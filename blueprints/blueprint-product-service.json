@@ -1,0 +1,193 @@
+{
+  "module": "ProductService",
+  "description": "Manages product catalog, categories, and inventory. Handles product creation, updates, search functionality, and availability checks. Includes caching strategies for product information.",
+  "file_count": 15,
+  "module_path": "product-service",
+  "interfaces": {
+    "com.gradlemedium100.productservice.service.ProductService": "Defines core product management operations",
+    "com.gradlemedium100.productservice.service.CategoryService": "Defines category management operations",
+    "com.gradlemedium100.productservice.service.InventoryService": "Defines inventory management operations",
+    "com.gradlemedium100.productservice.repository.ProductRepository": "Data access interface for product entities",
+    "com.gradlemedium100.productservice.repository.CategoryRepository": "Data access interface for category entities",
+    "com.gradlemedium100.productservice.repository.InventoryRepository": "Data access interface for inventory records"
+  },
+  "dependencies": {
+    "Common": "For shared utilities and common models",
+    "DataAccess": "For database connection and transaction management",
+    "SecurityModule": "For product access controls and authorization"
+  },
+  "classes": [
+    {
+      "name": "ProductController",
+      "package": "com.gradlemedium100.productservice.controller",
+      "type": "controller",
+      "description": "REST API controller that handles HTTP requests related to products",
+      "dependencies": ["com.gradlemedium100.productservice.service.ProductService", "com.gradlemedium100.productservice.dto.ProductDTO", "com.gradlemedium100.productservice.dto.ProductSearchCriteria"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "CategoryController",
+      "package": "com.gradlemedium100.productservice.controller",
+      "type": "controller",
+      "description": "REST API controller that handles HTTP requests related to product categories",
+      "dependencies": ["com.gradlemedium100.productservice.service.CategoryService", "com.gradlemedium100.productservice.dto.CategoryDTO"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "InventoryController",
+      "package": "com.gradlemedium100.productservice.controller",
+      "type": "controller",
+      "description": "REST API controller that handles inventory-related operations",
+      "dependencies": ["com.gradlemedium100.productservice.service.InventoryService", "com.gradlemedium100.productservice.dto.InventoryDTO"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "ProductServiceImpl",
+      "package": "com.gradlemedium100.productservice.service.impl",
+      "type": "service",
+      "description": "Implementation of ProductService that manages product operations and handles caching",
+      "dependencies": ["com.gradlemedium100.productservice.repository.ProductRepository", "com.gradlemedium100.productservice.model.Product", "com.gradlemedium100.productservice.dto.ProductDTO", "com.gradlemedium100.common.util.CacheManager"],
+      "implements": ["com.gradlemedium100.productservice.service.ProductService"],
+      "extends": ""
+    },
+    {
+      "name": "CategoryServiceImpl",
+      "package": "com.gradlemedium100.productservice.service.impl",
+      "type": "service",
+      "description": "Implementation of CategoryService that manages product category operations",
+      "dependencies": ["com.gradlemedium100.productservice.repository.CategoryRepository", "com.gradlemedium100.productservice.model.Category", "com.gradlemedium100.productservice.dto.CategoryDTO"],
+      "implements": ["com.gradlemedium100.productservice.service.CategoryService"],
+      "extends": ""
+    },
+    {
+      "name": "InventoryServiceImpl",
+      "package": "com.gradlemedium100.productservice.service.impl",
+      "type": "service",
+      "description": "Implementation of InventoryService that handles product inventory operations",
+      "dependencies": ["com.gradlemedium100.productservice.repository.InventoryRepository", "com.gradlemedium100.productservice.model.Inventory", "com.gradlemedium100.productservice.dto.InventoryDTO"],
+      "implements": ["com.gradlemedium100.productservice.service.InventoryService"],
+      "extends": ""
+    },
+    {
+      "name": "Product",
+      "package": "com.gradlemedium100.productservice.model",
+      "type": "model",
+      "description": "Entity class representing a product in the catalog",
+      "dependencies": ["com.gradlemedium100.productservice.model.Category"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "Category",
+      "package": "com.gradlemedium100.productservice.model",
+      "type": "model",
+      "description": "Entity class representing a product category",
+      "dependencies": [],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "Inventory",
+      "package": "com.gradlemedium100.productservice.model",
+      "type": "model",
+      "description": "Entity class representing inventory information for a product",
+      "dependencies": ["com.gradlemedium100.productservice.model.Product"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "ProductDTO",
+      "package": "com.gradlemedium100.productservice.dto",
+      "type": "dto",
+      "description": "Data Transfer Object for Product entity",
+      "dependencies": [],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "CategoryDTO",
+      "package": "com.gradlemedium100.productservice.dto",
+      "type": "dto",
+      "description": "Data Transfer Object for Category entity",
+      "dependencies": [],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "InventoryDTO",
+      "package": "com.gradlemedium100.productservice.dto",
+      "type": "dto",
+      "description": "Data Transfer Object for Inventory entity",
+      "dependencies": [],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "ProductSearchCriteria",
+      "package": "com.gradlemedium100.productservice.dto",
+      "type": "dto",
+      "description": "DTO containing search criteria for product queries",
+      "dependencies": [],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "ProductServiceConfig",
+      "package": "com.gradlemedium100.productservice.config",
+      "type": "configuration",
+      "description": "Spring configuration class for the product service module",
+      "dependencies": ["com.gradlemedium100.common.util.CacheManager"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "ProductServiceApplication",
+      "package": "com.gradlemedium100.productservice",
+      "type": "application",
+      "description": "Main application class that bootstraps the product service module",
+      "dependencies": ["org.springframework.boot.SpringApplication"],
+      "implements": [],
+      "extends": ""
+    }
+  ],
+  "configFiles": [
+    {
+      "path": "product-service/build.gradle",
+      "description": "Build file for the ProductService module"
+    },
+    {
+      "path": "product-service/src/main/resources/application.properties",
+      "description": "Configuration properties for the ProductService module"
+    },
+    {
+      "path": "product-service/src/main/resources/cache-config.properties",
+      "description": "Configuration for product caching strategies"
+    }
+  ],
+  "generationOrder": [
+    "com.gradlemedium100.productservice.model.Category",
+    "com.gradlemedium100.productservice.model.Product",
+    "com.gradlemedium100.productservice.model.Inventory",
+    "com.gradlemedium100.productservice.dto.ProductDTO",
+    "com.gradlemedium100.productservice.dto.CategoryDTO",
+    "com.gradlemedium100.productservice.dto.InventoryDTO",
+    "com.gradlemedium100.productservice.dto.ProductSearchCriteria",
+    "com.gradlemedium100.productservice.repository.ProductRepository",
+    "com.gradlemedium100.productservice.repository.CategoryRepository",
+    "com.gradlemedium100.productservice.repository.InventoryRepository",
+    "com.gradlemedium100.productservice.service.ProductService",
+    "com.gradlemedium100.productservice.service.CategoryService",
+    "com.gradlemedium100.productservice.service.InventoryService",
+    "com.gradlemedium100.productservice.service.impl.ProductServiceImpl",
+    "com.gradlemedium100.productservice.service.impl.CategoryServiceImpl",
+    "com.gradlemedium100.productservice.service.impl.InventoryServiceImpl",
+    "com.gradlemedium100.productservice.config.ProductServiceConfig",
+    "com.gradlemedium100.productservice.controller.ProductController",
+    "com.gradlemedium100.productservice.controller.CategoryController",
+    "com.gradlemedium100.productservice.controller.InventoryController",
+    "com.gradlemedium100.productservice.ProductServiceApplication"
+  ]
+}

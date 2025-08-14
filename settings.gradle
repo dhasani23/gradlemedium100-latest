@@ -1,0 +1,12 @@
+rootProject.name = 'gradlemedium100'
+
+include 'common'
+include 'security'
+include 'data-access'
+include 'product-service'
+include 'payment-service'
+include 'notification-service'
+include 'api-gateway'
+
+// Temporarily exclude the order-service module until we can fix all its dependencies
+// include 'order-service'

@@ -1,0 +1,236 @@
+##
+# Application Configuration for ApiGateway
+# Project: gradlemedium100
+# Description: Configuration properties for the ApiGateway module
+##
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+    min-response-size: 2048
+    mime-types: application/json,application/xml,text/html,text/plain
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: 
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            max-age: 3600
+      routes:
+        # Product Service Routes
+        - id: product-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+            - name: CircuitBreaker
+              args:
+                name: productServiceCircuitBreaker
+                fallbackUri: forward:/fallback/products
+
+        # Order Service Routes
+        - id: order-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+            - name: CircuitBreaker
+              args:
+                name: orderServiceCircuitBreaker
+                fallbackUri: forward:/fallback/orders
+
+        # Payment Service Routes
+        - id: payment-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+            - name: CircuitBreaker
+              args:
+                name: paymentServiceCircuitBreaker
+                fallbackUri: forward:/fallback/payments
+
+        # Notification Service Routes
+        - id: notification-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+            - name: CircuitBreaker
+              args:
+                name: notificationServiceCircuitBreaker
+                fallbackUri: forward:/fallback/notifications
+                
+        # API Documentation Routes
+        - id: api-docs
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/api-docs/**
+          filters:
+            - StripPrefix=1
+
+  # Redis Configuration for Rate Limiting
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+
+# Resilience4j Circuit Breaker Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      productServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 3
+      orderServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 3
+      paymentServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 3
+      notificationServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 3
+
+  timelimiter:
+    instances:
+      productServiceCircuitBreaker:
+        timeoutDuration: 5s
+      orderServiceCircuitBreaker:
+        timeoutDuration: 5s
+      paymentServiceCircuitBreaker:
+        timeoutDuration: 5s
+      notificationServiceCircuitBreaker:
+        timeoutDuration: 5s
+
+# Authentication and Security Configuration
+security:
+  authentication:
+    jwt:
+      secret: ${JWT_SECRET:4ey84Kfa6c82j3FCwK92j3FHnxER7gu5}
+      token-validity-in-seconds: 86400
+  skip-auth-paths:
+    - /api/auth/login
+    - /api/auth/register
+    - /api-docs
+    - /swagger-ui/**
+    - /health
+    - /metrics
+
+# API Gateway Filter Configuration
+filters:
+  correlation-id:
+    header-name: X-Correlation-ID
+    enabled: true
+  logging:
+    include-headers: true
+    include-payload: false
+    enabled: true
+
+# API Documentation Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    use-root-path: true
+    urls:
+      - name: Product Service
+        url: /api-docs/products
+      - name: Order Service
+        url: /api-docs/orders
+      - name: Payment Service
+        url: /api-docs/payments
+      - name: Notification Service
+        url: /api-docs/notifications
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.gradlemedium100: DEBUG
+    org.springframework.cloud.gateway: INFO
+    reactor.netty: INFO
+
+# Management and Monitoring Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Service URLs (configured for local development)
+service:
+  product:
+    url: http://localhost:8081
+  order:
+    url: http://localhost:8082
+  payment:
+    url: http://localhost:8083
+  notification:
+    url: http://localhost:8084
+
+# TODO: Configure service discovery for production environment
+# TODO: Add SSL configuration for production deployment
+# FIXME: Update JWT secret for production environment using secure vault

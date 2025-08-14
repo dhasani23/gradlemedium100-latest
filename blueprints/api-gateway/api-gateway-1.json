@@ -1,0 +1,120 @@
+[
+  {
+    "name": "CorrelationIdFilter",
+    "package": "com.gradlemedium100.apigateway.filter",
+    "type": "filter",
+    "description": "Filter for adding correlation IDs to track requests across microservices",
+    "dependencies": ["org.springframework.cloud.gateway.filter.GatewayFilter", "com.gradlemedium100.common.util.CorrelationIdGenerator"],
+    "implements": ["com.gradlemedium100.apigateway.filter.RequestFilter"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "correlationIdGenerator",
+        "type": "CorrelationIdGenerator",
+        "description": "Utility for generating correlation IDs"
+      },
+      {
+        "name": "correlationIdHeaderName",
+        "type": "String",
+        "description": "Name of the header for correlation ID"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getFilter",
+        "returnType": "GatewayFilter",
+        "parameters": [],
+        "description": "Returns a filter that adds correlation ID to requests"
+      },
+      {
+        "name": "getOrder",
+        "returnType": "int",
+        "parameters": [],
+        "description": "Returns the order of this filter in the filter chain"
+      },
+      {
+        "name": "generateCorrelationId",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Generates a unique correlation ID for tracking"
+      },
+      {
+        "name": "addCorrelationId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "exchange",
+            "type": "ServerWebExchange"
+          }
+        ],
+        "description": "Adds correlation ID to the request and response headers"
+      }
+    ]
+  },
+  {
+    "name": "CircuitBreakerConfig",
+    "package": "com.gradlemedium100.apigateway.config",
+    "type": "configuration",
+    "description": "Configuration for circuit breaker patterns to handle service failures",
+    "dependencies": ["org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "defaultFailureRateThreshold",
+        "type": "float",
+        "description": "Threshold percentage for failure rate to trip circuit breaker"
+      },
+      {
+        "name": "slowCallRateThreshold",
+        "type": "float",
+        "description": "Threshold percentage for slow call rate to trip circuit breaker"
+      },
+      {
+        "name": "slowCallDurationThreshold",
+        "type": "Duration",
+        "description": "Duration threshold to consider a call as slow"
+      },
+      {
+        "name": "permittedNumberOfCallsInHalfOpenState",
+        "type": "int",
+        "description": "Number of calls allowed in half-open state"
+      },
+      {
+        "name": "slidingWindowSize",
+        "type": "int",
+        "description": "Size of the sliding window for call statistics"
+      },
+      {
+        "name": "minimumNumberOfCalls",
+        "type": "int",
+        "description": "Minimum number of calls required before calculations"
+      },
+      {
+        "name": "waitDurationInOpenState",
+        "type": "Duration",
+        "description": "Duration to wait before transitioning from open to half-open"
+      }
+    ],
+    "methods": [
+      {
+        "name": "defaultCircuitBreakerFactory",
+        "returnType": "ReactiveResilience4JCircuitBreakerFactory",
+        "parameters": [],
+        "description": "Creates and configures a circuit breaker factory with default settings"
+      },
+      {
+        "name": "customCircuitBreakerConfig",
+        "returnType": "CircuitBreakerConfig",
+        "parameters": [],
+        "description": "Configures custom circuit breaker behavior"
+      },
+      {
+        "name": "timeLimiterConfig",
+        "returnType": "TimeLimiterConfig",
+        "parameters": [],
+        "description": "Configures time limiters for circuit breakers"
+      }
+    ]
+  }
+]

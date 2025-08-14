@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+description = 'Notification service module that manages email, SMS, and in-app notifications'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Internal module dependencies
+    implementation project(':common')
+    implementation project(':data-access')
+    implementation project(':security')
+    
+    // Spring Boot dependencies
+    implementation 'org.springframework.boot:spring-boot-starter:2.5.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.0'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.5.0'
+    
+    // Templating engines
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.0'
+    implementation 'org.freemarker:freemarker:2.3.31'
+    
+    // SMS service integration (example)
+    implementation 'com.twilio.sdk:twilio:8.22.0'
+    
+    // JSON handling
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.0'
+    
+    // Logging
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.mockito:mockito-core:3.9.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Optional: create an executable JAR if this service should be deployable standalone
+bootJar {
+    enabled = true
+    archiveBaseName = 'notification-service'
+    archiveVersion = '0.1.0-SNAPSHOT'
+}
+
+// Create javadoc JAR
+task javadocJar(type: Jar) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// Create sources JAR
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}

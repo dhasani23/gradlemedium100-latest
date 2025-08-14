@@ -1,0 +1,193 @@
+{
+    "module": "Common",
+    "description": "Contains common utilities, exceptions, DTOs, and shared constants used across all other modules. Includes logging configurations, validation helpers, common error handlers, and date/time utilities.",
+    "file_count": 15,
+    "module_path": "common",
+    "interfaces": {
+        "com.gradlemedium100.common.validation.Validator": "Interface for validation operations",
+        "com.gradlemedium100.common.exception.ErrorHandler": "Interface for handling errors consistently across the application"
+    },
+    "dependencies": {
+        "external": [
+            "org.springframework.boot:spring-boot-starter:2.5.0",
+            "org.springframework.boot:spring-boot-starter-validation:2.5.0",
+            "org.springframework.boot:spring-boot-starter-logging:2.5.0",
+            "com.fasterxml.jackson.core:jackson-databind:2.12.3",
+            "javax.validation:validation-api:2.0.1.Final",
+            "org.apache.commons:commons-lang3:3.12.0",
+            "org.slf4j:slf4j-api:1.7.30",
+            "ch.qos.logback:logback-classic:1.2.3"
+        ],
+        "internal": []
+    },
+    "classes": [
+        {
+            "name": "DateTimeUtils",
+            "package": "com.gradlemedium100.common.utils",
+            "type": "utility",
+            "description": "Utility class for date and time operations, formatting, parsing and conversion between different formats",
+            "dependencies": [],
+            "implements": [],
+            "extends": null
+        },
+        {
+            "name": "StringUtils",
+            "package": "com.gradlemedium100.common.utils",
+            "type": "utility",
+            "description": "Utility class for string manipulation operations like formatting, validation, sanitization",
+            "dependencies": ["org.apache.commons.lang3.StringUtils"],
+            "implements": [],
+            "extends": null
+        },
+        {
+            "name": "ValidationUtils",
+            "package": "com.gradlemedium100.common.utils",
+            "type": "utility",
+            "description": "Utility class providing common validation methods for strings, numbers, objects, etc.",
+            "dependencies": ["javax.validation.Validator", "com.gradlemedium100.common.validation.Validator"],
+            "implements": [],
+            "extends": null
+        },
+        {
+            "name": "JsonUtils",
+            "package": "com.gradlemedium100.common.utils",
+            "type": "utility",
+            "description": "Utility class for JSON serialization, deserialization, and manipulation operations",
+            "dependencies": ["com.fasterxml.jackson.databind.ObjectMapper"],
+            "implements": [],
+            "extends": null
+        },
+        {
+            "name": "LoggingUtils",
+            "package": "com.gradlemedium100.common.utils",
+            "type": "utility",
+            "description": "Utility class providing standardized logging methods and formatters",
+            "dependencies": ["org.slf4j.Logger", "org.slf4j.LoggerFactory"],
+            "implements": [],
+            "extends": null
+        },
+        {
+            "name": "BaseValidator",
+            "package": "com.gradlemedium100.common.validation",
+            "type": "service",
+            "description": "Base implementation of the Validator interface with common validation methods",
+            "dependencies": [],
+            "implements": ["com.gradlemedium100.common.validation.Validator"],
+            "extends": null
+        },
+        {
+            "name": "ResourceNotFoundException",
+            "package": "com.gradlemedium100.common.exception",
+            "type": "exception",
+            "description": "Exception thrown when a requested resource is not found",
+            "dependencies": [],
+            "implements": [],
+            "extends": "java.lang.RuntimeException"
+        },
+        {
+            "name": "BadRequestException",
+            "package": "com.gradlemedium100.common.exception",
+            "type": "exception",
+            "description": "Exception thrown when a request contains invalid parameters or data",
+            "dependencies": [],
+            "implements": [],
+            "extends": "java.lang.RuntimeException"
+        },
+        {
+            "name": "GlobalExceptionHandler",
+            "package": "com.gradlemedium100.common.exception",
+            "type": "handler",
+            "description": "Centralized exception handler for converting exceptions to appropriate HTTP responses",
+            "dependencies": ["com.gradlemedium100.common.exception.ErrorHandler", "com.gradlemedium100.common.dto.ErrorResponse", "org.slf4j.Logger"],
+            "implements": ["com.gradlemedium100.common.exception.ErrorHandler"],
+            "extends": null
+        },
+        {
+            "name": "ErrorResponse",
+            "package": "com.gradlemedium100.common.dto",
+            "type": "dto",
+            "description": "Data transfer object representing a standardized error response",
+            "dependencies": [],
+            "implements": [],
+            "extends": "java.io.Serializable"
+        },
+        {
+            "name": "BaseDTO",
+            "package": "com.gradlemedium100.common.dto",
+            "type": "dto",
+            "description": "Abstract base class for all DTOs with common fields and methods",
+            "dependencies": ["com.fasterxml.jackson.annotation.JsonInclude"],
+            "implements": [],
+            "extends": "java.io.Serializable"
+        },
+        {
+            "name": "PageRequest",
+            "package": "com.gradlemedium100.common.dto",
+            "type": "dto",
+            "description": "Data transfer object representing pagination parameters for API requests",
+            "dependencies": [],
+            "implements": [],
+            "extends": "com.gradlemedium100.common.dto.BaseDTO"
+        },
+        {
+            "name": "PageResponse",
+            "package": "com.gradlemedium100.common.dto",
+            "type": "dto",
+            "description": "Data transfer object representing paginated response data for API responses",
+            "dependencies": ["java.util.List"],
+            "implements": [],
+            "extends": "com.gradlemedium100.common.dto.BaseDTO"
+        },
+        {
+            "name": "Constants",
+            "package": "com.gradlemedium100.common",
+            "type": "constants",
+            "description": "Class containing application-wide constants and configuration values",
+            "dependencies": [],
+            "implements": [],
+            "extends": null
+        },
+        {
+            "name": "CommonConfiguration",
+            "package": "com.gradlemedium100.common.config",
+            "type": "configuration",
+            "description": "Spring configuration class that sets up common beans and services",
+            "dependencies": ["org.springframework.context.annotation.Configuration", "org.springframework.context.annotation.Bean"],
+            "implements": [],
+            "extends": null
+        }
+    ],
+    "configFiles": [
+        {
+            "path": "common/build.gradle",
+            "description": "Build file for the Common module"
+        },
+        {
+            "path": "common/src/main/resources/logback.xml",
+            "description": "Logback configuration for the application logging"
+        },
+        {
+            "path": "common/src/main/resources/validation-messages.properties",
+            "description": "Validation messages for error responses"
+        }
+    ],
+    "generationOrder": [
+        "com.gradlemedium100.common.validation.Validator",
+        "com.gradlemedium100.common.exception.ErrorHandler",
+        "com.gradlemedium100.common.utils.DateTimeUtils",
+        "com.gradlemedium100.common.utils.StringUtils",
+        "com.gradlemedium100.common.utils.JsonUtils",
+        "com.gradlemedium100.common.utils.LoggingUtils",
+        "com.gradlemedium100.common.dto.BaseDTO",
+        "com.gradlemedium100.common.dto.ErrorResponse",
+        "com.gradlemedium100.common.dto.PageRequest",
+        "com.gradlemedium100.common.dto.PageResponse",
+        "com.gradlemedium100.common.exception.ResourceNotFoundException",
+        "com.gradlemedium100.common.exception.BadRequestException",
+        "com.gradlemedium100.common.validation.BaseValidator",
+        "com.gradlemedium100.common.exception.GlobalExceptionHandler",
+        "com.gradlemedium100.common.Constants",
+        "com.gradlemedium100.common.config.CommonConfiguration",
+        "com.gradlemedium100.common.utils.ValidationUtils"
+    ]
+}

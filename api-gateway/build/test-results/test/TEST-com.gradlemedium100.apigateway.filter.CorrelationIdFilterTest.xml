@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.gradlemedium100.apigateway.filter.CorrelationIdFilterTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-08-14T20:35:22.595Z" hostname="6c7e67b8c02a" time="0.591">
+  <properties/>
+  <testcase name="shouldKeepExistingValidCorrelationId()" classname="com.gradlemedium100.apigateway.filter.CorrelationIdFilterTest" time="0.578"/>
+  <testcase name="shouldReplaceInvalidCorrelationId()" classname="com.gradlemedium100.apigateway.filter.CorrelationIdFilterTest" time="0.004"/>
+  <testcase name="shouldAddCorrelationIdWhenNotPresent()" classname="com.gradlemedium100.apigateway.filter.CorrelationIdFilterTest" time="0.005"/>
+  <testcase name="shouldHaveCorrectFilterOrder()" classname="com.gradlemedium100.apigateway.filter.CorrelationIdFilterTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,1020 @@
+[
+    {
+        "name": "BaseEntity",
+        "package": "com.gradlemedium100.dataaccess.entity",
+        "type": "model",
+        "description": "Abstract base entity class with common fields like id, created date, and modified date",
+        "dependencies": ["javax.persistence.Entity", "javax.persistence.Id", "javax.persistence.MappedSuperclass", "javax.persistence.GeneratedValue", "java.time.LocalDateTime"],
+        "implements": [],
+        "extends": "",
+        "fields": [
+            {
+                "name": "id",
+                "type": "Long",
+                "description": "Unique identifier for the entity"
+            },
+            {
+                "name": "createdAt",
+                "type": "LocalDateTime",
+                "description": "Date and time when the entity was created"
+            },
+            {
+                "name": "updatedAt",
+                "type": "LocalDateTime",
+                "description": "Date and time when the entity was last updated"
+            },
+            {
+                "name": "version",
+                "type": "Long",
+                "description": "Version number for optimistic locking"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getId",
+                "returnType": "Long",
+                "parameters": [],
+                "description": "Get the entity ID"
+            },
+            {
+                "name": "setId",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Set the entity ID"
+            },
+            {
+                "name": "getCreatedAt",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Get the creation timestamp"
+            },
+            {
+                "name": "setCreatedAt",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "createdAt",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Set the creation timestamp"
+            },
+            {
+                "name": "getUpdatedAt",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Get the last update timestamp"
+            },
+            {
+                "name": "setUpdatedAt",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "updatedAt",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Set the last update timestamp"
+            },
+            {
+                "name": "getVersion",
+                "returnType": "Long",
+                "parameters": [],
+                "description": "Get the entity version"
+            },
+            {
+                "name": "setVersion",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "version",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Set the entity version"
+            },
+            {
+                "name": "prePersist",
+                "returnType": "void",
+                "parameters": [],
+                "description": "Lifecycle callback to set createdAt and updatedAt before persisting"
+            },
+            {
+                "name": "preUpdate",
+                "returnType": "void",
+                "parameters": [],
+                "description": "Lifecycle callback to update the updatedAt timestamp before updating"
+            }
+        ]
+    },
+    {
+        "name": "ProductEntity",
+        "package": "com.gradlemedium100.dataaccess.entity",
+        "type": "model",
+        "description": "Entity class representing a product in the database",
+        "dependencies": ["javax.persistence.Entity", "javax.persistence.Table", "java.math.BigDecimal"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.entity.BaseEntity",
+        "fields": [
+            {
+                "name": "name",
+                "type": "String",
+                "description": "Product name"
+            },
+            {
+                "name": "description",
+                "type": "String",
+                "description": "Product description"
+            },
+            {
+                "name": "sku",
+                "type": "String",
+                "description": "Stock keeping unit, unique identifier for the product"
+            },
+            {
+                "name": "price",
+                "type": "BigDecimal",
+                "description": "Product price"
+            },
+            {
+                "name": "stockQuantity",
+                "type": "Integer",
+                "description": "Available quantity in stock"
+            },
+            {
+                "name": "category",
+                "type": "String",
+                "description": "Product category"
+            },
+            {
+                "name": "active",
+                "type": "boolean",
+                "description": "Whether the product is active and available for purchase"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getName",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the product name"
+            },
+            {
+                "name": "setName",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the product name"
+            },
+            {
+                "name": "getDescription",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the product description"
+            },
+            {
+                "name": "setDescription",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "description",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the product description"
+            },
+            {
+                "name": "getSku",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the product SKU"
+            },
+            {
+                "name": "setSku",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "sku",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the product SKU"
+            },
+            {
+                "name": "getPrice",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Get the product price"
+            },
+            {
+                "name": "setPrice",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "price",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Set the product price"
+            },
+            {
+                "name": "getStockQuantity",
+                "returnType": "Integer",
+                "parameters": [],
+                "description": "Get the available stock quantity"
+            },
+            {
+                "name": "setStockQuantity",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "stockQuantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Set the available stock quantity"
+            },
+            {
+                "name": "getCategory",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the product category"
+            },
+            {
+                "name": "setCategory",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the product category"
+            },
+            {
+                "name": "isActive",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Check if the product is active"
+            },
+            {
+                "name": "setActive",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "type": "boolean"
+                    }
+                ],
+                "description": "Set the product active status"
+            }
+        ]
+    },
+    {
+        "name": "OrderEntity",
+        "package": "com.gradlemedium100.dataaccess.entity",
+        "type": "model",
+        "description": "Entity class representing an order in the database",
+        "dependencies": ["javax.persistence.Entity", "javax.persistence.Table", "javax.persistence.ManyToOne", "javax.persistence.OneToMany", "java.math.BigDecimal", "java.time.LocalDateTime", "java.util.List"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.entity.BaseEntity",
+        "fields": [
+            {
+                "name": "orderNumber",
+                "type": "String",
+                "description": "Unique order number"
+            },
+            {
+                "name": "user",
+                "type": "UserEntity",
+                "description": "User who placed the order"
+            },
+            {
+                "name": "orderDate",
+                "type": "LocalDateTime",
+                "description": "Date when the order was placed"
+            },
+            {
+                "name": "totalAmount",
+                "type": "BigDecimal",
+                "description": "Total amount of the order"
+            },
+            {
+                "name": "status",
+                "type": "String",
+                "description": "Current status of the order (e.g., PENDING, SHIPPED, DELIVERED)"
+            },
+            {
+                "name": "shippingAddress",
+                "type": "String",
+                "description": "Shipping address for the order"
+            },
+            {
+                "name": "billingAddress",
+                "type": "String",
+                "description": "Billing address for the order"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getOrderNumber",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the order number"
+            },
+            {
+                "name": "setOrderNumber",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "orderNumber",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the order number"
+            },
+            {
+                "name": "getUser",
+                "returnType": "UserEntity",
+                "parameters": [],
+                "description": "Get the user who placed the order"
+            },
+            {
+                "name": "setUser",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "type": "UserEntity"
+                    }
+                ],
+                "description": "Set the user who placed the order"
+            },
+            {
+                "name": "getOrderDate",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Get the order date"
+            },
+            {
+                "name": "setOrderDate",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "orderDate",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Set the order date"
+            },
+            {
+                "name": "getTotalAmount",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Get the total order amount"
+            },
+            {
+                "name": "setTotalAmount",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "totalAmount",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Set the total order amount"
+            },
+            {
+                "name": "getStatus",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the order status"
+            },
+            {
+                "name": "setStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the order status"
+            },
+            {
+                "name": "getShippingAddress",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the shipping address"
+            },
+            {
+                "name": "setShippingAddress",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "shippingAddress",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the shipping address"
+            },
+            {
+                "name": "getBillingAddress",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the billing address"
+            },
+            {
+                "name": "setBillingAddress",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "billingAddress",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the billing address"
+            }
+        ]
+    },
+    {
+        "name": "UserEntity",
+        "package": "com.gradlemedium100.dataaccess.entity",
+        "type": "model",
+        "description": "Entity class representing a user in the database",
+        "dependencies": ["javax.persistence.Entity", "javax.persistence.Table", "javax.persistence.Column", "java.time.LocalDateTime"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.entity.BaseEntity",
+        "fields": [
+            {
+                "name": "username",
+                "type": "String",
+                "description": "User's unique username"
+            },
+            {
+                "name": "email",
+                "type": "String",
+                "description": "User's email address"
+            },
+            {
+                "name": "passwordHash",
+                "type": "String",
+                "description": "Hashed password for the user"
+            },
+            {
+                "name": "firstName",
+                "type": "String",
+                "description": "User's first name"
+            },
+            {
+                "name": "lastName",
+                "type": "String",
+                "description": "User's last name"
+            },
+            {
+                "name": "active",
+                "type": "boolean",
+                "description": "Whether the user account is active"
+            },
+            {
+                "name": "lastLogin",
+                "type": "LocalDateTime",
+                "description": "Last login timestamp"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getUsername",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the username"
+            },
+            {
+                "name": "setUsername",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the username"
+            },
+            {
+                "name": "getEmail",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the email address"
+            },
+            {
+                "name": "setEmail",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the email address"
+            },
+            {
+                "name": "getPasswordHash",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the password hash"
+            },
+            {
+                "name": "setPasswordHash",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "passwordHash",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the password hash"
+            },
+            {
+                "name": "getFirstName",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the user's first name"
+            },
+            {
+                "name": "setFirstName",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "firstName",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the user's first name"
+            },
+            {
+                "name": "getLastName",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the user's last name"
+            },
+            {
+                "name": "setLastName",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "lastName",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the user's last name"
+            },
+            {
+                "name": "isActive",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Check if the user is active"
+            },
+            {
+                "name": "setActive",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "type": "boolean"
+                    }
+                ],
+                "description": "Set the user's active status"
+            },
+            {
+                "name": "getLastLogin",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Get the last login timestamp"
+            },
+            {
+                "name": "setLastLogin",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "lastLogin",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Set the last login timestamp"
+            }
+        ]
+    },
+    {
+        "name": "PaymentEntity",
+        "package": "com.gradlemedium100.dataaccess.entity",
+        "type": "model",
+        "description": "Entity class representing a payment in the database",
+        "dependencies": ["javax.persistence.Entity", "javax.persistence.Table", "javax.persistence.ManyToOne", "java.math.BigDecimal", "java.time.LocalDateTime"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.entity.BaseEntity",
+        "fields": [
+            {
+                "name": "order",
+                "type": "OrderEntity",
+                "description": "The order associated with this payment"
+            },
+            {
+                "name": "amount",
+                "type": "BigDecimal",
+                "description": "Payment amount"
+            },
+            {
+                "name": "paymentDate",
+                "type": "LocalDateTime",
+                "description": "Date and time of the payment"
+            },
+            {
+                "name": "paymentMethod",
+                "type": "String",
+                "description": "Method of payment (e.g., CREDIT_CARD, PAYPAL, etc.)"
+            },
+            {
+                "name": "transactionId",
+                "type": "String",
+                "description": "Unique transaction ID from the payment processor"
+            },
+            {
+                "name": "status",
+                "type": "String",
+                "description": "Payment status (e.g., PENDING, COMPLETED, FAILED)"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getOrder",
+                "returnType": "OrderEntity",
+                "parameters": [],
+                "description": "Get the associated order"
+            },
+            {
+                "name": "setOrder",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "OrderEntity"
+                    }
+                ],
+                "description": "Set the associated order"
+            },
+            {
+                "name": "getAmount",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Get the payment amount"
+            },
+            {
+                "name": "setAmount",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "amount",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Set the payment amount"
+            },
+            {
+                "name": "getPaymentDate",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Get the payment date"
+            },
+            {
+                "name": "setPaymentDate",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "paymentDate",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Set the payment date"
+            },
+            {
+                "name": "getPaymentMethod",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the payment method"
+            },
+            {
+                "name": "setPaymentMethod",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "paymentMethod",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the payment method"
+            },
+            {
+                "name": "getTransactionId",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the transaction ID"
+            },
+            {
+                "name": "setTransactionId",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "transactionId",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the transaction ID"
+            },
+            {
+                "name": "getStatus",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Get the payment status"
+            },
+            {
+                "name": "setStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Set the payment status"
+            }
+        ]
+    },
+    {
+        "name": "DataAccessApplication",
+        "package": "com.gradlemedium100.dataaccess",
+        "type": "configuration",
+        "description": "Main configuration class for the DataAccess module, sets up database connections and JPA repositories",
+        "dependencies": ["org.springframework.boot.autoconfigure.SpringBootApplication", "org.springframework.data.jpa.repository.config.EnableJpaRepositories"],
+        "implements": [],
+        "extends": "",
+        "fields": [],
+        "methods": [
+            {
+                "name": "main",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "args",
+                        "type": "String[]"
+                    }
+                ],
+                "description": "Main entry point for running the DataAccess module as a standalone application"
+            }
+        ]
+    },
+    {
+        "name": "DatabaseConfig",
+        "package": "com.gradlemedium100.dataaccess.config",
+        "type": "configuration",
+        "description": "Configuration class for database connection settings and properties",
+        "dependencies": ["org.springframework.context.annotation.Configuration", "org.springframework.beans.factory.annotation.Value", "javax.sql.DataSource", "com.zaxxer.hikari.HikariConfig", "com.zaxxer.hikari.HikariDataSource"],
+        "implements": [],
+        "extends": "",
+        "fields": [
+            {
+                "name": "dbUrl",
+                "type": "String",
+                "description": "Database connection URL"
+            },
+            {
+                "name": "dbUsername",
+                "type": "String",
+                "description": "Database username"
+            },
+            {
+                "name": "dbPassword",
+                "type": "String",
+                "description": "Database password"
+            },
+            {
+                "name": "maxPoolSize",
+                "type": "int",
+                "description": "Maximum number of connections in the pool"
+            }
+        ],
+        "methods": [
+            {
+                "name": "dataSource",
+                "returnType": "DataSource",
+                "parameters": [],
+                "description": "Creates and configures the database connection pool"
+            },
+            {
+                "name": "hikariConfig",
+                "returnType": "HikariConfig",
+                "parameters": [],
+                "description": "Configures the HikariCP connection pool settings"
+            }
+        ]
+    },
+    {
+        "name": "FlywayMigrationConfig",
+        "package": "com.gradlemedium100.dataaccess.config",
+        "type": "configuration",
+        "description": "Configuration for Flyway database migration settings and initialization",
+        "dependencies": ["org.springframework.context.annotation.Configuration", "org.flywaydb.core.Flyway", "javax.sql.DataSource", "org.springframework.beans.factory.annotation.Autowired"],
+        "implements": [],
+        "extends": "",
+        "fields": [
+            {
+                "name": "dataSource",
+                "type": "DataSource",
+                "description": "Datasource for Flyway to use for migrations"
+            }
+        ],
+        "methods": [
+            {
+                "name": "configureFlyway",
+                "returnType": "Flyway",
+                "parameters": [],
+                "description": "Configures and initializes Flyway for database migrations"
+            },
+            {
+                "name": "migrateDatabase",
+                "returnType": "void",
+                "parameters": [],
+                "description": "Executes the database migrations"
+            }
+        ]
+    },
+    {
+        "name": "BaseRepositoryImpl",
+        "package": "com.gradlemedium100.dataaccess.repository.impl",
+        "type": "repository",
+        "description": "Generic repository implementation providing common CRUD operations",
+        "dependencies": ["javax.persistence.EntityManager", "org.springframework.transaction.annotation.Transactional"],
+        "implements": ["com.gradlemedium100.dataaccess.repository.BaseRepository"],
+        "extends": "",
+        "fields": [
+            {
+                "name": "entityManager",
+                "type": "EntityManager",
+                "description": "JPA EntityManager for database operations"
+            },
+            {
+                "name": "entityClass",
+                "type": "Class<T>",
+                "description": "Class type of the entity being managed"
+            }
+        ],
+        "methods": [
+            {
+                "name": "findById",
+                "returnType": "T",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Find an entity by its ID"
+            },
+            {
+                "name": "findAll",
+                "returnType": "List<T>",
+                "parameters": [],
+                "description": "Retrieve all entities of the managed type"
+            },
+            {
+                "name": "save",
+                "returnType": "T",
+                "parameters": [
+                    {
+                        "name": "entity",
+                        "type": "T"
+                    }
+                ],
+                "description": "Save or update an entity"
+            },
+            {
+                "name": "delete",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "entity",
+                        "type": "T"
+                    }
+                ],
+                "description": "Delete an entity"
+            },
+            {
+                "name": "deleteById",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Delete an entity by ID"
+            },
+            {
+                "name": "count",
+                "returnType": "long",
+                "parameters": [],
+                "description": "Count all entities of the managed type"
+            }
+        ]
+    },
+    {
+        "name": "ProductRepositoryImpl",
+        "package": "com.gradlemedium100.dataaccess.repository.impl",
+        "type": "repository",
+        "description": "Implementation of the product repository interface",
+        "dependencies": ["javax.persistence.EntityManager", "org.springframework.stereotype.Repository", "org.springframework.transaction.annotation.Transactional", "com.gradlemedium100.dataaccess.entity.ProductEntity"],
+        "implements": ["com.gradlemedium100.dataaccess.repository.ProductRepository"],
+        "extends": "com.gradlemedium100.dataaccess.repository.impl.BaseRepositoryImpl",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByName",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find products by name (partial match)"
+            },
+            {
+                "name": "findByCategory",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find products by category"
+            },
+            {
+                "name": "findByPriceLessThan",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "price",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Find products with price less than the specified amount"
+            },
+            {
+                "name": "findByPriceGreaterThan",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "price",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Find products with price greater than the specified amount"
+            },
+            {
+                "name": "findBySku",
+                "returnType": "ProductEntity",
+                "parameters": [
+                    {
+                        "name": "sku",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a product by its SKU"
+            },
+            {
+                "name": "updateStock",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Update the stock quantity for a product"
+            }
+        ]
+    }
+]

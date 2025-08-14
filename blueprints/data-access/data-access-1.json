@@ -1,0 +1,663 @@
+[
+    {
+        "name": "OrderRepositoryImpl",
+        "package": "com.gradlemedium100.dataaccess.repository.impl",
+        "type": "repository",
+        "description": "Implementation of the order repository interface",
+        "dependencies": ["javax.persistence.EntityManager", "org.springframework.stereotype.Repository", "org.springframework.transaction.annotation.Transactional", "com.gradlemedium100.dataaccess.entity.OrderEntity"],
+        "implements": ["com.gradlemedium100.dataaccess.repository.OrderRepository"],
+        "extends": "com.gradlemedium100.dataaccess.repository.impl.BaseRepositoryImpl",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByOrderNumber",
+                "returnType": "OrderEntity",
+                "parameters": [
+                    {
+                        "name": "orderNumber",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find an order by its unique order number"
+            },
+            {
+                "name": "findByUserId",
+                "returnType": "List<OrderEntity>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Find all orders for a specific user"
+            },
+            {
+                "name": "findByStatus",
+                "returnType": "List<OrderEntity>",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find orders by their status"
+            },
+            {
+                "name": "findOrdersCreatedBetween",
+                "returnType": "List<OrderEntity>",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "type": "LocalDateTime"
+                    },
+                    {
+                        "name": "endDate",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Find orders created within a date range"
+            },
+            {
+                "name": "updateOrderStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Update the status of an order"
+            }
+        ]
+    },
+    {
+        "name": "UserRepositoryImpl",
+        "package": "com.gradlemedium100.dataaccess.repository.impl",
+        "type": "repository",
+        "description": "Implementation of the user repository interface",
+        "dependencies": ["javax.persistence.EntityManager", "org.springframework.stereotype.Repository", "org.springframework.transaction.annotation.Transactional", "com.gradlemedium100.dataaccess.entity.UserEntity"],
+        "implements": ["com.gradlemedium100.dataaccess.repository.UserRepository"],
+        "extends": "com.gradlemedium100.dataaccess.repository.impl.BaseRepositoryImpl",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByUsername",
+                "returnType": "UserEntity",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a user by username"
+            },
+            {
+                "name": "findByEmail",
+                "returnType": "UserEntity",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a user by email address"
+            },
+            {
+                "name": "findActiveUsers",
+                "returnType": "List<UserEntity>",
+                "parameters": [],
+                "description": "Find all active users"
+            },
+            {
+                "name": "updateLastLogin",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "lastLogin",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Update a user's last login timestamp"
+            },
+            {
+                "name": "updatePassword",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "passwordHash",
+                        "type": "String"
+                    }
+                ],
+                "description": "Update a user's password hash"
+            }
+        ]
+    },
+    {
+        "name": "PaymentRepositoryImpl",
+        "package": "com.gradlemedium100.dataaccess.repository.impl",
+        "type": "repository",
+        "description": "Implementation of the payment repository interface",
+        "dependencies": ["javax.persistence.EntityManager", "org.springframework.stereotype.Repository", "org.springframework.transaction.annotation.Transactional", "com.gradlemedium100.dataaccess.entity.PaymentEntity"],
+        "implements": ["com.gradlemedium100.dataaccess.repository.PaymentRepository"],
+        "extends": "com.gradlemedium100.dataaccess.repository.impl.BaseRepositoryImpl",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByTransactionId",
+                "returnType": "PaymentEntity",
+                "parameters": [
+                    {
+                        "name": "transactionId",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a payment by its transaction ID"
+            },
+            {
+                "name": "findByOrderId",
+                "returnType": "List<PaymentEntity>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Find all payments for a specific order"
+            },
+            {
+                "name": "findByPaymentMethod",
+                "returnType": "List<PaymentEntity>",
+                "parameters": [
+                    {
+                        "name": "paymentMethod",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find payments by payment method"
+            },
+            {
+                "name": "findByStatus",
+                "returnType": "List<PaymentEntity>",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find payments by status"
+            },
+            {
+                "name": "updatePaymentStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "paymentId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Update the status of a payment"
+            }
+        ]
+    },
+    {
+        "name": "DatabaseHealthIndicator",
+        "package": "com.gradlemedium100.dataaccess.health",
+        "type": "utility",
+        "description": "Health indicator for database connection status monitoring",
+        "dependencies": ["org.springframework.boot.actuate.health.HealthIndicator", "org.springframework.boot.actuate.health.Health", "org.springframework.stereotype.Component", "javax.sql.DataSource"],
+        "implements": ["org.springframework.boot.actuate.health.HealthIndicator"],
+        "extends": "",
+        "fields": [
+            {
+                "name": "dataSource",
+                "type": "DataSource",
+                "description": "The database data source to monitor"
+            }
+        ],
+        "methods": [
+            {
+                "name": "health",
+                "returnType": "Health",
+                "parameters": [],
+                "description": "Check and return the health status of the database connection"
+            },
+            {
+                "name": "checkConnection",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Check if the database connection is valid"
+            }
+        ]
+    },
+    {
+        "name": "QueryPerformanceInterceptor",
+        "package": "com.gradlemedium100.dataaccess.interceptor",
+        "type": "utility",
+        "description": "Interceptor for monitoring and logging SQL query performance",
+        "dependencies": ["org.hibernate.EmptyInterceptor", "org.springframework.stereotype.Component", "java.util.Properties", "java.time.Duration"],
+        "implements": [],
+        "extends": "org.hibernate.EmptyInterceptor",
+        "fields": [
+            {
+                "name": "slowQueryThresholdMs",
+                "type": "long",
+                "description": "Threshold in milliseconds for logging slow queries"
+            },
+            {
+                "name": "logger",
+                "type": "Logger",
+                "description": "Logger for recording performance information"
+            }
+        ],
+        "methods": [
+            {
+                "name": "onPrepareStatement",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "sql",
+                        "type": "String"
+                    }
+                ],
+                "description": "Intercept SQL statements before they are executed"
+            },
+            {
+                "name": "logQueryPerformance",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "sql",
+                        "type": "String"
+                    },
+                    {
+                        "name": "executionTime",
+                        "type": "long"
+                    }
+                ],
+                "description": "Log performance details of SQL queries"
+            }
+        ]
+    },
+    {
+        "name": "BaseRepository",
+        "package": "com.gradlemedium100.dataaccess.repository",
+        "type": "interface",
+        "description": "Generic repository interface defining common CRUD operations for all entities",
+        "dependencies": ["java.util.List", "java.util.Optional"],
+        "implements": [],
+        "extends": "",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findById",
+                "returnType": "T",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Find an entity by its ID"
+            },
+            {
+                "name": "findAll",
+                "returnType": "List<T>",
+                "parameters": [],
+                "description": "Retrieve all entities of the managed type"
+            },
+            {
+                "name": "save",
+                "returnType": "T",
+                "parameters": [
+                    {
+                        "name": "entity",
+                        "type": "T"
+                    }
+                ],
+                "description": "Save or update an entity"
+            },
+            {
+                "name": "delete",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "entity",
+                        "type": "T"
+                    }
+                ],
+                "description": "Delete an entity"
+            },
+            {
+                "name": "deleteById",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Delete an entity by ID"
+            },
+            {
+                "name": "count",
+                "returnType": "long",
+                "parameters": [],
+                "description": "Count all entities of the managed type"
+            }
+        ]
+    },
+    {
+        "name": "ProductRepository",
+        "package": "com.gradlemedium100.dataaccess.repository",
+        "type": "interface",
+        "description": "Repository interface for product-related database operations",
+        "dependencies": ["java.util.List", "java.math.BigDecimal", "com.gradlemedium100.dataaccess.entity.ProductEntity"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.repository.BaseRepository",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByName",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find products by name (partial match)"
+            },
+            {
+                "name": "findByCategory",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find products by category"
+            },
+            {
+                "name": "findByPriceLessThan",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "price",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Find products with price less than the specified amount"
+            },
+            {
+                "name": "findByPriceGreaterThan",
+                "returnType": "List<ProductEntity>",
+                "parameters": [
+                    {
+                        "name": "price",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Find products with price greater than the specified amount"
+            },
+            {
+                "name": "findBySku",
+                "returnType": "ProductEntity",
+                "parameters": [
+                    {
+                        "name": "sku",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a product by its SKU"
+            },
+            {
+                "name": "updateStock",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Update the stock quantity for a product"
+            }
+        ]
+    },
+    {
+        "name": "OrderRepository",
+        "package": "com.gradlemedium100.dataaccess.repository",
+        "type": "interface",
+        "description": "Repository interface for order-related database operations",
+        "dependencies": ["java.util.List", "java.time.LocalDateTime", "com.gradlemedium100.dataaccess.entity.OrderEntity"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.repository.BaseRepository",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByOrderNumber",
+                "returnType": "OrderEntity",
+                "parameters": [
+                    {
+                        "name": "orderNumber",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find an order by its unique order number"
+            },
+            {
+                "name": "findByUserId",
+                "returnType": "List<OrderEntity>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Find all orders for a specific user"
+            },
+            {
+                "name": "findByStatus",
+                "returnType": "List<OrderEntity>",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find orders by their status"
+            },
+            {
+                "name": "findOrdersCreatedBetween",
+                "returnType": "List<OrderEntity>",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "type": "LocalDateTime"
+                    },
+                    {
+                        "name": "endDate",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Find orders created within a date range"
+            },
+            {
+                "name": "updateOrderStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Update the status of an order"
+            }
+        ]
+    },
+    {
+        "name": "UserRepository",
+        "package": "com.gradlemedium100.dataaccess.repository",
+        "type": "interface",
+        "description": "Repository interface for user-related database operations",
+        "dependencies": ["java.util.List", "java.time.LocalDateTime", "com.gradlemedium100.dataaccess.entity.UserEntity"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.repository.BaseRepository",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByUsername",
+                "returnType": "UserEntity",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a user by username"
+            },
+            {
+                "name": "findByEmail",
+                "returnType": "UserEntity",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a user by email address"
+            },
+            {
+                "name": "findActiveUsers",
+                "returnType": "List<UserEntity>",
+                "parameters": [],
+                "description": "Find all active users"
+            },
+            {
+                "name": "updateLastLogin",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "lastLogin",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Update a user's last login timestamp"
+            },
+            {
+                "name": "updatePassword",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "passwordHash",
+                        "type": "String"
+                    }
+                ],
+                "description": "Update a user's password hash"
+            }
+        ]
+    },
+    {
+        "name": "PaymentRepository",
+        "package": "com.gradlemedium100.dataaccess.repository",
+        "type": "interface",
+        "description": "Repository interface for payment-related database operations",
+        "dependencies": ["java.util.List", "com.gradlemedium100.dataaccess.entity.PaymentEntity"],
+        "implements": [],
+        "extends": "com.gradlemedium100.dataaccess.repository.BaseRepository",
+        "fields": [],
+        "methods": [
+            {
+                "name": "findByTransactionId",
+                "returnType": "PaymentEntity",
+                "parameters": [
+                    {
+                        "name": "transactionId",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find a payment by its transaction ID"
+            },
+            {
+                "name": "findByOrderId",
+                "returnType": "List<PaymentEntity>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Find all payments for a specific order"
+            },
+            {
+                "name": "findByPaymentMethod",
+                "returnType": "List<PaymentEntity>",
+                "parameters": [
+                    {
+                        "name": "paymentMethod",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find payments by payment method"
+            },
+            {
+                "name": "findByStatus",
+                "returnType": "List<PaymentEntity>",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Find payments by status"
+            },
+            {
+                "name": "updatePaymentStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "paymentId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "Update the status of a payment"
+            }
+        ]
+    }
+]

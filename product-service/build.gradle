@@ -1,0 +1,84 @@
+/*
+ * Build file for the ProductService module
+ * 
+ * This module manages product catalog, categories, and inventory. It handles product creation, 
+ * updates, search functionality, and availability checks.
+ */
+
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+description = 'Product Service Module'
+
+ext {
+    springCloudVersion = '2020.0.3'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    // Spring Boot dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    
+    // Spring Cloud
+    implementation 'org.springframework.cloud:spring-cloud-starter'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    
+    // Internal module dependencies
+    implementation project(':common')
+    implementation project(':data-access')
+    implementation project(':security')
+    
+    // Database driver
+    runtimeOnly 'org.postgresql:postgresql'
+    
+    // Caching dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+    
+    // Lombok for boilerplate code reduction
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    
+    // Swagger for API documentation
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+bootJar {
+    archiveBaseName.set('product-service')
+    archiveVersion.set('0.1.0-SNAPSHOT')
+}
+
+// Skip Javadoc generation to avoid errors with unresolved references
+tasks.withType(Javadoc).configureEach {
+    enabled = false
+}
+
+// TODO: Add custom gradle task for initial product data generation
+// TODO: Configure environment-specific database connection properties
+// FIXME: Resolve potential version conflicts with common module dependencies

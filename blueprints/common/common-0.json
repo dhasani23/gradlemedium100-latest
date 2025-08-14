@@ -1,0 +1,812 @@
+[
+    {
+        "name": "DateTimeUtils",
+        "package": "com.gradlemedium100.common.utils",
+        "type": "utility",
+        "description": "Utility class for date and time operations, formatting, parsing and conversion between different formats",
+        "dependencies": [],
+        "implements": [],
+        "extends": null,
+        "fields": [
+            {
+                "name": "DEFAULT_DATE_FORMAT",
+                "type": "String",
+                "description": "Default date format string (yyyy-MM-dd)"
+            },
+            {
+                "name": "DEFAULT_DATETIME_FORMAT",
+                "type": "String",
+                "description": "Default date-time format string (yyyy-MM-dd HH:mm:ss)"
+            },
+            {
+                "name": "UTC_ZONE_ID",
+                "type": "ZoneId",
+                "description": "Zone ID for UTC timezone"
+            }
+        ],
+        "methods": [
+            {
+                "name": "formatDate",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "type": "LocalDate"
+                    },
+                    {
+                        "name": "pattern",
+                        "type": "String"
+                    }
+                ],
+                "description": "Formats a LocalDate using the provided pattern"
+            },
+            {
+                "name": "formatDateTime",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "dateTime",
+                        "type": "LocalDateTime"
+                    },
+                    {
+                        "name": "pattern",
+                        "type": "String"
+                    }
+                ],
+                "description": "Formats a LocalDateTime using the provided pattern"
+            },
+            {
+                "name": "parseDate",
+                "returnType": "LocalDate",
+                "parameters": [
+                    {
+                        "name": "dateStr",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pattern",
+                        "type": "String"
+                    }
+                ],
+                "description": "Parses a string into a LocalDate using the provided pattern"
+            },
+            {
+                "name": "parseDateTime",
+                "returnType": "LocalDateTime",
+                "parameters": [
+                    {
+                        "name": "dateTimeStr",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pattern",
+                        "type": "String"
+                    }
+                ],
+                "description": "Parses a string into a LocalDateTime using the provided pattern"
+            },
+            {
+                "name": "convertToUtc",
+                "returnType": "ZonedDateTime",
+                "parameters": [
+                    {
+                        "name": "localDateTime",
+                        "type": "LocalDateTime"
+                    },
+                    {
+                        "name": "zoneId",
+                        "type": "ZoneId"
+                    }
+                ],
+                "description": "Converts a LocalDateTime from a specific timezone to UTC"
+            },
+            {
+                "name": "getCurrentTimestamp",
+                "returnType": "long",
+                "parameters": [],
+                "description": "Gets the current timestamp in milliseconds"
+            }
+        ]
+    },
+    {
+        "name": "StringUtils",
+        "package": "com.gradlemedium100.common.utils",
+        "type": "utility",
+        "description": "Utility class for string manipulation operations like formatting, validation, sanitization",
+        "dependencies": ["org.apache.commons.lang3.StringUtils"],
+        "implements": [],
+        "extends": null,
+        "fields": [
+            {
+                "name": "EMPTY",
+                "type": "String",
+                "description": "Empty string constant"
+            }
+        ],
+        "methods": [
+            {
+                "name": "isNullOrEmpty",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "str",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a string is null or empty"
+            },
+            {
+                "name": "isNullOrWhitespace",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "str",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a string is null, empty or consists only of whitespace"
+            },
+            {
+                "name": "truncate",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "str",
+                        "type": "String"
+                    },
+                    {
+                        "name": "maxLength",
+                        "type": "int"
+                    }
+                ],
+                "description": "Truncates a string to the specified maximum length"
+            },
+            {
+                "name": "sanitizeHtml",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "html",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sanitizes HTML content to prevent XSS attacks"
+            },
+            {
+                "name": "capitalize",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "str",
+                        "type": "String"
+                    }
+                ],
+                "description": "Capitalizes the first letter of a string"
+            },
+            {
+                "name": "maskSensitiveData",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "type": "String"
+                    },
+                    {
+                        "name": "visibleChars",
+                        "type": "int"
+                    }
+                ],
+                "description": "Masks sensitive data, showing only the specified number of characters"
+            }
+        ]
+    },
+    {
+        "name": "ValidationUtils",
+        "package": "com.gradlemedium100.common.utils",
+        "type": "utility",
+        "description": "Utility class providing common validation methods for strings, numbers, objects, etc.",
+        "dependencies": ["javax.validation.Validator", "com.gradlemedium100.common.validation.Validator"],
+        "implements": [],
+        "extends": null,
+        "fields": [
+            {
+                "name": "EMAIL_REGEX",
+                "type": "String",
+                "description": "Regular expression pattern for validating email addresses"
+            },
+            {
+                "name": "PHONE_REGEX",
+                "type": "String",
+                "description": "Regular expression pattern for validating phone numbers"
+            }
+        ],
+        "methods": [
+            {
+                "name": "validateEmail",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "type": "String"
+                    }
+                ],
+                "description": "Validates if a string is a valid email address"
+            },
+            {
+                "name": "validatePhone",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "type": "String"
+                    }
+                ],
+                "description": "Validates if a string is a valid phone number"
+            },
+            {
+                "name": "validateRange",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "value",
+                        "type": "int"
+                    },
+                    {
+                        "name": "min",
+                        "type": "int"
+                    },
+                    {
+                        "name": "max",
+                        "type": "int"
+                    }
+                ],
+                "description": "Validates if a number is within the specified range"
+            },
+            {
+                "name": "validateNotNull",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "type": "Object"
+                    },
+                    {
+                        "name": "message",
+                        "type": "String"
+                    }
+                ],
+                "description": "Validates that an object is not null, throws IllegalArgumentException if it is"
+            },
+            {
+                "name": "validateBeanConstraints",
+                "returnType": "Set<javax.validation.ConstraintViolation<?>>",
+                "parameters": [
+                    {
+                        "name": "bean",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Validates bean constraints using the Bean Validation API"
+            }
+        ]
+    },
+    {
+        "name": "JsonUtils",
+        "package": "com.gradlemedium100.common.utils",
+        "type": "utility",
+        "description": "Utility class for JSON serialization, deserialization, and manipulation operations",
+        "dependencies": ["com.fasterxml.jackson.databind.ObjectMapper"],
+        "implements": [],
+        "extends": null,
+        "fields": [
+            {
+                "name": "objectMapper",
+                "type": "ObjectMapper",
+                "description": "Jackson ObjectMapper instance for JSON operations"
+            }
+        ],
+        "methods": [
+            {
+                "name": "toJson",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Converts an object to a JSON string"
+            },
+            {
+                "name": "fromJson",
+                "returnType": "T",
+                "parameters": [
+                    {
+                        "name": "json",
+                        "type": "String"
+                    },
+                    {
+                        "name": "valueType",
+                        "type": "Class<T>"
+                    }
+                ],
+                "description": "Converts a JSON string to an object of the specified type"
+            },
+            {
+                "name": "fromJsonToList",
+                "returnType": "List<T>",
+                "parameters": [
+                    {
+                        "name": "json",
+                        "type": "String"
+                    },
+                    {
+                        "name": "elementType",
+                        "type": "Class<T>"
+                    }
+                ],
+                "description": "Converts a JSON array string to a list of objects of the specified type"
+            },
+            {
+                "name": "fromJsonToMap",
+                "returnType": "Map<String, Object>",
+                "parameters": [
+                    {
+                        "name": "json",
+                        "type": "String"
+                    }
+                ],
+                "description": "Converts a JSON object string to a map"
+            },
+            {
+                "name": "prettyPrint",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "json",
+                        "type": "String"
+                    }
+                ],
+                "description": "Formats a JSON string with indentation and line breaks"
+            }
+        ]
+    },
+    {
+        "name": "LoggingUtils",
+        "package": "com.gradlemedium100.common.utils",
+        "type": "utility",
+        "description": "Utility class providing standardized logging methods and formatters",
+        "dependencies": ["org.slf4j.Logger", "org.slf4j.LoggerFactory"],
+        "implements": [],
+        "extends": null,
+        "fields": [
+            {
+                "name": "ENTRY_MESSAGE",
+                "type": "String",
+                "description": "Standard message format for method entry logging"
+            },
+            {
+                "name": "EXIT_MESSAGE",
+                "type": "String",
+                "description": "Standard message format for method exit logging"
+            },
+            {
+                "name": "ERROR_MESSAGE",
+                "type": "String",
+                "description": "Standard message format for error logging"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getLogger",
+                "returnType": "Logger",
+                "parameters": [
+                    {
+                        "name": "clazz",
+                        "type": "Class<?>"
+                    }
+                ],
+                "description": "Gets a logger for the specified class"
+            },
+            {
+                "name": "logEntry",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "logger",
+                        "type": "Logger"
+                    },
+                    {
+                        "name": "methodName",
+                        "type": "String"
+                    },
+                    {
+                        "name": "args",
+                        "type": "Object..."
+                    }
+                ],
+                "description": "Logs method entry with standardized format"
+            },
+            {
+                "name": "logExit",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "logger",
+                        "type": "Logger"
+                    },
+                    {
+                        "name": "methodName",
+                        "type": "String"
+                    },
+                    {
+                        "name": "result",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Logs method exit with standardized format"
+            },
+            {
+                "name": "logError",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "logger",
+                        "type": "Logger"
+                    },
+                    {
+                        "name": "methodName",
+                        "type": "String"
+                    },
+                    {
+                        "name": "exception",
+                        "type": "Throwable"
+                    }
+                ],
+                "description": "Logs exceptions with standardized format"
+            },
+            {
+                "name": "sanitizeLogMessage",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sanitizes log messages to remove sensitive information"
+            }
+        ]
+    },
+    {
+        "name": "Validator",
+        "package": "com.gradlemedium100.common.validation",
+        "type": "interface",
+        "description": "Interface for validation operations",
+        "dependencies": [],
+        "implements": [],
+        "extends": null,
+        "fields": [],
+        "methods": [
+            {
+                "name": "validate",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Validates an object against defined rules"
+            },
+            {
+                "name": "validateWithErrors",
+                "returnType": "List<String>",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Validates an object and returns a list of validation errors"
+            },
+            {
+                "name": "isValid",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "value",
+                        "type": "String"
+                    },
+                    {
+                        "name": "validationType",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a value is valid according to the specified validation type"
+            }
+        ]
+    },
+    {
+        "name": "BaseValidator",
+        "package": "com.gradlemedium100.common.validation",
+        "type": "service",
+        "description": "Base implementation of the Validator interface with common validation methods",
+        "dependencies": [],
+        "implements": ["com.gradlemedium100.common.validation.Validator"],
+        "extends": null,
+        "fields": [
+            {
+                "name": "javaValidator",
+                "type": "javax.validation.Validator",
+                "description": "Java Bean Validation API validator"
+            },
+            {
+                "name": "validationTypes",
+                "type": "Map<String, Pattern>",
+                "description": "Map of validation types to their corresponding regex patterns"
+            }
+        ],
+        "methods": [
+            {
+                "name": "validate",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Validates an object against defined rules"
+            },
+            {
+                "name": "validateWithErrors",
+                "returnType": "List<String>",
+                "parameters": [
+                    {
+                        "name": "object",
+                        "type": "Object"
+                    }
+                ],
+                "description": "Validates an object and returns a list of validation errors"
+            },
+            {
+                "name": "isValid",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "value",
+                        "type": "String"
+                    },
+                    {
+                        "name": "validationType",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a value is valid according to the specified validation type"
+            },
+            {
+                "name": "registerValidationType",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "typeName",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pattern",
+                        "type": "Pattern"
+                    }
+                ],
+                "description": "Registers a new validation type with a corresponding regex pattern"
+            }
+        ]
+    },
+    {
+        "name": "ErrorHandler",
+        "package": "com.gradlemedium100.common.exception",
+        "type": "interface",
+        "description": "Interface for handling errors consistently across the application",
+        "dependencies": ["com.gradlemedium100.common.dto.ErrorResponse"],
+        "implements": [],
+        "extends": null,
+        "fields": [],
+        "methods": [
+            {
+                "name": "handleException",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "Exception"
+                    }
+                ],
+                "description": "Handles an exception and returns an appropriate error response"
+            },
+            {
+                "name": "handleResourceNotFoundException",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "ResourceNotFoundException"
+                    }
+                ],
+                "description": "Handles a resource not found exception"
+            },
+            {
+                "name": "handleBadRequestException",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "BadRequestException"
+                    }
+                ],
+                "description": "Handles a bad request exception"
+            }
+        ]
+    },
+    {
+        "name": "ResourceNotFoundException",
+        "package": "com.gradlemedium100.common.exception",
+        "type": "exception",
+        "description": "Exception thrown when a requested resource is not found",
+        "dependencies": [],
+        "implements": [],
+        "extends": "java.lang.RuntimeException",
+        "fields": [
+            {
+                "name": "resourceId",
+                "type": "String",
+                "description": "ID of the resource that was not found"
+            },
+            {
+                "name": "resourceType",
+                "type": "String",
+                "description": "Type of the resource that was not found"
+            },
+            {
+                "name": "serialVersionUID",
+                "type": "long",
+                "description": "Serial version UID for serialization"
+            }
+        ],
+        "methods": [
+            {
+                "name": "ResourceNotFoundException",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    }
+                ],
+                "description": "Constructor with message"
+            },
+            {
+                "name": "ResourceNotFoundException",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "resourceType",
+                        "type": "String"
+                    },
+                    {
+                        "name": "resourceId",
+                        "type": "String"
+                    }
+                ],
+                "description": "Constructor with resource type and ID"
+            },
+            {
+                "name": "ResourceNotFoundException",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    },
+                    {
+                        "name": "cause",
+                        "type": "Throwable"
+                    }
+                ],
+                "description": "Constructor with message and cause"
+            },
+            {
+                "name": "getResourceId",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Gets the ID of the resource that was not found"
+            },
+            {
+                "name": "getResourceType",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Gets the type of the resource that was not found"
+            }
+        ]
+    },
+    {
+        "name": "BadRequestException",
+        "package": "com.gradlemedium100.common.exception",
+        "type": "exception",
+        "description": "Exception thrown when a request contains invalid parameters or data",
+        "dependencies": [],
+        "implements": [],
+        "extends": "java.lang.RuntimeException",
+        "fields": [
+            {
+                "name": "errors",
+                "type": "List<String>",
+                "description": "List of validation errors"
+            },
+            {
+                "name": "serialVersionUID",
+                "type": "long",
+                "description": "Serial version UID for serialization"
+            }
+        ],
+        "methods": [
+            {
+                "name": "BadRequestException",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    }
+                ],
+                "description": "Constructor with message"
+            },
+            {
+                "name": "BadRequestException",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    },
+                    {
+                        "name": "errors",
+                        "type": "List<String>"
+                    }
+                ],
+                "description": "Constructor with message and list of errors"
+            },
+            {
+                "name": "BadRequestException",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    },
+                    {
+                        "name": "cause",
+                        "type": "Throwable"
+                    }
+                ],
+                "description": "Constructor with message and cause"
+            },
+            {
+                "name": "getErrors",
+                "returnType": "List<String>",
+                "parameters": [],
+                "description": "Gets the list of validation errors"
+            },
+            {
+                "name": "addError",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "error",
+                        "type": "String"
+                    }
+                ],
+                "description": "Adds a validation error to the list"
+            }
+        ]
+    }
+]

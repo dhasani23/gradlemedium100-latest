@@ -1,0 +1,75 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+description = 'Manages the order lifecycle from cart to completion. Handles shopping cart operations, order creation, status updates, and history tracking. Includes order validation and business rules implementation.'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Internal module dependencies
+    implementation project(':common')
+    implementation project(':data-access')
+    implementation project(':product-service')
+    implementation project(':payment-service')
+    implementation project(':notification-service')
+    
+    // Spring Boot dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    
+    // Database dependencies
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
+    
+    // Utilities
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'org.modelmapper:modelmapper:2.4.4'
+    
+    // Logging
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    
+    // Testing dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    testImplementation 'org.mockito:mockito-core:3.9.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    archiveBaseName = 'order-service'
+    archiveVersion = '0.1.0-SNAPSHOT'
+}
+
+// Task to run application with specific profile
+task runDev(type: JavaExec) {
+    group = 'application'
+    description = 'Run the application with the dev profile'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.gradlemedium100.orderservice.OrderServiceApplication'
+    args = ['--spring.profiles.active=dev']
+}
+
+// Task to ensure tests are run before building the jar
+bootJar.dependsOn test
+
+// Set Java compatibility options across all Java compilation tasks
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+}

@@ -1,0 +1,521 @@
+[
+  {
+    "name": "PaymentController",
+    "package": "com.gradlemedium100.payment.controller",
+    "type": "controller",
+    "description": "RESTful API controller that handles payment-related HTTP requests such as payment processing, status inquiries, and refund requests",
+    "dependencies": ["com.gradlemedium100.payment.service.PaymentProcessorService", "com.gradlemedium100.payment.service.RefundService", "com.gradlemedium100.payment.dto.PaymentRequestDTO"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "paymentProcessorService",
+        "type": "PaymentProcessorService",
+        "description": "Service responsible for processing payment transactions"
+      },
+      {
+        "name": "refundService",
+        "type": "RefundService",
+        "description": "Service responsible for handling refund operations"
+      }
+    ],
+    "methods": [
+      {
+        "name": "processPayment",
+        "returnType": "ResponseEntity<Map<String, Object>>",
+        "parameters": [
+          {
+            "name": "paymentRequestDTO",
+            "type": "PaymentRequestDTO"
+          }
+        ],
+        "description": "Processes a payment request and returns the transaction result"
+      },
+      {
+        "name": "getPaymentStatus",
+        "returnType": "ResponseEntity<Map<String, Object>>",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves the status of a payment transaction by its ID"
+      },
+      {
+        "name": "processRefund",
+        "returnType": "ResponseEntity<Map<String, Object>>",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "type": "Long"
+          },
+          {
+            "name": "amount",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Processes a refund for a specified payment transaction"
+      }
+    ]
+  },
+  {
+    "name": "PaymentProcessorServiceImpl",
+    "package": "com.gradlemedium100.payment.service.impl",
+    "type": "service",
+    "description": "Implementation of the PaymentProcessorService that handles the core payment processing logic and orchestrates the payment workflow",
+    "dependencies": ["com.gradlemedium100.payment.service.PaymentGatewayService", "com.gradlemedium100.payment.repository.PaymentRepository", "com.gradlemedium100.payment.model.Payment"],
+    "implements": ["com.gradlemedium100.payment.service.PaymentProcessorService"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "paymentGatewayService",
+        "type": "PaymentGatewayService",
+        "description": "Service that integrates with external payment gateway providers"
+      },
+      {
+        "name": "paymentRepository",
+        "type": "PaymentRepository",
+        "description": "Repository for persisting and retrieving payment records"
+      }
+    ],
+    "methods": [
+      {
+        "name": "processPayment",
+        "returnType": "Payment",
+        "parameters": [
+          {
+            "name": "paymentDetails",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Processes a payment transaction using the payment gateway and stores the transaction record"
+      },
+      {
+        "name": "validatePaymentDetails",
+        "returnType": "boolean",
+        "parameters": [
+          {
+            "name": "paymentDetails",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Validates payment details before processing"
+      },
+      {
+        "name": "getPaymentStatus",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves the status of a payment transaction"
+      }
+    ]
+  },
+  {
+    "name": "RefundServiceImpl",
+    "package": "com.gradlemedium100.payment.service.impl",
+    "type": "service",
+    "description": "Implementation of the RefundService that handles refund processing and updates payment records accordingly",
+    "dependencies": ["com.gradlemedium100.payment.service.PaymentGatewayService", "com.gradlemedium100.payment.repository.PaymentRepository", "com.gradlemedium100.payment.model.Payment"],
+    "implements": ["com.gradlemedium100.payment.service.RefundService"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "paymentGatewayService",
+        "type": "PaymentGatewayService",
+        "description": "Service that integrates with external payment gateway providers"
+      },
+      {
+        "name": "paymentRepository",
+        "type": "PaymentRepository",
+        "description": "Repository for persisting and retrieving payment records"
+      }
+    ],
+    "methods": [
+      {
+        "name": "processRefund",
+        "returnType": "boolean",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "type": "Long"
+          },
+          {
+            "name": "amount",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Processes a refund for a payment transaction"
+      },
+      {
+        "name": "validateRefundRequest",
+        "returnType": "boolean",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "type": "Long"
+          },
+          {
+            "name": "amount",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Validates a refund request before processing"
+      },
+      {
+        "name": "getRefundHistory",
+        "returnType": "List<Map<String, Object>>",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves the refund history for a payment transaction"
+      }
+    ]
+  },
+  {
+    "name": "PaymentGatewayServiceImpl",
+    "package": "com.gradlemedium100.payment.service.impl",
+    "type": "service",
+    "description": "Implementation of the PaymentGatewayService that integrates with external payment gateway providers and manages the communication",
+    "dependencies": ["com.gradlemedium100.payment.config.PaymentGatewayConfig"],
+    "implements": ["com.gradlemedium100.payment.service.PaymentGatewayService"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "paymentGatewayConfig",
+        "type": "PaymentGatewayConfig",
+        "description": "Configuration for payment gateway connections"
+      }
+    ],
+    "methods": [
+      {
+        "name": "processPaymentWithGateway",
+        "returnType": "Map<String, Object>",
+        "parameters": [
+          {
+            "name": "paymentDetails",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Processes a payment transaction using the configured payment gateway"
+      },
+      {
+        "name": "processRefundWithGateway",
+        "returnType": "Map<String, Object>",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "type": "String"
+          },
+          {
+            "name": "amount",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Processes a refund with the payment gateway"
+      },
+      {
+        "name": "checkTransactionStatus",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "type": "String"
+          }
+        ],
+        "description": "Checks the status of a transaction with the payment gateway"
+      }
+    ]
+  },
+  {
+    "name": "PaymentRepository",
+    "package": "com.gradlemedium100.payment.repository",
+    "type": "repository",
+    "description": "JPA repository for Payment entities that handles database operations for payment records",
+    "dependencies": ["com.gradlemedium100.payment.model.Payment", "org.springframework.data.jpa.repository.JpaRepository"],
+    "implements": [],
+    "extends": "org.springframework.data.jpa.repository.JpaRepository<Payment, Long>",
+    "fields": [],
+    "methods": [
+      {
+        "name": "findByTransactionId",
+        "returnType": "Payment",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "type": "String"
+          }
+        ],
+        "description": "Finds a payment record by its transaction ID"
+      },
+      {
+        "name": "findByOrderId",
+        "returnType": "List<Payment>",
+        "parameters": [
+          {
+            "name": "orderId",
+            "type": "Long"
+          }
+        ],
+        "description": "Finds all payment records associated with an order"
+      },
+      {
+        "name": "findByStatusAndCreatedDateBefore",
+        "returnType": "List<Payment>",
+        "parameters": [
+          {
+            "name": "status",
+            "type": "String"
+          },
+          {
+            "name": "date",
+            "type": "Date"
+          }
+        ],
+        "description": "Finds payments with a specific status created before a certain date"
+      }
+    ]
+  },
+  {
+    "name": "Payment",
+    "package": "com.gradlemedium100.payment.model",
+    "type": "model",
+    "description": "Entity class that represents payment transactions in the system with all necessary attributes",
+    "dependencies": ["javax.persistence.Entity", "lombok.Data"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Primary key for the payment record"
+      },
+      {
+        "name": "transactionId",
+        "type": "String",
+        "description": "Unique identifier for the payment transaction from the payment gateway"
+      },
+      {
+        "name": "orderId",
+        "type": "Long",
+        "description": "Associated order ID"
+      },
+      {
+        "name": "amount",
+        "type": "BigDecimal",
+        "description": "Amount of the payment"
+      },
+      {
+        "name": "currency",
+        "type": "String",
+        "description": "Currency code for the payment"
+      },
+      {
+        "name": "status",
+        "type": "String",
+        "description": "Status of the payment (e.g., PENDING, COMPLETED, FAILED, REFUNDED)"
+      },
+      {
+        "name": "paymentMethod",
+        "type": "PaymentMethod",
+        "description": "Method used for the payment"
+      },
+      {
+        "name": "gatewayResponse",
+        "type": "String",
+        "description": "Raw response from the payment gateway"
+      },
+      {
+        "name": "createdDate",
+        "type": "Date",
+        "description": "Date when the payment record was created"
+      },
+      {
+        "name": "lastUpdatedDate",
+        "type": "Date",
+        "description": "Date when the payment record was last updated"
+      }
+    ],
+    "methods": []
+  },
+  {
+    "name": "PaymentMethod",
+    "package": "com.gradlemedium100.payment.model",
+    "type": "model",
+    "description": "Entity class that represents saved payment methods for users such as credit cards or digital wallets",
+    "dependencies": ["javax.persistence.Entity", "lombok.Data"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Primary key for the payment method"
+      },
+      {
+        "name": "userId",
+        "type": "Long",
+        "description": "ID of the user who owns this payment method"
+      },
+      {
+        "name": "type",
+        "type": "String",
+        "description": "Type of payment method (e.g., CREDIT_CARD, DEBIT_CARD, PAYPAL)"
+      },
+      {
+        "name": "cardNumber",
+        "type": "String",
+        "description": "Masked card number (for card payment methods)"
+      },
+      {
+        "name": "cardExpiryMonth",
+        "type": "String",
+        "description": "Card expiration month (for card payment methods)"
+      },
+      {
+        "name": "cardExpiryYear",
+        "type": "String",
+        "description": "Card expiration year (for card payment methods)"
+      },
+      {
+        "name": "gatewayToken",
+        "type": "String",
+        "description": "Token provided by the payment gateway for stored payment methods"
+      },
+      {
+        "name": "isDefault",
+        "type": "boolean",
+        "description": "Flag indicating if this is the default payment method for the user"
+      },
+      {
+        "name": "createdDate",
+        "type": "Date",
+        "description": "Date when the payment method was created"
+      }
+    ],
+    "methods": []
+  },
+  {
+    "name": "PaymentGatewayConfig",
+    "package": "com.gradlemedium100.payment.config",
+    "type": "configuration",
+    "description": "Configuration class that sets up the payment gateway connections and API keys in a secure manner",
+    "dependencies": ["org.springframework.context.annotation.Configuration", "com.gradlemedium100.security.EncryptionService"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "apiKey",
+        "type": "String",
+        "description": "API key for the payment gateway"
+      },
+      {
+        "name": "apiSecret",
+        "type": "String",
+        "description": "API secret for the payment gateway"
+      },
+      {
+        "name": "gatewayUrl",
+        "type": "String",
+        "description": "URL endpoint for the payment gateway"
+      },
+      {
+        "name": "encryptionService",
+        "type": "EncryptionService",
+        "description": "Service for encrypting and decrypting sensitive payment data"
+      }
+    ],
+    "methods": [
+      {
+        "name": "gatewayClient",
+        "returnType": "PaymentGatewayClient",
+        "parameters": [],
+        "description": "Creates and configures the payment gateway client with the necessary credentials"
+      },
+      {
+        "name": "getDecryptedApiKey",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Retrieves and decrypts the API key for the payment gateway"
+      },
+      {
+        "name": "getDecryptedApiSecret",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Retrieves and decrypts the API secret for the payment gateway"
+      }
+    ]
+  },
+  {
+    "name": "PaymentServiceApplication",
+    "package": "com.gradlemedium100.payment",
+    "type": "application",
+    "description": "Spring Boot application entry point for the Payment Service module",
+    "dependencies": ["org.springframework.boot.SpringApplication", "org.springframework.boot.autoconfigure.SpringBootApplication"],
+    "implements": [],
+    "extends": "",
+    "fields": [],
+    "methods": [
+      {
+        "name": "main",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "String[]"
+          }
+        ],
+        "description": "Main method that launches the Spring Boot application"
+      }
+    ]
+  },
+  {
+    "name": "PaymentRequestDTO",
+    "package": "com.gradlemedium100.payment.dto",
+    "type": "dto",
+    "description": "Data Transfer Object that encapsulates the details required to process a payment request",
+    "dependencies": ["lombok.Data"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "orderId",
+        "type": "Long",
+        "description": "ID of the order being paid for"
+      },
+      {
+        "name": "amount",
+        "type": "BigDecimal",
+        "description": "Amount to be paid"
+      },
+      {
+        "name": "currency",
+        "type": "String",
+        "description": "Currency code for the payment"
+      },
+      {
+        "name": "paymentMethodId",
+        "type": "Long",
+        "description": "ID of the saved payment method to use (optional)"
+      },
+      {
+        "name": "cardDetails",
+        "type": "Map<String, String>",
+        "description": "Credit card details if not using a saved payment method"
+      },
+      {
+        "name": "savePaymentMethod",
+        "type": "boolean",
+        "description": "Flag indicating whether to save this payment method for future use"
+      }
+    ],
+    "methods": []
+  }
+]

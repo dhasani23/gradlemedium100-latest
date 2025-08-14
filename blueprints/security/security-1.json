@@ -1,0 +1,404 @@
+[
+    {
+        "name": "AuthenticationServiceImpl",
+        "package": "com.gradlemedium100.security.service.impl",
+        "type": "service",
+        "description": "Service implementation that handles user authentication, registration, and related security operations.",
+        "dependencies": [
+            "com.gradlemedium100.security.service.JwtService",
+            "com.gradlemedium100.security.model.SecurityUser",
+            "com.gradlemedium100.security.model.Role",
+            "com.gradlemedium100.security.dto.AuthenticationRequest",
+            "com.gradlemedium100.security.dto.AuthenticationResponse",
+            "com.gradlemedium100.security.dto.RegisterRequest",
+            "com.gradlemedium100.security.service.UserDetailsService"
+        ],
+        "implements": ["com.gradlemedium100.security.service.AuthenticationService"],
+        "fields": [
+            {
+                "name": "jwtService",
+                "type": "JwtService",
+                "description": "Service for JWT token operations"
+            },
+            {
+                "name": "userDetailsService",
+                "type": "UserDetailsService",
+                "description": "Service for user details operations"
+            },
+            {
+                "name": "authenticationManager",
+                "type": "AuthenticationManager",
+                "description": "Spring Security's authentication manager"
+            },
+            {
+                "name": "passwordEncoder",
+                "type": "PasswordEncoder",
+                "description": "Encoder for password hashing"
+            }
+        ],
+        "methods": [
+            {
+                "name": "authenticate",
+                "returnType": "AuthenticationResponse",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "AuthenticationRequest"
+                    }
+                ],
+                "description": "Authenticates a user with the provided credentials and returns a token"
+            },
+            {
+                "name": "register",
+                "returnType": "AuthenticationResponse",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "RegisterRequest"
+                    }
+                ],
+                "description": "Registers a new user with the provided details and returns a token"
+            },
+            {
+                "name": "refreshToken",
+                "returnType": "AuthenticationResponse",
+                "parameters": [
+                    {
+                        "name": "refreshToken",
+                        "type": "String"
+                    }
+                ],
+                "description": "Refreshes an expired JWT token and issues a new one"
+            },
+            {
+                "name": "validateToken",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Validates the provided token"
+            },
+            {
+                "name": "buildUserAuthorities",
+                "returnType": "List<String>",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "type": "SecurityUser"
+                    }
+                ],
+                "description": "Builds a list of authority strings from user roles"
+            },
+            {
+                "name": "createSecurityUserFromRequest",
+                "returnType": "SecurityUser",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "RegisterRequest"
+                    }
+                ],
+                "description": "Creates a SecurityUser object from a registration request"
+            }
+        ]
+    },
+    {
+        "name": "JwtAuthenticationFilter",
+        "package": "com.gradlemedium100.security.filter",
+        "type": "filter",
+        "description": "Filter that intercepts each HTTP request, extracts JWT token, validates it, and sets authentication in the security context if valid.",
+        "dependencies": [
+            "com.gradlemedium100.security.service.impl.JwtServiceImpl",
+            "com.gradlemedium100.security.service.impl.UserDetailsServiceImpl"
+        ],
+        "extends": "org.springframework.web.filter.OncePerRequestFilter",
+        "fields": [
+            {
+                "name": "jwtService",
+                "type": "JwtService",
+                "description": "Service for JWT token operations"
+            },
+            {
+                "name": "userDetailsService",
+                "type": "UserDetailsService",
+                "description": "Service for user details operations"
+            }
+        ],
+        "methods": [
+            {
+                "name": "doFilterInternal",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "HttpServletRequest"
+                    },
+                    {
+                        "name": "response",
+                        "type": "HttpServletResponse"
+                    },
+                    {
+                        "name": "filterChain",
+                        "type": "FilterChain"
+                    }
+                ],
+                "description": "Main filter method that processes each request"
+            },
+            {
+                "name": "extractJwtFromRequest",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "HttpServletRequest"
+                    }
+                ],
+                "description": "Extracts JWT token from the Authorization header"
+            },
+            {
+                "name": "shouldSkipAuthentication",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "HttpServletRequest"
+                    }
+                ],
+                "description": "Determines if authentication should be skipped for certain paths"
+            },
+            {
+                "name": "setAuthenticationContext",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    },
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Sets authentication in the security context"
+            }
+        ]
+    },
+    {
+        "name": "SecurityConfig",
+        "package": "com.gradlemedium100.security.config",
+        "type": "configuration",
+        "description": "Main security configuration class that sets up Spring Security, defines security filter chain, authentication provider, password encoder, and security rules.",
+        "dependencies": [
+            "com.gradlemedium100.security.filter.JwtAuthenticationFilter",
+            "com.gradlemedium100.security.service.impl.UserDetailsServiceImpl"
+        ],
+        "extends": "org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter",
+        "fields": [
+            {
+                "name": "userDetailsService",
+                "type": "UserDetailsService",
+                "description": "Service for user details operations"
+            },
+            {
+                "name": "jwtAuthenticationFilter",
+                "type": "JwtAuthenticationFilter",
+                "description": "Filter for JWT authentication"
+            }
+        ],
+        "methods": [
+            {
+                "name": "configure",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "http",
+                        "type": "HttpSecurity"
+                    }
+                ],
+                "description": "Configures HTTP security"
+            },
+            {
+                "name": "configure",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "auth",
+                        "type": "AuthenticationManagerBuilder"
+                    }
+                ],
+                "description": "Configures authentication manager"
+            },
+            {
+                "name": "passwordEncoder",
+                "returnType": "PasswordEncoder",
+                "parameters": [],
+                "description": "Creates a BCrypt password encoder bean"
+            },
+            {
+                "name": "authenticationManager",
+                "returnType": "AuthenticationManager",
+                "parameters": [],
+                "description": "Creates an authentication manager bean"
+            },
+            {
+                "name": "corsConfigurationSource",
+                "returnType": "CorsConfigurationSource",
+                "parameters": [],
+                "description": "Configures CORS settings"
+            }
+        ]
+    },
+    {
+        "name": "AuthenticationController",
+        "package": "com.gradlemedium100.security.controller",
+        "type": "controller",
+        "description": "REST controller that handles login, registration, token refresh, and logout endpoints.",
+        "dependencies": [
+            "com.gradlemedium100.security.service.impl.AuthenticationServiceImpl",
+            "com.gradlemedium100.security.dto.AuthenticationRequest",
+            "com.gradlemedium100.security.dto.AuthenticationResponse",
+            "com.gradlemedium100.security.dto.RegisterRequest"
+        ],
+        "fields": [
+            {
+                "name": "authenticationService",
+                "type": "AuthenticationService",
+                "description": "Service for authentication operations"
+            }
+        ],
+        "methods": [
+            {
+                "name": "login",
+                "returnType": "ResponseEntity<AuthenticationResponse>",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "AuthenticationRequest"
+                    }
+                ],
+                "description": "Endpoint for user login"
+            },
+            {
+                "name": "register",
+                "returnType": "ResponseEntity<AuthenticationResponse>",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "RegisterRequest"
+                    }
+                ],
+                "description": "Endpoint for user registration"
+            },
+            {
+                "name": "refreshToken",
+                "returnType": "ResponseEntity<AuthenticationResponse>",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "HttpServletRequest"
+                    }
+                ],
+                "description": "Endpoint for refreshing an expired token"
+            },
+            {
+                "name": "validateToken",
+                "returnType": "ResponseEntity<Boolean>",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Endpoint for validating a token"
+            }
+        ]
+    },
+    {
+        "name": "SecurityExceptionHandler",
+        "package": "com.gradlemedium100.security.exception",
+        "type": "exception",
+        "description": "Global exception handler for security-related exceptions like invalid tokens, authentication failures, and authorization issues.",
+        "dependencies": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "handleAuthenticationException",
+                "returnType": "ResponseEntity<Object>",
+                "parameters": [
+                    {
+                        "name": "ex",
+                        "type": "AuthenticationException"
+                    },
+                    {
+                        "name": "request",
+                        "type": "WebRequest"
+                    }
+                ],
+                "description": "Handles authentication exceptions"
+            },
+            {
+                "name": "handleAccessDeniedException",
+                "returnType": "ResponseEntity<Object>",
+                "parameters": [
+                    {
+                        "name": "ex",
+                        "type": "AccessDeniedException"
+                    },
+                    {
+                        "name": "request",
+                        "type": "WebRequest"
+                    }
+                ],
+                "description": "Handles access denied exceptions"
+            },
+            {
+                "name": "handleJwtException",
+                "returnType": "ResponseEntity<Object>",
+                "parameters": [
+                    {
+                        "name": "ex",
+                        "type": "JwtException"
+                    },
+                    {
+                        "name": "request",
+                        "type": "WebRequest"
+                    }
+                ],
+                "description": "Handles JWT token exceptions"
+            },
+            {
+                "name": "handleInvalidTokenException",
+                "returnType": "ResponseEntity<Object>",
+                "parameters": [
+                    {
+                        "name": "ex",
+                        "type": "Exception"
+                    },
+                    {
+                        "name": "request",
+                        "type": "WebRequest"
+                    }
+                ],
+                "description": "Handles invalid token exceptions"
+            },
+            {
+                "name": "buildErrorResponse",
+                "returnType": "Map<String, Object>",
+                "parameters": [
+                    {
+                        "name": "message",
+                        "type": "String"
+                    },
+                    {
+                        "name": "status",
+                        "type": "HttpStatus"
+                    }
+                ],
+                "description": "Builds a standardized error response"
+            }
+        ]
+    }
+]

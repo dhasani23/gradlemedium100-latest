@@ -1,0 +1,502 @@
+[
+  {
+    "name": "NotificationServiceImpl",
+    "package": "com.gradlemedium100.notification.service",
+    "type": "service",
+    "description": "Core implementation of the notification service that orchestrates the sending of notifications through various channels",
+    "dependencies": ["com.gradlemedium100.notification.channel.EmailChannel", "com.gradlemedium100.notification.channel.SmsChannel", "com.gradlemedium100.notification.channel.InAppChannel", "com.gradlemedium100.notification.template.TemplateEngineImpl"],
+    "implements": ["com.gradlemedium100.notification.service.NotificationService"],
+    "extends": null,
+    "fields": [
+      {
+        "name": "emailChannel",
+        "type": "com.gradlemedium100.notification.channel.EmailChannel",
+        "description": "Service for sending email notifications"
+      },
+      {
+        "name": "smsChannel",
+        "type": "com.gradlemedium100.notification.channel.SmsChannel",
+        "description": "Service for sending SMS notifications"
+      },
+      {
+        "name": "inAppChannel",
+        "type": "com.gradlemedium100.notification.channel.InAppChannel",
+        "description": "Service for sending in-app notifications"
+      },
+      {
+        "name": "templateEngine",
+        "type": "com.gradlemedium100.notification.template.TemplateEngine",
+        "description": "Engine for processing notification templates"
+      }
+    ],
+    "methods": [
+      {
+        "name": "sendNotification",
+        "returnType": "com.gradlemedium100.notification.model.NotificationResponse",
+        "parameters": [
+          {
+            "name": "request",
+            "type": "com.gradlemedium100.notification.model.NotificationRequest"
+          }
+        ],
+        "description": "Sends a notification based on the provided request"
+      },
+      {
+        "name": "sendBulkNotifications",
+        "returnType": "List<com.gradlemedium100.notification.model.NotificationResponse>",
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "List<com.gradlemedium100.notification.model.NotificationRequest>"
+          }
+        ],
+        "description": "Sends multiple notifications in bulk"
+      },
+      {
+        "name": "processTemplate",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "templateName",
+            "type": "String"
+          },
+          {
+            "name": "data",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Processes a notification template with provided data"
+      },
+      {
+        "name": "selectChannel",
+        "returnType": "Object",
+        "parameters": [
+          {
+            "name": "notificationType",
+            "type": "com.gradlemedium100.notification.model.NotificationType"
+          }
+        ],
+        "description": "Selects the appropriate channel based on notification type"
+      }
+    ]
+  },
+  {
+    "name": "NotificationService",
+    "package": "com.gradlemedium100.notification.service",
+    "type": "interface",
+    "description": "Defines the contract for sending notifications through different channels",
+    "dependencies": ["com.gradlemedium100.notification.model.NotificationRequest", "com.gradlemedium100.notification.model.NotificationResponse"],
+    "implements": [],
+    "extends": null,
+    "fields": [],
+    "methods": [
+      {
+        "name": "sendNotification",
+        "returnType": "com.gradlemedium100.notification.model.NotificationResponse",
+        "parameters": [
+          {
+            "name": "request",
+            "type": "com.gradlemedium100.notification.model.NotificationRequest"
+          }
+        ],
+        "description": "Sends a notification based on the provided request"
+      },
+      {
+        "name": "sendBulkNotifications",
+        "returnType": "List<com.gradlemedium100.notification.model.NotificationResponse>",
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "List<com.gradlemedium100.notification.model.NotificationRequest>"
+          }
+        ],
+        "description": "Sends multiple notifications in bulk"
+      }
+    ]
+  },
+  {
+    "name": "NotificationRequest",
+    "package": "com.gradlemedium100.notification.model",
+    "type": "model",
+    "description": "Data model representing a notification request with recipient, content, and channel information",
+    "dependencies": ["com.gradlemedium100.notification.model.NotificationType"],
+    "implements": [],
+    "extends": "java.io.Serializable",
+    "fields": [
+      {
+        "name": "id",
+        "type": "String",
+        "description": "Unique identifier for the notification request"
+      },
+      {
+        "name": "recipientId",
+        "type": "String",
+        "description": "ID of the recipient of the notification"
+      },
+      {
+        "name": "recipientEmail",
+        "type": "String",
+        "description": "Email address of the recipient"
+      },
+      {
+        "name": "recipientPhone",
+        "type": "String",
+        "description": "Phone number of the recipient"
+      },
+      {
+        "name": "subject",
+        "type": "String",
+        "description": "Subject of the notification"
+      },
+      {
+        "name": "content",
+        "type": "String",
+        "description": "Content of the notification"
+      },
+      {
+        "name": "templateName",
+        "type": "String",
+        "description": "Name of the template to use"
+      },
+      {
+        "name": "templateData",
+        "type": "Map<String, Object>",
+        "description": "Data to populate the template with"
+      },
+      {
+        "name": "notificationType",
+        "type": "com.gradlemedium100.notification.model.NotificationType",
+        "description": "Type of notification to send"
+      },
+      {
+        "name": "createdAt",
+        "type": "java.time.LocalDateTime",
+        "description": "Timestamp when the notification request was created"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the ID of the notification request"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the ID of the notification request"
+      },
+      {
+        "name": "getRecipientId",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the recipient ID"
+      },
+      {
+        "name": "setRecipientId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "recipientId",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the recipient ID"
+      }
+    ]
+  },
+  {
+    "name": "NotificationResponse",
+    "package": "com.gradlemedium100.notification.model",
+    "type": "model",
+    "description": "Data model representing the response of a notification delivery attempt",
+    "dependencies": ["com.gradlemedium100.notification.model.NotificationStatus"],
+    "implements": [],
+    "extends": "java.io.Serializable",
+    "fields": [
+      {
+        "name": "id",
+        "type": "String",
+        "description": "Unique identifier for the notification response"
+      },
+      {
+        "name": "requestId",
+        "type": "String",
+        "description": "ID of the corresponding notification request"
+      },
+      {
+        "name": "status",
+        "type": "com.gradlemedium100.notification.model.NotificationStatus",
+        "description": "Status of the notification delivery"
+      },
+      {
+        "name": "message",
+        "type": "String",
+        "description": "Message associated with the response, especially for failures"
+      },
+      {
+        "name": "timestamp",
+        "type": "java.time.LocalDateTime",
+        "description": "Timestamp when the notification was processed"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the ID of the notification response"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the ID of the notification response"
+      },
+      {
+        "name": "getRequestId",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the request ID"
+      },
+      {
+        "name": "setRequestId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "requestId",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the request ID"
+      },
+      {
+        "name": "getStatus",
+        "returnType": "com.gradlemedium100.notification.model.NotificationStatus",
+        "parameters": [],
+        "description": "Gets the notification status"
+      },
+      {
+        "name": "setStatus",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "status",
+            "type": "com.gradlemedium100.notification.model.NotificationStatus"
+          }
+        ],
+        "description": "Sets the notification status"
+      }
+    ]
+  },
+  {
+    "name": "NotificationType",
+    "package": "com.gradlemedium100.notification.model",
+    "type": "enum",
+    "description": "Enumeration of different notification types (EMAIL, SMS, IN_APP)",
+    "dependencies": [],
+    "implements": [],
+    "extends": "java.lang.Enum",
+    "fields": [
+      {
+        "name": "EMAIL",
+        "type": "com.gradlemedium100.notification.model.NotificationType",
+        "description": "Email notification type"
+      },
+      {
+        "name": "SMS",
+        "type": "com.gradlemedium100.notification.model.NotificationType",
+        "description": "SMS notification type"
+      },
+      {
+        "name": "IN_APP",
+        "type": "com.gradlemedium100.notification.model.NotificationType",
+        "description": "In-app notification type"
+      }
+    ],
+    "methods": [
+      {
+        "name": "values",
+        "returnType": "com.gradlemedium100.notification.model.NotificationType[]",
+        "parameters": [],
+        "description": "Returns an array containing the constants of this enum type"
+      },
+      {
+        "name": "valueOf",
+        "returnType": "com.gradlemedium100.notification.model.NotificationType",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Returns the enum constant of this type with the specified name"
+      }
+    ]
+  },
+  {
+    "name": "NotificationStatus",
+    "package": "com.gradlemedium100.notification.model",
+    "type": "enum",
+    "description": "Enumeration of notification delivery statuses (SENT, FAILED, PENDING)",
+    "dependencies": [],
+    "implements": [],
+    "extends": "java.lang.Enum",
+    "fields": [
+      {
+        "name": "SENT",
+        "type": "com.gradlemedium100.notification.model.NotificationStatus",
+        "description": "Notification was successfully sent"
+      },
+      {
+        "name": "FAILED",
+        "type": "com.gradlemedium100.notification.model.NotificationStatus",
+        "description": "Notification sending failed"
+      },
+      {
+        "name": "PENDING",
+        "type": "com.gradlemedium100.notification.model.NotificationStatus",
+        "description": "Notification is pending delivery"
+      }
+    ],
+    "methods": [
+      {
+        "name": "values",
+        "returnType": "com.gradlemedium100.notification.model.NotificationStatus[]",
+        "parameters": [],
+        "description": "Returns an array containing the constants of this enum type"
+      },
+      {
+        "name": "valueOf",
+        "returnType": "com.gradlemedium100.notification.model.NotificationStatus",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Returns the enum constant of this type with the specified name"
+      }
+    ]
+  },
+  {
+    "name": "TemplateEngine",
+    "package": "com.gradlemedium100.notification.template",
+    "type": "interface",
+    "description": "Interface for processing notification templates and populating them with data",
+    "dependencies": [],
+    "implements": [],
+    "extends": null,
+    "fields": [],
+    "methods": [
+      {
+        "name": "processTemplate",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "templateName",
+            "type": "String"
+          },
+          {
+            "name": "data",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Processes a template with provided data and returns the populated content"
+      },
+      {
+        "name": "getAvailableTemplates",
+        "returnType": "List<String>",
+        "parameters": [],
+        "description": "Returns a list of available template names"
+      }
+    ]
+  },
+  {
+    "name": "TemplateEngineImpl",
+    "package": "com.gradlemedium100.notification.template",
+    "type": "service",
+    "description": "Implementation of the template engine that processes notification templates",
+    "dependencies": ["com.gradlemedium100.notification.template.TemplateEngine"],
+    "implements": ["com.gradlemedium100.notification.template.TemplateEngine"],
+    "extends": null,
+    "fields": [
+      {
+        "name": "templateCache",
+        "type": "Map<String, String>",
+        "description": "Cache of template content by template name"
+      },
+      {
+        "name": "templatePath",
+        "type": "String",
+        "description": "Path to the templates directory"
+      }
+    ],
+    "methods": [
+      {
+        "name": "processTemplate",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "templateName",
+            "type": "String"
+          },
+          {
+            "name": "data",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Processes a template with provided data and returns the populated content"
+      },
+      {
+        "name": "getAvailableTemplates",
+        "returnType": "List<String>",
+        "parameters": [],
+        "description": "Returns a list of available template names"
+      },
+      {
+        "name": "loadTemplate",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "templateName",
+            "type": "String"
+          }
+        ],
+        "description": "Loads a template from the filesystem or database"
+      },
+      {
+        "name": "populateTemplate",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "template",
+            "type": "String"
+          },
+          {
+            "name": "data",
+            "type": "Map<String, Object>"
+          }
+        ],
+        "description": "Populates a template string with the provided data"
+      },
+      {
+        "name": "clearCache",
+        "returnType": "void",
+        "parameters": [],
+        "description": "Clears the template cache"
+      }
+    ]
+  }
+]

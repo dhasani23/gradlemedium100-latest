@@ -1,0 +1,105 @@
+{
+  "module": "NotificationService",
+  "description": "Manages email, SMS, and in-app notifications. Provides templates for different notification types and handles message formatting and delivery through various channels.",
+  "file_count": 8,
+  "module_path": "notification-service",
+  "interfaces": [
+    "com.gradlemedium100.notification.service.NotificationService",
+    "com.gradlemedium100.notification.template.TemplateEngine"
+  ],
+  "dependencies": [
+    "Common",
+    "DataAccess",
+    "SecurityModule"
+  ],
+  "classes": [
+    {
+      "name": "NotificationServiceImpl",
+      "package": "com.gradlemedium100.notification.service",
+      "type": "service",
+      "description": "Core implementation of the notification service that orchestrates the sending of notifications through various channels",
+      "dependencies": ["com.gradlemedium100.notification.channel.EmailChannel", "com.gradlemedium100.notification.channel.SmsChannel", "com.gradlemedium100.notification.channel.InAppChannel", "com.gradlemedium100.notification.template.TemplateEngineImpl"],
+      "implements": ["com.gradlemedium100.notification.service.NotificationService"],
+      "extends": null
+    },
+    {
+      "name": "NotificationService",
+      "package": "com.gradlemedium100.notification.service",
+      "type": "interface",
+      "description": "Defines the contract for sending notifications through different channels",
+      "dependencies": ["com.gradlemedium100.notification.model.NotificationRequest", "com.gradlemedium100.notification.model.NotificationResponse"],
+      "implements": [],
+      "extends": null
+    },
+    {
+      "name": "NotificationRequest",
+      "package": "com.gradlemedium100.notification.model",
+      "type": "model",
+      "description": "Data model representing a notification request with recipient, content, and channel information",
+      "dependencies": ["com.gradlemedium100.notification.model.NotificationType"],
+      "implements": [],
+      "extends": "java.io.Serializable"
+    },
+    {
+      "name": "NotificationResponse",
+      "package": "com.gradlemedium100.notification.model",
+      "type": "model",
+      "description": "Data model representing the response of a notification delivery attempt",
+      "dependencies": ["com.gradlemedium100.notification.model.NotificationStatus"],
+      "implements": [],
+      "extends": "java.io.Serializable"
+    },
+    {
+      "name": "NotificationType",
+      "package": "com.gradlemedium100.notification.model",
+      "type": "enum",
+      "description": "Enumeration of different notification types (EMAIL, SMS, IN_APP)",
+      "dependencies": [],
+      "implements": [],
+      "extends": "java.lang.Enum"
+    },
+    {
+      "name": "NotificationStatus",
+      "package": "com.gradlemedium100.notification.model",
+      "type": "enum",
+      "description": "Enumeration of notification delivery statuses (SENT, FAILED, PENDING)",
+      "dependencies": [],
+      "implements": [],
+      "extends": "java.lang.Enum"
+    },
+    {
+      "name": "TemplateEngine",
+      "package": "com.gradlemedium100.notification.template",
+      "type": "interface",
+      "description": "Interface for processing notification templates and populating them with data",
+      "dependencies": [],
+      "implements": [],
+      "extends": null
+    },
+    {
+      "name": "TemplateEngineImpl",
+      "package": "com.gradlemedium100.notification.template",
+      "type": "service",
+      "description": "Implementation of the template engine that processes notification templates",
+      "dependencies": ["com.gradlemedium100.notification.template.TemplateEngine"],
+      "implements": ["com.gradlemedium100.notification.template.TemplateEngine"],
+      "extends": null
+    }
+  ],
+  "configFiles": [
+    {
+      "path": "notification-service/build.gradle",
+      "description": "Build file for the NotificationService module"
+    }
+  ],
+  "generationOrder": [
+    "com.gradlemedium100.notification.model.NotificationType",
+    "com.gradlemedium100.notification.model.NotificationStatus",
+    "com.gradlemedium100.notification.model.NotificationRequest",
+    "com.gradlemedium100.notification.model.NotificationResponse",
+    "com.gradlemedium100.notification.template.TemplateEngine",
+    "com.gradlemedium100.notification.template.TemplateEngineImpl",
+    "com.gradlemedium100.notification.service.NotificationService",
+    "com.gradlemedium100.notification.service.NotificationServiceImpl"
+  ]
+}

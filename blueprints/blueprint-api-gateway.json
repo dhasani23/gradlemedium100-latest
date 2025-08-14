@@ -1,0 +1,134 @@
+{
+  "module": "ApiGateway",
+  "description": "Acts as the entry point for the application, routing requests to appropriate services. Handles request filtering, rate limiting, and API documentation integration.",
+  "file_count": 2,
+  "module_path": "api-gateway",
+  "interfaces": {
+    "com.gradlemedium100.apigateway.filter.RequestFilter": "Interface for handling API request filtering",
+    "com.gradlemedium100.apigateway.limiter.RateLimiter": "Interface for implementing API rate limiting functionality"
+  },
+  "dependencies": {
+    "Common": "For shared utilities and models across modules",
+    "SecurityModule": "For authentication and authorization",
+    "ProductService": "For product related API routing",
+    "OrderService": "For order related API routing",
+    "PaymentService": "For payment related API routing",
+    "NotificationService": "For notification related API routing"
+  },
+  "classes": [
+    {
+      "name": "ApiGatewayApplication",
+      "package": "com.gradlemedium100.apigateway",
+      "type": "application",
+      "description": "Main Spring Boot application class that bootstraps the API Gateway",
+      "dependencies": ["org.springframework.boot.SpringApplication"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "GatewayConfig",
+      "package": "com.gradlemedium100.apigateway.config",
+      "type": "configuration",
+      "description": "Configuration class for setting up API gateway routes and global filters",
+      "dependencies": ["org.springframework.cloud.gateway.route.RouteLocator", "org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "AuthenticationFilter",
+      "package": "com.gradlemedium100.apigateway.filter",
+      "type": "filter",
+      "description": "Global filter for handling authentication of incoming requests",
+      "dependencies": ["com.gradlemedium100.securitymodule.service.TokenService", "org.springframework.cloud.gateway.filter.GatewayFilter"],
+      "implements": ["com.gradlemedium100.apigateway.filter.RequestFilter"],
+      "extends": ""
+    },
+    {
+      "name": "LoggingFilter",
+      "package": "com.gradlemedium100.apigateway.filter",
+      "type": "filter",
+      "description": "Global filter for logging request and response details",
+      "dependencies": ["org.springframework.cloud.gateway.filter.GatewayFilter", "org.slf4j.Logger"],
+      "implements": ["com.gradlemedium100.apigateway.filter.RequestFilter"],
+      "extends": ""
+    },
+    {
+      "name": "RequestRateLimiter",
+      "package": "com.gradlemedium100.apigateway.limiter",
+      "type": "service",
+      "description": "Implementation of rate limiting functionality for API requests",
+      "dependencies": ["org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter"],
+      "implements": ["com.gradlemedium100.apigateway.limiter.RateLimiter"],
+      "extends": ""
+    },
+    {
+      "name": "ApiDocController",
+      "package": "com.gradlemedium100.apigateway.controller",
+      "type": "controller",
+      "description": "Controller for serving API documentation",
+      "dependencies": ["org.springframework.web.bind.annotation.RestController", "springfox.documentation.swagger.web.SwaggerResource"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "RoutesConfiguration",
+      "package": "com.gradlemedium100.apigateway.config",
+      "type": "configuration",
+      "description": "Configuration class defining the routing rules for different service endpoints",
+      "dependencies": ["org.springframework.cloud.gateway.route.RouteLocator"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "GlobalErrorHandler",
+      "package": "com.gradlemedium100.apigateway.error",
+      "type": "handler",
+      "description": "Global error handler for managing exceptions in the API gateway",
+      "dependencies": ["org.springframework.web.reactive.function.server.ServerResponse", "org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler"],
+      "implements": [],
+      "extends": ""
+    },
+    {
+      "name": "CorrelationIdFilter",
+      "package": "com.gradlemedium100.apigateway.filter",
+      "type": "filter",
+      "description": "Filter for adding correlation IDs to track requests across microservices",
+      "dependencies": ["org.springframework.cloud.gateway.filter.GatewayFilter", "com.gradlemedium100.common.util.CorrelationIdGenerator"],
+      "implements": ["com.gradlemedium100.apigateway.filter.RequestFilter"],
+      "extends": ""
+    },
+    {
+      "name": "CircuitBreakerConfig",
+      "package": "com.gradlemedium100.apigateway.config",
+      "type": "configuration",
+      "description": "Configuration for circuit breaker patterns to handle service failures",
+      "dependencies": ["org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory"],
+      "implements": [],
+      "extends": ""
+    }
+  ],
+  "configFiles": [
+    {
+      "path": "api-gateway/build.gradle",
+      "description": "Build file for the ApiGateway module"
+    },
+    {
+      "path": "api-gateway/src/main/resources/application.yml",
+      "description": "Configuration properties for the ApiGateway module"
+    }
+  ],
+  "generationOrder": [
+    "com.gradlemedium100.apigateway.filter.RequestFilter",
+    "com.gradlemedium100.apigateway.limiter.RateLimiter",
+    "com.gradlemedium100.apigateway.limiter.RequestRateLimiter",
+    "com.gradlemedium100.apigateway.filter.LoggingFilter",
+    "com.gradlemedium100.apigateway.filter.CorrelationIdFilter",
+    "com.gradlemedium100.apigateway.filter.AuthenticationFilter",
+    "com.gradlemedium100.apigateway.error.GlobalErrorHandler",
+    "com.gradlemedium100.apigateway.config.CircuitBreakerConfig",
+    "com.gradlemedium100.apigateway.config.RoutesConfiguration",
+    "com.gradlemedium100.apigateway.config.GatewayConfig",
+    "com.gradlemedium100.apigateway.controller.ApiDocController",
+    "com.gradlemedium100.apigateway.ApiGatewayApplication"
+  ]
+}

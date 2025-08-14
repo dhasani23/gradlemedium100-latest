@@ -1,0 +1,864 @@
+[
+    {
+        "name": "Order",
+        "package": "com.gradlemedium100.orderservice.model",
+        "type": "model",
+        "description": "Entity representing an order in the system with all associated details",
+        "dependencies": [],
+        "implements": [],
+        "fields": [
+            {
+                "name": "id",
+                "type": "Long",
+                "description": "Unique identifier for the order"
+            },
+            {
+                "name": "userId",
+                "type": "Long",
+                "description": "Identifier of the user who placed the order"
+            },
+            {
+                "name": "orderDate",
+                "type": "LocalDateTime",
+                "description": "Date and time when the order was placed"
+            },
+            {
+                "name": "status",
+                "type": "OrderStatus",
+                "description": "Current status of the order in its lifecycle"
+            },
+            {
+                "name": "totalAmount",
+                "type": "BigDecimal",
+                "description": "Total monetary amount of the order"
+            },
+            {
+                "name": "shippingAddress",
+                "type": "String",
+                "description": "Address where the order should be shipped"
+            },
+            {
+                "name": "billingAddress",
+                "type": "String",
+                "description": "Address for billing purposes"
+            },
+            {
+                "name": "items",
+                "type": "List<OrderItem>",
+                "description": "List of items included in the order"
+            },
+            {
+                "name": "paymentId",
+                "type": "Long",
+                "description": "Reference to the payment transaction for this order"
+            },
+            {
+                "name": "notes",
+                "type": "String",
+                "description": "Additional notes or special instructions for the order"
+            }
+        ],
+        "methods": [
+            {
+                "name": "calculateTotal",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Calculates the total amount of the order based on all items"
+            },
+            {
+                "name": "addItem",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "item",
+                        "type": "OrderItem"
+                    }
+                ],
+                "description": "Adds an item to the order and recalculates the total amount"
+            },
+            {
+                "name": "removeItem",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "itemId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Removes an item from the order by its ID and recalculates the total amount"
+            },
+            {
+                "name": "updateStatus",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "newStatus",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Updates the status of the order"
+            }
+        ]
+    },
+    {
+        "name": "OrderItem",
+        "package": "com.gradlemedium100.orderservice.model",
+        "type": "model",
+        "description": "Entity representing an item within an order, including quantity and pricing",
+        "dependencies": [],
+        "implements": [],
+        "fields": [
+            {
+                "name": "id",
+                "type": "Long",
+                "description": "Unique identifier for the order item"
+            },
+            {
+                "name": "orderId",
+                "type": "Long",
+                "description": "Reference to the parent order"
+            },
+            {
+                "name": "productId",
+                "type": "Long",
+                "description": "Reference to the product being ordered"
+            },
+            {
+                "name": "productName",
+                "type": "String",
+                "description": "Name of the product at the time of order (for historical reference)"
+            },
+            {
+                "name": "quantity",
+                "type": "Integer",
+                "description": "Number of units ordered"
+            },
+            {
+                "name": "unitPrice",
+                "type": "BigDecimal",
+                "description": "Price per unit at the time of order"
+            },
+            {
+                "name": "totalPrice",
+                "type": "BigDecimal",
+                "description": "Total price for this item (quantity * unitPrice)"
+            },
+            {
+                "name": "discountAmount",
+                "type": "BigDecimal",
+                "description": "Amount of discount applied to this item"
+            }
+        ],
+        "methods": [
+            {
+                "name": "calculateTotalPrice",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Calculates the total price for this item based on quantity and unit price, applying any discounts"
+            },
+            {
+                "name": "updateQuantity",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "newQuantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Updates the quantity and recalculates the total price"
+            },
+            {
+                "name": "applyDiscount",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "discountPercent",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Applies a percentage discount to this item and recalculates the total price"
+            }
+        ]
+    },
+    {
+        "name": "Cart",
+        "package": "com.gradlemedium100.orderservice.model",
+        "type": "model",
+        "description": "Entity representing a user's shopping cart with items before conversion to an order",
+        "dependencies": [],
+        "implements": [],
+        "fields": [
+            {
+                "name": "id",
+                "type": "Long",
+                "description": "Unique identifier for the cart"
+            },
+            {
+                "name": "userId",
+                "type": "Long",
+                "description": "Identifier of the user who owns the cart"
+            },
+            {
+                "name": "createdDate",
+                "type": "LocalDateTime",
+                "description": "Date and time when the cart was created"
+            },
+            {
+                "name": "lastUpdated",
+                "type": "LocalDateTime",
+                "description": "Date and time when the cart was last modified"
+            },
+            {
+                "name": "items",
+                "type": "List<CartItem>",
+                "description": "Items currently in the shopping cart"
+            },
+            {
+                "name": "totalAmount",
+                "type": "BigDecimal",
+                "description": "Total monetary amount of all items in the cart"
+            }
+        ],
+        "methods": [
+            {
+                "name": "addItem",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "item",
+                        "type": "CartItem"
+                    }
+                ],
+                "description": "Adds an item to the cart or increments quantity if it already exists"
+            },
+            {
+                "name": "updateItemQuantity",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Updates the quantity of an item in the cart"
+            },
+            {
+                "name": "removeItem",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Removes an item from the cart"
+            },
+            {
+                "name": "clearCart",
+                "returnType": "void",
+                "parameters": [],
+                "description": "Removes all items from the cart"
+            },
+            {
+                "name": "calculateTotal",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Calculates the total amount of all items in the cart"
+            },
+            {
+                "name": "convertToOrder",
+                "returnType": "Order",
+                "parameters": [],
+                "description": "Converts the cart to an order entity"
+            }
+        ]
+    },
+    {
+        "name": "CartItem",
+        "package": "com.gradlemedium100.orderservice.model",
+        "type": "model",
+        "description": "Entity representing an item in the shopping cart before conversion to an order item",
+        "dependencies": [],
+        "implements": [],
+        "fields": [
+            {
+                "name": "id",
+                "type": "Long",
+                "description": "Unique identifier for the cart item"
+            },
+            {
+                "name": "cartId",
+                "type": "Long",
+                "description": "Reference to the parent cart"
+            },
+            {
+                "name": "productId",
+                "type": "Long",
+                "description": "Reference to the product in the cart"
+            },
+            {
+                "name": "productName",
+                "type": "String",
+                "description": "Name of the product (cached for display purposes)"
+            },
+            {
+                "name": "quantity",
+                "type": "Integer",
+                "description": "Number of units in the cart"
+            },
+            {
+                "name": "unitPrice",
+                "type": "BigDecimal",
+                "description": "Current price per unit"
+            },
+            {
+                "name": "totalPrice",
+                "type": "BigDecimal",
+                "description": "Total price for this item (quantity * unitPrice)"
+            },
+            {
+                "name": "dateAdded",
+                "type": "LocalDateTime",
+                "description": "Date and time when the item was added to the cart"
+            }
+        ],
+        "methods": [
+            {
+                "name": "updateQuantity",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "newQuantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Updates the quantity and recalculates the total price"
+            },
+            {
+                "name": "calculateTotalPrice",
+                "returnType": "BigDecimal",
+                "parameters": [],
+                "description": "Calculates the total price for this item based on quantity and unit price"
+            },
+            {
+                "name": "convertToOrderItem",
+                "returnType": "OrderItem",
+                "parameters": [],
+                "description": "Converts the cart item to an order item"
+            }
+        ]
+    },
+    {
+        "name": "OrderStatus",
+        "package": "com.gradlemedium100.orderservice.model",
+        "type": "enum",
+        "description": "Enumeration of possible order statuses in the order lifecycle",
+        "dependencies": [],
+        "implements": [],
+        "fields": [
+            {
+                "name": "CREATED",
+                "type": "enum constant",
+                "description": "Order has been created but not processed yet"
+            },
+            {
+                "name": "PAYMENT_PENDING",
+                "type": "enum constant",
+                "description": "Order is waiting for payment confirmation"
+            },
+            {
+                "name": "PAYMENT_CONFIRMED",
+                "type": "enum constant",
+                "description": "Payment has been confirmed for the order"
+            },
+            {
+                "name": "PROCESSING",
+                "type": "enum constant",
+                "description": "Order is being processed (items gathered, packaged, etc.)"
+            },
+            {
+                "name": "SHIPPED",
+                "type": "enum constant",
+                "description": "Order has been shipped to the delivery address"
+            },
+            {
+                "name": "DELIVERED",
+                "type": "enum constant",
+                "description": "Order has been successfully delivered to the customer"
+            },
+            {
+                "name": "CANCELED",
+                "type": "enum constant",
+                "description": "Order has been canceled"
+            },
+            {
+                "name": "REFUNDED",
+                "type": "enum constant",
+                "description": "Order has been refunded"
+            }
+        ],
+        "methods": [
+            {
+                "name": "isTerminalState",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Returns true if this status represents an end state in the order lifecycle"
+            },
+            {
+                "name": "canTransitionTo",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "nextStatus",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Checks if a transition from the current status to the next status is valid"
+            }
+        ]
+    },
+    {
+        "name": "OrderRepository",
+        "package": "com.gradlemedium100.orderservice.repository",
+        "type": "repository",
+        "description": "Interface for data access operations on orders",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.orderservice.model.OrderStatus",
+            "com.gradlemedium100.common.exception.DataAccessException"
+        ],
+        "implements": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "findById",
+                "returnType": "Optional<Order>",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds an order by its unique identifier"
+            },
+            {
+                "name": "findByUserId",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds all orders for a specific user"
+            },
+            {
+                "name": "findByStatus",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Finds all orders with a specific status"
+            },
+            {
+                "name": "save",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Saves or updates an order in the database"
+            },
+            {
+                "name": "delete",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Deletes an order by its ID"
+            },
+            {
+                "name": "findOrdersCreatedBetween",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "type": "LocalDateTime"
+                    },
+                    {
+                        "name": "endDate",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Finds orders created within a specified date range"
+            }
+        ]
+    },
+    {
+        "name": "CartRepository",
+        "package": "com.gradlemedium100.orderservice.repository",
+        "type": "repository",
+        "description": "Interface for data access operations on shopping carts",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Cart",
+            "com.gradlemedium100.common.exception.DataAccessException"
+        ],
+        "implements": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "findById",
+                "returnType": "Optional<Cart>",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds a shopping cart by its unique identifier"
+            },
+            {
+                "name": "findByUserId",
+                "returnType": "Optional<Cart>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds the active shopping cart for a specific user"
+            },
+            {
+                "name": "save",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "type": "Cart"
+                    }
+                ],
+                "description": "Saves or updates a shopping cart in the database"
+            },
+            {
+                "name": "delete",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "cartId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Deletes a shopping cart by its ID"
+            },
+            {
+                "name": "findAbandonedCarts",
+                "returnType": "List<Cart>",
+                "parameters": [
+                    {
+                        "name": "olderThan",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Finds carts that have not been updated since the specified date"
+            }
+        ]
+    },
+    {
+        "name": "OrderRepositoryImpl",
+        "package": "com.gradlemedium100.orderservice.repository.impl",
+        "type": "repository",
+        "description": "Implementation of the OrderRepository interface for order data access",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.orderservice.model.OrderStatus",
+            "com.gradlemedium100.orderservice.repository.OrderRepository",
+            "com.gradlemedium100.dataaccess.BaseRepository",
+            "com.gradlemedium100.common.exception.DataAccessException"
+        ],
+        "implements": ["com.gradlemedium100.orderservice.repository.OrderRepository"],
+        "extends": "com.gradlemedium100.dataaccess.BaseRepository",
+        "fields": [
+            {
+                "name": "jdbcTemplate",
+                "type": "JdbcTemplate",
+                "description": "Spring JDBC template for database operations"
+            },
+            {
+                "name": "orderMapper",
+                "type": "RowMapper<Order>",
+                "description": "Mapper for converting database rows to Order objects"
+            }
+        ],
+        "methods": [
+            {
+                "name": "findById",
+                "returnType": "Optional<Order>",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds an order by its unique identifier"
+            },
+            {
+                "name": "findByUserId",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds all orders for a specific user"
+            },
+            {
+                "name": "findByStatus",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Finds all orders with a specific status"
+            },
+            {
+                "name": "save",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Saves or updates an order in the database"
+            },
+            {
+                "name": "delete",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Deletes an order by its ID"
+            },
+            {
+                "name": "findOrdersCreatedBetween",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "type": "LocalDateTime"
+                    },
+                    {
+                        "name": "endDate",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Finds orders created within a specified date range"
+            },
+            {
+                "name": "mapResultSetToOrder",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "rs",
+                        "type": "ResultSet"
+                    },
+                    {
+                        "name": "rowNum",
+                        "type": "int"
+                    }
+                ],
+                "description": "Maps a database result set row to an Order object"
+            },
+            {
+                "name": "fetchOrderItems",
+                "returnType": "List<OrderItem>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Fetches all items for a specific order from the database"
+            }
+        ]
+    },
+    {
+        "name": "CartRepositoryImpl",
+        "package": "com.gradlemedium100.orderservice.repository.impl",
+        "type": "repository",
+        "description": "Implementation of the CartRepository interface for cart data access",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Cart",
+            "com.gradlemedium100.orderservice.model.CartItem",
+            "com.gradlemedium100.orderservice.repository.CartRepository",
+            "com.gradlemedium100.dataaccess.BaseRepository",
+            "com.gradlemedium100.common.exception.DataAccessException"
+        ],
+        "implements": ["com.gradlemedium100.orderservice.repository.CartRepository"],
+        "extends": "com.gradlemedium100.dataaccess.BaseRepository",
+        "fields": [
+            {
+                "name": "jdbcTemplate",
+                "type": "JdbcTemplate",
+                "description": "Spring JDBC template for database operations"
+            },
+            {
+                "name": "cartMapper",
+                "type": "RowMapper<Cart>",
+                "description": "Mapper for converting database rows to Cart objects"
+            }
+        ],
+        "methods": [
+            {
+                "name": "findById",
+                "returnType": "Optional<Cart>",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds a shopping cart by its unique identifier"
+            },
+            {
+                "name": "findByUserId",
+                "returnType": "Optional<Cart>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Finds the active shopping cart for a specific user"
+            },
+            {
+                "name": "save",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "type": "Cart"
+                    }
+                ],
+                "description": "Saves or updates a shopping cart in the database"
+            },
+            {
+                "name": "delete",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "cartId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Deletes a shopping cart by its ID"
+            },
+            {
+                "name": "findAbandonedCarts",
+                "returnType": "List<Cart>",
+                "parameters": [
+                    {
+                        "name": "olderThan",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Finds carts that have not been updated since the specified date"
+            },
+            {
+                "name": "mapResultSetToCart",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "rs",
+                        "type": "ResultSet"
+                    },
+                    {
+                        "name": "rowNum",
+                        "type": "int"
+                    }
+                ],
+                "description": "Maps a database result set row to a Cart object"
+            },
+            {
+                "name": "fetchCartItems",
+                "returnType": "List<CartItem>",
+                "parameters": [
+                    {
+                        "name": "cartId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Fetches all items for a specific cart from the database"
+            }
+        ]
+    },
+    {
+        "name": "OrderValidator",
+        "package": "com.gradlemedium100.orderservice.validation",
+        "type": "service",
+        "description": "Interface for validating order data before processing",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.common.exception.ValidationException"
+        ],
+        "implements": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "validateOrder",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Validates an order's data integrity and business rules"
+            },
+            {
+                "name": "validateOrderStatus",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "currentStatus",
+                        "type": "OrderStatus"
+                    },
+                    {
+                        "name": "newStatus",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Validates if a status transition is allowed"
+            },
+            {
+                "name": "validateOrderItems",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Validates the items in an order for availability and pricing"
+            }
+        ]
+    }
+]

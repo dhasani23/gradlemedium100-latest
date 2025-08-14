@@ -1,0 +1,438 @@
+[
+  {
+    "name": "ApiGatewayApplication",
+    "package": "com.gradlemedium100.apigateway",
+    "type": "application",
+    "description": "Main Spring Boot application class that bootstraps the API Gateway",
+    "dependencies": ["org.springframework.boot.SpringApplication"],
+    "implements": [],
+    "extends": "",
+    "fields": [],
+    "methods": [
+      {
+        "name": "main",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "String[]"
+          }
+        ],
+        "description": "Main entry point of the application that starts the Spring Boot API Gateway"
+      }
+    ]
+  },
+  {
+    "name": "GatewayConfig",
+    "package": "com.gradlemedium100.apigateway.config",
+    "type": "configuration",
+    "description": "Configuration class for setting up API gateway routes and global filters",
+    "dependencies": ["org.springframework.cloud.gateway.route.RouteLocator", "org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder"],
+    "implements": [],
+    "extends": "",
+    "fields": [],
+    "methods": [
+      {
+        "name": "routeLocator",
+        "returnType": "RouteLocator",
+        "parameters": [
+          {
+            "name": "builder",
+            "type": "RouteLocatorBuilder"
+          }
+        ],
+        "description": "Defines the route configurations for the API gateway"
+      },
+      {
+        "name": "corsConfiguration",
+        "returnType": "CorsWebFilter",
+        "parameters": [],
+        "description": "Configures CORS settings for the API gateway"
+      }
+    ]
+  },
+  {
+    "name": "RequestFilter",
+    "package": "com.gradlemedium100.apigateway.filter",
+    "type": "interface",
+    "description": "Interface for handling API request filtering",
+    "dependencies": ["org.springframework.cloud.gateway.filter.GatewayFilter"],
+    "implements": [],
+    "extends": "",
+    "fields": [],
+    "methods": [
+      {
+        "name": "getFilter",
+        "returnType": "GatewayFilter",
+        "parameters": [],
+        "description": "Returns a gateway filter implementation"
+      },
+      {
+        "name": "getOrder",
+        "returnType": "int",
+        "parameters": [],
+        "description": "Returns the order of this filter in the filter chain"
+      }
+    ]
+  },
+  {
+    "name": "AuthenticationFilter",
+    "package": "com.gradlemedium100.apigateway.filter",
+    "type": "filter",
+    "description": "Global filter for handling authentication of incoming requests",
+    "dependencies": ["com.gradlemedium100.securitymodule.service.TokenService", "org.springframework.cloud.gateway.filter.GatewayFilter"],
+    "implements": ["com.gradlemedium100.apigateway.filter.RequestFilter"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "tokenService",
+        "type": "TokenService",
+        "description": "Service for validating JWT tokens"
+      },
+      {
+        "name": "skipAuthPaths",
+        "type": "List<String>",
+        "description": "List of paths that don't require authentication"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getFilter",
+        "returnType": "GatewayFilter",
+        "parameters": [],
+        "description": "Returns a filter that verifies authentication token in requests"
+      },
+      {
+        "name": "getOrder",
+        "returnType": "int",
+        "parameters": [],
+        "description": "Returns the order of this filter in the filter chain"
+      },
+      {
+        "name": "shouldSkipAuth",
+        "returnType": "boolean",
+        "parameters": [
+          {
+            "name": "path",
+            "type": "String"
+          }
+        ],
+        "description": "Determines if a path should skip authentication"
+      }
+    ]
+  },
+  {
+    "name": "LoggingFilter",
+    "package": "com.gradlemedium100.apigateway.filter",
+    "type": "filter",
+    "description": "Global filter for logging request and response details",
+    "dependencies": ["org.springframework.cloud.gateway.filter.GatewayFilter", "org.slf4j.Logger"],
+    "implements": ["com.gradlemedium100.apigateway.filter.RequestFilter"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "logger",
+        "type": "Logger",
+        "description": "Logger for recording request and response details"
+      },
+      {
+        "name": "includeHeaders",
+        "type": "boolean",
+        "description": "Flag to determine if headers should be included in logs"
+      },
+      {
+        "name": "includePayload",
+        "type": "boolean",
+        "description": "Flag to determine if payload should be included in logs"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getFilter",
+        "returnType": "GatewayFilter",
+        "parameters": [],
+        "description": "Returns a filter that logs request and response details"
+      },
+      {
+        "name": "getOrder",
+        "returnType": "int",
+        "parameters": [],
+        "description": "Returns the order of this filter in the filter chain"
+      },
+      {
+        "name": "logRequest",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "exchange",
+            "type": "ServerWebExchange"
+          }
+        ],
+        "description": "Logs details of the incoming request"
+      },
+      {
+        "name": "logResponse",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "exchange",
+            "type": "ServerWebExchange"
+          }
+        ],
+        "description": "Logs details of the outgoing response"
+      }
+    ]
+  },
+  {
+    "name": "RateLimiter",
+    "package": "com.gradlemedium100.apigateway.limiter",
+    "type": "interface",
+    "description": "Interface for implementing API rate limiting functionality",
+    "dependencies": [],
+    "implements": [],
+    "extends": "",
+    "fields": [],
+    "methods": [
+      {
+        "name": "isAllowed",
+        "returnType": "Mono<Boolean>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "String"
+          }
+        ],
+        "description": "Determines if a request is allowed based on rate limiting rules"
+      },
+      {
+        "name": "getKey",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "exchange",
+            "type": "ServerWebExchange"
+          }
+        ],
+        "description": "Generates a key for rate limiting based on the request"
+      }
+    ]
+  },
+  {
+    "name": "RequestRateLimiter",
+    "package": "com.gradlemedium100.apigateway.limiter",
+    "type": "service",
+    "description": "Implementation of rate limiting functionality for API requests",
+    "dependencies": ["org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter"],
+    "implements": ["com.gradlemedium100.apigateway.limiter.RateLimiter"],
+    "extends": "",
+    "fields": [
+      {
+        "name": "redisRateLimiter",
+        "type": "RedisRateLimiter",
+        "description": "Redis-based implementation for rate limiting"
+      },
+      {
+        "name": "requestsPerSecond",
+        "type": "int",
+        "description": "Number of requests allowed per second"
+      },
+      {
+        "name": "burstCapacity",
+        "type": "int",
+        "description": "Maximum burst capacity for requests"
+      }
+    ],
+    "methods": [
+      {
+        "name": "isAllowed",
+        "returnType": "Mono<Boolean>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "String"
+          }
+        ],
+        "description": "Checks if a request is allowed based on rate limiting configuration"
+      },
+      {
+        "name": "getKey",
+        "returnType": "String",
+        "parameters": [
+          {
+            "name": "exchange",
+            "type": "ServerWebExchange"
+          }
+        ],
+        "description": "Generates a key for rate limiting based on IP address or user ID"
+      },
+      {
+        "name": "getRateLimitResponse",
+        "returnType": "Mono<ServerResponse>",
+        "parameters": [],
+        "description": "Creates a response for when rate limit is exceeded"
+      }
+    ]
+  },
+  {
+    "name": "ApiDocController",
+    "package": "com.gradlemedium100.apigateway.controller",
+    "type": "controller",
+    "description": "Controller for serving API documentation",
+    "dependencies": ["org.springframework.web.bind.annotation.RestController", "springfox.documentation.swagger.web.SwaggerResource"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "serviceDefinitions",
+        "type": "List<ServiceDefinition>",
+        "description": "List of service definitions for API documentation"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getSwaggerResources",
+        "returnType": "List<SwaggerResource>",
+        "parameters": [],
+        "description": "Returns a list of Swagger resources for all services"
+      },
+      {
+        "name": "getSwaggerUiConfig",
+        "returnType": "UiConfiguration",
+        "parameters": [],
+        "description": "Returns configuration for Swagger UI"
+      },
+      {
+        "name": "getSwaggerSecurityConfiguration",
+        "returnType": "SecurityConfiguration",
+        "parameters": [],
+        "description": "Returns security configuration for Swagger"
+      }
+    ]
+  },
+  {
+    "name": "RoutesConfiguration",
+    "package": "com.gradlemedium100.apigateway.config",
+    "type": "configuration",
+    "description": "Configuration class defining the routing rules for different service endpoints",
+    "dependencies": ["org.springframework.cloud.gateway.route.RouteLocator"],
+    "implements": [],
+    "extends": "",
+    "fields": [
+      {
+        "name": "productServiceUrl",
+        "type": "String",
+        "description": "URL for the product service"
+      },
+      {
+        "name": "orderServiceUrl",
+        "type": "String",
+        "description": "URL for the order service"
+      },
+      {
+        "name": "paymentServiceUrl",
+        "type": "String",
+        "description": "URL for the payment service"
+      },
+      {
+        "name": "notificationServiceUrl",
+        "type": "String",
+        "description": "URL for the notification service"
+      }
+    ],
+    "methods": [
+      {
+        "name": "productServiceRoutes",
+        "returnType": "RouteLocator",
+        "parameters": [
+          {
+            "name": "builder",
+            "type": "RouteLocatorBuilder"
+          }
+        ],
+        "description": "Configures routes for product service"
+      },
+      {
+        "name": "orderServiceRoutes",
+        "returnType": "RouteLocator",
+        "parameters": [
+          {
+            "name": "builder",
+            "type": "RouteLocatorBuilder"
+          }
+        ],
+        "description": "Configures routes for order service"
+      },
+      {
+        "name": "paymentServiceRoutes",
+        "returnType": "RouteLocator",
+        "parameters": [
+          {
+            "name": "builder",
+            "type": "RouteLocatorBuilder"
+          }
+        ],
+        "description": "Configures routes for payment service"
+      },
+      {
+        "name": "notificationServiceRoutes",
+        "returnType": "RouteLocator",
+        "parameters": [
+          {
+            "name": "builder",
+            "type": "RouteLocatorBuilder"
+          }
+        ],
+        "description": "Configures routes for notification service"
+      }
+    ]
+  },
+  {
+    "name": "GlobalErrorHandler",
+    "package": "com.gradlemedium100.apigateway.error",
+    "type": "handler",
+    "description": "Global error handler for managing exceptions in the API gateway",
+    "dependencies": ["org.springframework.web.reactive.function.server.ServerResponse", "org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler"],
+    "implements": [],
+    "extends": "org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler",
+    "fields": [
+      {
+        "name": "logger",
+        "type": "Logger",
+        "description": "Logger for error details"
+      },
+      {
+        "name": "objectMapper",
+        "type": "ObjectMapper",
+        "description": "Jackson object mapper for JSON serialization"
+      }
+    ],
+    "methods": [
+      {
+        "name": "handle",
+        "returnType": "Mono<Void>",
+        "parameters": [
+          {
+            "name": "exchange",
+            "type": "ServerWebExchange"
+          },
+          {
+            "name": "ex",
+            "type": "Throwable"
+          }
+        ],
+        "description": "Handles exceptions and returns appropriate error responses"
+      },
+      {
+        "name": "renderErrorResponse",
+        "returnType": "Mono<ServerResponse>",
+        "parameters": [
+          {
+            "name": "ex",
+            "type": "Throwable"
+          }
+        ],
+        "description": "Creates a standardized error response for different types of exceptions"
+      }
+    ]
+  }
+]

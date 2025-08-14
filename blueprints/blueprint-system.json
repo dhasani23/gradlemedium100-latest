@@ -1,0 +1,83 @@
+{
+  "project": "gradlemedium100",
+  "build_system": "gradle",
+  "multi_module": true,
+  "total_files": 100,
+  "description": "A medium complexity e-commerce platform built with Spring Boot and Gradle. The system allows users to browse products, manage their shopping cart, place orders, and track delivery status. It includes authentication, product catalog management, order processing, payment integration, and notification services.",
+  "modules": [
+    {
+      "name": "Common",
+      "blueprint_file": "blueprint-common.json",
+      "module_path": "common",
+      "file_count": 15,
+      "path": "common",
+      "description": "Contains common utilities, exceptions, DTOs, and shared constants used across all other modules. Includes logging configurations, validation helpers, common error handlers, and date/time utilities."
+    },
+    {
+      "name": "SecurityModule",
+      "blueprint_file": "blueprint-security.json",
+      "module_path": "security",
+      "file_count": 12,
+      "path": "security",
+      "description": "Handles user authentication, authorization, and session management. Implements Spring Security with JWT token authentication, user roles, permissions, and security configurations."
+    },
+    {
+      "name": "DataAccess",
+      "blueprint_file": "blueprint-data-access.json",
+      "module_path": "data-access",
+      "file_count": 20,
+      "path": "data-access",
+      "description": "Provides repository implementations and database entity models. Contains JPA repositories, database configuration, migration scripts, and entity mappings for the application's domain objects."
+    },
+    {
+      "name": "ProductService",
+      "blueprint_file": "blueprint-product-service.json",
+      "module_path": "product-service",
+      "file_count": 15,
+      "path": "product-service",
+      "description": "Manages product catalog, categories, and inventory. Handles product creation, updates, search functionality, and availability checks. Includes caching strategies for product information."
+    },
+    {
+      "name": "OrderService",
+      "blueprint_file": "blueprint-order-service.json",
+      "module_path": "order-service",
+      "file_count": 18,
+      "path": "order-service",
+      "description": "Manages the order lifecycle from cart to completion. Handles shopping cart operations, order creation, status updates, and history tracking. Includes order validation and business rules implementation."
+    },
+    {
+      "name": "PaymentService",
+      "blueprint_file": "blueprint-payment-service.json",
+      "module_path": "payment-service",
+      "file_count": 10,
+      "path": "payment-service",
+      "description": "Integrates with payment gateways and manages payment processing. Handles payment methods, transaction processing, refunds, and payment status tracking with proper security measures."
+    },
+    {
+      "name": "NotificationService",
+      "blueprint_file": "blueprint-notification-service.json",
+      "module_path": "notification-service",
+      "file_count": 8,
+      "path": "notification-service",
+      "description": "Manages email, SMS, and in-app notifications. Provides templates for different notification types and handles message formatting and delivery through various channels."
+    },
+    {
+      "name": "ApiGateway",
+      "blueprint_file": "blueprint-api-gateway.json",
+      "module_path": "api-gateway",
+      "file_count": 2,
+      "path": "api-gateway",
+      "description": "Acts as the entry point for the application, routing requests to appropriate services. Handles request filtering, rate limiting, and API documentation integration."
+    }
+  ],
+  "generation_order": [
+    "Common",
+    "SecurityModule",
+    "DataAccess",
+    "ProductService",
+    "OrderService",
+    "PaymentService",
+    "NotificationService",
+    "ApiGateway"
+  ]
+}

@@ -1,0 +1,234 @@
+{
+    "module": "OrderService",
+    "description": "Manages the order lifecycle from cart to completion. Handles shopping cart operations, order creation, status updates, and history tracking. Includes order validation and business rules implementation.",
+    "file_count": 18,
+    "module_path": "order-service",
+    "interfaces": [
+        {
+            "name": "OrderRepository",
+            "package": "com.gradlemedium100.orderservice.repository",
+            "type": "repository",
+            "description": "Interface for data access operations on orders"
+        },
+        {
+            "name": "CartRepository",
+            "package": "com.gradlemedium100.orderservice.repository",
+            "type": "repository",
+            "description": "Interface for data access operations on shopping carts"
+        },
+        {
+            "name": "OrderService",
+            "package": "com.gradlemedium100.orderservice.service",
+            "type": "service",
+            "description": "Interface defining the core order management operations"
+        },
+        {
+            "name": "CartService",
+            "package": "com.gradlemedium100.orderservice.service",
+            "type": "service",
+            "description": "Interface defining the shopping cart management operations"
+        },
+        {
+            "name": "OrderValidator",
+            "package": "com.gradlemedium100.orderservice.validation",
+            "type": "service",
+            "description": "Interface for validating order data before processing"
+        }
+    ],
+    "dependencies": [
+        "Common",
+        "DataAccess",
+        "ProductService",
+        "PaymentService",
+        "NotificationService"
+    ],
+    "classes": [
+        {
+            "name": "Order",
+            "package": "com.gradlemedium100.orderservice.model",
+            "type": "model",
+            "description": "Entity representing an order in the system with all associated details",
+            "dependencies": [],
+            "implements": []
+        },
+        {
+            "name": "OrderItem",
+            "package": "com.gradlemedium100.orderservice.model",
+            "type": "model",
+            "description": "Entity representing an item within an order, including quantity and pricing",
+            "dependencies": [],
+            "implements": []
+        },
+        {
+            "name": "Cart",
+            "package": "com.gradlemedium100.orderservice.model",
+            "type": "model",
+            "description": "Entity representing a user's shopping cart with items before conversion to an order",
+            "dependencies": [],
+            "implements": []
+        },
+        {
+            "name": "CartItem",
+            "package": "com.gradlemedium100.orderservice.model",
+            "type": "model",
+            "description": "Entity representing an item in the shopping cart before conversion to an order item",
+            "dependencies": [],
+            "implements": []
+        },
+        {
+            "name": "OrderStatus",
+            "package": "com.gradlemedium100.orderservice.model",
+            "type": "enum",
+            "description": "Enumeration of possible order statuses in the order lifecycle",
+            "dependencies": [],
+            "implements": []
+        },
+        {
+            "name": "OrderServiceImpl",
+            "package": "com.gradlemedium100.orderservice.service.impl",
+            "type": "service",
+            "description": "Implementation of the OrderService interface for managing orders",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.repository.OrderRepository",
+                "com.gradlemedium100.orderservice.validation.OrderValidator",
+                "com.gradlemedium100.orderservice.model.Order",
+                "com.gradlemedium100.common.exception.ServiceException",
+                "com.gradlemedium100.paymentservice.service.PaymentService",
+                "com.gradlemedium100.notificationservice.service.NotificationService"
+            ],
+            "implements": ["com.gradlemedium100.orderservice.service.OrderService"]
+        },
+        {
+            "name": "CartServiceImpl",
+            "package": "com.gradlemedium100.orderservice.service.impl",
+            "type": "service",
+            "description": "Implementation of the CartService interface for managing shopping carts",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.repository.CartRepository",
+                "com.gradlemedium100.orderservice.model.Cart",
+                "com.gradlemedium100.orderservice.model.CartItem",
+                "com.gradlemedium100.common.exception.ServiceException",
+                "com.gradlemedium100.productservice.service.ProductService"
+            ],
+            "implements": ["com.gradlemedium100.orderservice.service.CartService"]
+        },
+        {
+            "name": "OrderValidatorImpl",
+            "package": "com.gradlemedium100.orderservice.validation.impl",
+            "type": "service",
+            "description": "Implementation of the OrderValidator interface for validating order data",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.model.Order",
+                "com.gradlemedium100.orderservice.model.OrderItem",
+                "com.gradlemedium100.common.exception.ValidationException",
+                "com.gradlemedium100.productservice.service.ProductService"
+            ],
+            "implements": ["com.gradlemedium100.orderservice.validation.OrderValidator"]
+        },
+        {
+            "name": "OrderController",
+            "package": "com.gradlemedium100.orderservice.controller",
+            "type": "controller",
+            "description": "REST controller for order management operations",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.service.OrderService",
+                "com.gradlemedium100.orderservice.model.Order",
+                "com.gradlemedium100.common.dto.OrderDTO",
+                "com.gradlemedium100.common.exception.ControllerException"
+            ],
+            "implements": []
+        },
+        {
+            "name": "CartController",
+            "package": "com.gradlemedium100.orderservice.controller",
+            "type": "controller",
+            "description": "REST controller for shopping cart operations",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.service.CartService",
+                "com.gradlemedium100.orderservice.model.Cart",
+                "com.gradlemedium100.common.dto.CartDTO",
+                "com.gradlemedium100.common.exception.ControllerException"
+            ],
+            "implements": []
+        },
+        {
+            "name": "OrderRepositoryImpl",
+            "package": "com.gradlemedium100.orderservice.repository.impl",
+            "type": "repository",
+            "description": "Implementation of the OrderRepository interface for order data access",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.model.Order",
+                "com.gradlemedium100.dataaccess.BaseRepository",
+                "com.gradlemedium100.common.exception.DataAccessException"
+            ],
+            "implements": ["com.gradlemedium100.orderservice.repository.OrderRepository"],
+            "extends": "com.gradlemedium100.dataaccess.BaseRepository"
+        },
+        {
+            "name": "CartRepositoryImpl",
+            "package": "com.gradlemedium100.orderservice.repository.impl",
+            "type": "repository",
+            "description": "Implementation of the CartRepository interface for cart data access",
+            "dependencies": [
+                "com.gradlemedium100.orderservice.model.Cart",
+                "com.gradlemedium100.dataaccess.BaseRepository",
+                "com.gradlemedium100.common.exception.DataAccessException"
+            ],
+            "implements": ["com.gradlemedium100.orderservice.repository.CartRepository"],
+            "extends": "com.gradlemedium100.dataaccess.BaseRepository"
+        },
+        {
+            "name": "OrderServiceApplication",
+            "package": "com.gradlemedium100.orderservice",
+            "type": "application",
+            "description": "Spring Boot application entry point for the Order Service module",
+            "dependencies": [
+                "org.springframework.boot.SpringApplication",
+                "org.springframework.boot.autoconfigure.SpringBootApplication"
+            ],
+            "implements": []
+        }
+    ],
+    "configFiles": [
+        {
+            "path": "order-service/build.gradle",
+            "description": "Gradle build file for the OrderService module"
+        },
+        {
+            "path": "order-service/src/main/resources/application.properties",
+            "description": "Configuration properties for the OrderService module"
+        },
+        {
+            "path": "order-service/src/main/resources/application-dev.properties",
+            "description": "Development environment configuration for the OrderService module"
+        },
+        {
+            "path": "order-service/src/main/resources/application-prod.properties",
+            "description": "Production environment configuration for the OrderService module"
+        },
+        {
+            "path": "order-service/src/test/resources/application-test.properties",
+            "description": "Test environment configuration for the OrderService module"
+        }
+    ],
+    "generationOrder": [
+        "com.gradlemedium100.orderservice.model.OrderStatus",
+        "com.gradlemedium100.orderservice.model.OrderItem",
+        "com.gradlemedium100.orderservice.model.Order",
+        "com.gradlemedium100.orderservice.model.CartItem",
+        "com.gradlemedium100.orderservice.model.Cart",
+        "com.gradlemedium100.orderservice.repository.OrderRepository",
+        "com.gradlemedium100.orderservice.repository.CartRepository",
+        "com.gradlemedium100.orderservice.repository.impl.OrderRepositoryImpl",
+        "com.gradlemedium100.orderservice.repository.impl.CartRepositoryImpl",
+        "com.gradlemedium100.orderservice.validation.OrderValidator",
+        "com.gradlemedium100.orderservice.validation.impl.OrderValidatorImpl",
+        "com.gradlemedium100.orderservice.service.OrderService",
+        "com.gradlemedium100.orderservice.service.CartService",
+        "com.gradlemedium100.orderservice.service.impl.OrderServiceImpl",
+        "com.gradlemedium100.orderservice.service.impl.CartServiceImpl",
+        "com.gradlemedium100.orderservice.controller.OrderController",
+        "com.gradlemedium100.orderservice.controller.CartController",
+        "com.gradlemedium100.orderservice.OrderServiceApplication"
+    ]
+}

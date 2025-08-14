@@ -1,0 +1,788 @@
+[
+    {
+        "name": "Role",
+        "package": "com.gradlemedium100.security.model",
+        "type": "model",
+        "description": "Enumeration of user roles within the system for authorization purposes.",
+        "dependencies": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "values",
+                "returnType": "Role[]",
+                "parameters": [],
+                "description": "Returns an array containing the constants of this enum type, in the order they are declared."
+            },
+            {
+                "name": "valueOf",
+                "returnType": "Role",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "type": "String"
+                    }
+                ],
+                "description": "Returns the enum constant of this type with the specified name."
+            },
+            {
+                "name": "getAuthority",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the authority representation of this role, prefixed with ROLE_"
+            }
+        ]
+    },
+    {
+        "name": "SecurityUser",
+        "package": "com.gradlemedium100.security.model",
+        "type": "model",
+        "description": "User entity model for security context with Spring Security integration.",
+        "dependencies": [],
+        "implements": ["org.springframework.security.core.userdetails.UserDetails"],
+        "fields": [
+            {
+                "name": "id",
+                "type": "Long",
+                "description": "Unique identifier for the user"
+            },
+            {
+                "name": "username",
+                "type": "String",
+                "description": "Username for authentication"
+            },
+            {
+                "name": "password",
+                "type": "String",
+                "description": "Encrypted password for authentication"
+            },
+            {
+                "name": "email",
+                "type": "String",
+                "description": "User email address"
+            },
+            {
+                "name": "firstName",
+                "type": "String",
+                "description": "User's first name"
+            },
+            {
+                "name": "lastName",
+                "type": "String",
+                "description": "User's last name"
+            },
+            {
+                "name": "roles",
+                "type": "List<Role>",
+                "description": "List of roles assigned to this user"
+            },
+            {
+                "name": "enabled",
+                "type": "boolean",
+                "description": "Flag indicating if the user account is active"
+            },
+            {
+                "name": "accountNonExpired",
+                "type": "boolean",
+                "description": "Flag indicating if the user account is not expired"
+            },
+            {
+                "name": "accountNonLocked",
+                "type": "boolean",
+                "description": "Flag indicating if the user account is not locked"
+            },
+            {
+                "name": "credentialsNonExpired",
+                "type": "boolean",
+                "description": "Flag indicating if the user credentials are not expired"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getAuthorities",
+                "returnType": "Collection<? extends GrantedAuthority>",
+                "parameters": [],
+                "description": "Returns the authorities granted to the user as a collection of GrantedAuthority objects"
+            },
+            {
+                "name": "getUsername",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the username used to authenticate the user"
+            },
+            {
+                "name": "getPassword",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the password used to authenticate the user"
+            },
+            {
+                "name": "isAccountNonExpired",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Indicates whether the user's account has expired"
+            },
+            {
+                "name": "isAccountNonLocked",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Indicates whether the user is locked or unlocked"
+            },
+            {
+                "name": "isCredentialsNonExpired",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Indicates whether the user's credentials have expired"
+            },
+            {
+                "name": "isEnabled",
+                "returnType": "boolean",
+                "parameters": [],
+                "description": "Indicates whether the user is enabled or disabled"
+            }
+        ]
+    },
+    {
+        "name": "AuthenticationRequest",
+        "package": "com.gradlemedium100.security.dto",
+        "type": "dto",
+        "description": "Data Transfer Object that holds login credentials from client requests.",
+        "dependencies": [],
+        "fields": [
+            {
+                "name": "username",
+                "type": "String",
+                "description": "Username for authentication"
+            },
+            {
+                "name": "password",
+                "type": "String",
+                "description": "Password for authentication"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getUsername",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the username"
+            },
+            {
+                "name": "setUsername",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the username"
+            },
+            {
+                "name": "getPassword",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the password"
+            },
+            {
+                "name": "setPassword",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the password"
+            }
+        ]
+    },
+    {
+        "name": "AuthenticationResponse",
+        "package": "com.gradlemedium100.security.dto",
+        "type": "dto",
+        "description": "Data Transfer Object that returns authentication results, including JWT token and user details.",
+        "dependencies": [],
+        "fields": [
+            {
+                "name": "token",
+                "type": "String",
+                "description": "JWT authentication token"
+            },
+            {
+                "name": "username",
+                "type": "String",
+                "description": "Username of the authenticated user"
+            },
+            {
+                "name": "roles",
+                "type": "List<String>",
+                "description": "List of roles assigned to the authenticated user"
+            },
+            {
+                "name": "expiresAt",
+                "type": "long",
+                "description": "Timestamp when the token expires"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getToken",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the JWT token"
+            },
+            {
+                "name": "setToken",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the JWT token"
+            },
+            {
+                "name": "getUsername",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the username"
+            },
+            {
+                "name": "setUsername",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the username"
+            },
+            {
+                "name": "getRoles",
+                "returnType": "List<String>",
+                "parameters": [],
+                "description": "Returns the roles"
+            },
+            {
+                "name": "setRoles",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "roles",
+                        "type": "List<String>"
+                    }
+                ],
+                "description": "Sets the roles"
+            },
+            {
+                "name": "getExpiresAt",
+                "returnType": "long",
+                "parameters": [],
+                "description": "Returns the token expiration timestamp"
+            },
+            {
+                "name": "setExpiresAt",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "expiresAt",
+                        "type": "long"
+                    }
+                ],
+                "description": "Sets the token expiration timestamp"
+            }
+        ]
+    },
+    {
+        "name": "RegisterRequest",
+        "package": "com.gradlemedium100.security.dto",
+        "type": "dto",
+        "description": "Data Transfer Object that holds user registration details from client requests.",
+        "dependencies": [],
+        "fields": [
+            {
+                "name": "username",
+                "type": "String",
+                "description": "Username for the new user"
+            },
+            {
+                "name": "password",
+                "type": "String",
+                "description": "Password for the new user"
+            },
+            {
+                "name": "email",
+                "type": "String",
+                "description": "Email for the new user"
+            },
+            {
+                "name": "firstName",
+                "type": "String",
+                "description": "First name of the new user"
+            },
+            {
+                "name": "lastName",
+                "type": "String",
+                "description": "Last name of the new user"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getUsername",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the username"
+            },
+            {
+                "name": "setUsername",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the username"
+            },
+            {
+                "name": "getPassword",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the password"
+            },
+            {
+                "name": "setPassword",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the password"
+            },
+            {
+                "name": "getEmail",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the email"
+            },
+            {
+                "name": "setEmail",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the email"
+            },
+            {
+                "name": "getFirstName",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the first name"
+            },
+            {
+                "name": "setFirstName",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "firstName",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the first name"
+            },
+            {
+                "name": "getLastName",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Returns the last name"
+            },
+            {
+                "name": "setLastName",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "lastName",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the last name"
+            }
+        ]
+    },
+    {
+        "name": "JwtService",
+        "package": "com.gradlemedium100.security.service",
+        "type": "interface",
+        "description": "Service interface for JWT token operations including generation, validation, and claims extraction.",
+        "dependencies": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "extractUsername",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Extracts username from a JWT token"
+            },
+            {
+                "name": "generateToken",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Generates a new JWT token for the given user"
+            },
+            {
+                "name": "generateToken",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "extraClaims",
+                        "type": "Map<String, Object>"
+                    },
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Generates a new JWT token with extra claims"
+            },
+            {
+                "name": "isTokenValid",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    },
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Validates if the token belongs to the given user and is not expired"
+            },
+            {
+                "name": "extractExpiration",
+                "returnType": "Date",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Extracts token expiration date"
+            },
+            {
+                "name": "extractAllClaims",
+                "returnType": "Claims",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Extracts all claims from the token"
+            }
+        ]
+    },
+    {
+        "name": "AuthenticationService",
+        "package": "com.gradlemedium100.security.service",
+        "type": "interface",
+        "description": "Service interface for user authentication, registration, and token management operations.",
+        "dependencies": [
+            "com.gradlemedium100.security.dto.AuthenticationRequest",
+            "com.gradlemedium100.security.dto.AuthenticationResponse",
+            "com.gradlemedium100.security.dto.RegisterRequest"
+        ],
+        "fields": [],
+        "methods": [
+            {
+                "name": "authenticate",
+                "returnType": "AuthenticationResponse",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "AuthenticationRequest"
+                    }
+                ],
+                "description": "Authenticates a user with the provided credentials and returns a token"
+            },
+            {
+                "name": "register",
+                "returnType": "AuthenticationResponse",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "type": "RegisterRequest"
+                    }
+                ],
+                "description": "Registers a new user with the provided details and returns a token"
+            },
+            {
+                "name": "refreshToken",
+                "returnType": "AuthenticationResponse",
+                "parameters": [
+                    {
+                        "name": "refreshToken",
+                        "type": "String"
+                    }
+                ],
+                "description": "Refreshes an expired JWT token and issues a new one"
+            },
+            {
+                "name": "validateToken",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Validates the provided token"
+            }
+        ]
+    },
+    {
+        "name": "UserDetailsService",
+        "package": "com.gradlemedium100.security.service",
+        "type": "interface",
+        "description": "Interface that extends Spring Security's UserDetailsService for loading user-specific data for authentication.",
+        "dependencies": [],
+        "extends": "org.springframework.security.core.userdetails.UserDetailsService",
+        "fields": [],
+        "methods": [
+            {
+                "name": "loadUserByUsername",
+                "returnType": "UserDetails",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Loads a user by username for authentication purposes"
+            },
+            {
+                "name": "createUser",
+                "returnType": "UserDetails",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "type": "SecurityUser"
+                    }
+                ],
+                "description": "Creates a new user in the system"
+            },
+            {
+                "name": "userExists",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a user with the given username exists"
+            }
+        ]
+    },
+    {
+        "name": "JwtServiceImpl",
+        "package": "com.gradlemedium100.security.service.impl",
+        "type": "service",
+        "description": "Implementation of JwtService that handles JWT token generation, validation, and extraction of claims.",
+        "dependencies": [],
+        "implements": ["com.gradlemedium100.security.service.JwtService"],
+        "fields": [
+            {
+                "name": "SECRET_KEY",
+                "type": "String",
+                "description": "Secret key used for signing JWT tokens"
+            },
+            {
+                "name": "jwtExpiration",
+                "type": "long",
+                "description": "JWT token expiration time in milliseconds"
+            }
+        ],
+        "methods": [
+            {
+                "name": "extractUsername",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Extracts the subject (username) from a JWT token"
+            },
+            {
+                "name": "generateToken",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Generates a new JWT token for the given user"
+            },
+            {
+                "name": "generateToken",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "extraClaims",
+                        "type": "Map<String, Object>"
+                    },
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Generates a new JWT token with extra claims"
+            },
+            {
+                "name": "isTokenValid",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    },
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    }
+                ],
+                "description": "Validates if the token belongs to the given user and is not expired"
+            },
+            {
+                "name": "extractExpiration",
+                "returnType": "Date",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Extracts the expiration date from a JWT token"
+            },
+            {
+                "name": "extractAllClaims",
+                "returnType": "Claims",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Extracts all claims from a JWT token"
+            },
+            {
+                "name": "isTokenExpired",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a token has expired"
+            },
+            {
+                "name": "buildToken",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "extraClaims",
+                        "type": "Map<String, Object>"
+                    },
+                    {
+                        "name": "userDetails",
+                        "type": "UserDetails"
+                    },
+                    {
+                        "name": "expiration",
+                        "type": "long"
+                    }
+                ],
+                "description": "Builds a JWT token with the given claims, user, and expiration"
+            }
+        ]
+    },
+    {
+        "name": "UserDetailsServiceImpl",
+        "package": "com.gradlemedium100.security.service.impl",
+        "type": "service",
+        "description": "Implementation of UserDetailsService that loads user-specific data for authentication.",
+        "dependencies": [
+            "com.gradlemedium100.security.model.SecurityUser"
+        ],
+        "implements": ["com.gradlemedium100.security.service.UserDetailsService"],
+        "fields": [
+            {
+                "name": "userRepository",
+                "type": "UserRepository",
+                "description": "Repository for accessing user data"
+            },
+            {
+                "name": "passwordEncoder",
+                "type": "PasswordEncoder",
+                "description": "Encoder for password hashing"
+            }
+        ],
+        "methods": [
+            {
+                "name": "loadUserByUsername",
+                "returnType": "UserDetails",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Loads a user by username for authentication purposes"
+            },
+            {
+                "name": "createUser",
+                "returnType": "UserDetails",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "type": "SecurityUser"
+                    }
+                ],
+                "description": "Creates a new user in the system with encrypted password"
+            },
+            {
+                "name": "userExists",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "type": "String"
+                    }
+                ],
+                "description": "Checks if a user with the given username exists"
+            }
+        ]
+    }
+]

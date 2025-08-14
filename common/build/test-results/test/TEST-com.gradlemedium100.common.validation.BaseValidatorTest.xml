@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.gradlemedium100.common.validation.BaseValidatorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-08-14T20:35:23.963Z" hostname="6c7e67b8c02a" time="0.222">
+  <properties/>
+  <testcase name="testIsValid_InvalidEmail()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.201"/>
+  <testcase name="testValidate_WithNullObject()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.006"/>
+  <testcase name="testRemoveValidationType()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.001"/>
+  <testcase name="testValidateWithErrors_NoErrors()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.005"/>
+  <testcase name="testRegisterValidationType()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.001"/>
+  <testcase name="testIsValid_ValidEmail()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.001"/>
+  <testcase name="testIsValid_UnknownType()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.001"/>
+  <testcase name="testGetValidationTypeNames()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.001"/>
+  <testcase name="testValidate_WithValidObject()" classname="com.gradlemedium100.common.validation.BaseValidatorTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

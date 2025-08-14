@@ -1,0 +1,756 @@
+[
+  {
+    "name": "ProductDTO",
+    "package": "com.gradlemedium100.productservice.dto",
+    "type": "dto",
+    "description": "Data Transfer Object for Product entity",
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Unique identifier for the product"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "description": "Name of the product"
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "description": "Detailed description of the product"
+      },
+      {
+        "name": "price",
+        "type": "BigDecimal",
+        "description": "Price of the product"
+      },
+      {
+        "name": "categoryId",
+        "type": "Long",
+        "description": "ID of the category to which the product belongs"
+      },
+      {
+        "name": "categoryName",
+        "type": "String",
+        "description": "Name of the category to which the product belongs"
+      },
+      {
+        "name": "sku",
+        "type": "String",
+        "description": "Stock keeping unit - unique code for the product"
+      },
+      {
+        "name": "imageUrl",
+        "type": "String",
+        "description": "URL pointing to the product image"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the product ID"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the product ID"
+      },
+      {
+        "name": "getName",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the product name"
+      },
+      {
+        "name": "setName",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the product name"
+      },
+      {
+        "name": "getDescription",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the product description"
+      },
+      {
+        "name": "setDescription",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the product description"
+      }
+    ]
+  },
+  {
+    "name": "CategoryDTO",
+    "package": "com.gradlemedium100.productservice.dto",
+    "type": "dto",
+    "description": "Data Transfer Object for Category entity",
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Unique identifier for the category"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "description": "Name of the category"
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "description": "Detailed description of the category"
+      },
+      {
+        "name": "parentCategoryId",
+        "type": "Long",
+        "description": "ID of the parent category (for hierarchical categories)"
+      },
+      {
+        "name": "parentCategoryName",
+        "type": "String",
+        "description": "Name of the parent category"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the category ID"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the category ID"
+      },
+      {
+        "name": "getName",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the category name"
+      },
+      {
+        "name": "setName",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the category name"
+      },
+      {
+        "name": "getDescription",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the category description"
+      },
+      {
+        "name": "setDescription",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the category description"
+      }
+    ]
+  },
+  {
+    "name": "InventoryDTO",
+    "package": "com.gradlemedium100.productservice.dto",
+    "type": "dto",
+    "description": "Data Transfer Object for Inventory entity",
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Unique identifier for the inventory record"
+      },
+      {
+        "name": "productId",
+        "type": "Long",
+        "description": "ID of the product associated with this inventory"
+      },
+      {
+        "name": "productName",
+        "type": "String",
+        "description": "Name of the product"
+      },
+      {
+        "name": "quantity",
+        "type": "Integer",
+        "description": "Current quantity in stock"
+      },
+      {
+        "name": "lastRestocked",
+        "type": "LocalDateTime",
+        "description": "Timestamp of the last restock"
+      },
+      {
+        "name": "lowStockThreshold",
+        "type": "Integer",
+        "description": "Threshold below which stock is considered low"
+      },
+      {
+        "name": "location",
+        "type": "String",
+        "description": "Storage location of the product"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the inventory record ID"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the inventory record ID"
+      },
+      {
+        "name": "getProductId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the associated product ID"
+      },
+      {
+        "name": "setProductId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the associated product ID"
+      },
+      {
+        "name": "getQuantity",
+        "returnType": "Integer",
+        "parameters": [],
+        "description": "Gets the current quantity in stock"
+      },
+      {
+        "name": "setQuantity",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "quantity",
+            "type": "Integer"
+          }
+        ],
+        "description": "Sets the current quantity in stock"
+      }
+    ]
+  },
+  {
+    "name": "ProductSearchCriteria",
+    "package": "com.gradlemedium100.productservice.dto",
+    "type": "dto",
+    "description": "DTO containing search criteria for product queries",
+    "fields": [
+      {
+        "name": "keyword",
+        "type": "String",
+        "description": "Keyword to search in product name and description"
+      },
+      {
+        "name": "categoryId",
+        "type": "Long",
+        "description": "ID of the category to filter products by"
+      },
+      {
+        "name": "minPrice",
+        "type": "BigDecimal",
+        "description": "Minimum price for price range filtering"
+      },
+      {
+        "name": "maxPrice",
+        "type": "BigDecimal",
+        "description": "Maximum price for price range filtering"
+      },
+      {
+        "name": "sortBy",
+        "type": "String",
+        "description": "Field by which to sort the results"
+      },
+      {
+        "name": "sortDirection",
+        "type": "String",
+        "description": "Sort direction (ASC or DESC)"
+      },
+      {
+        "name": "page",
+        "type": "Integer",
+        "description": "Page number for pagination"
+      },
+      {
+        "name": "pageSize",
+        "type": "Integer",
+        "description": "Page size for pagination"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getKeyword",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the search keyword"
+      },
+      {
+        "name": "setKeyword",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "keyword",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the search keyword"
+      },
+      {
+        "name": "getCategoryId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the category ID filter"
+      },
+      {
+        "name": "setCategoryId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the category ID filter"
+      },
+      {
+        "name": "getMinPrice",
+        "returnType": "BigDecimal",
+        "parameters": [],
+        "description": "Gets the minimum price filter"
+      },
+      {
+        "name": "setMinPrice",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "minPrice",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Sets the minimum price filter"
+      }
+    ]
+  },
+  {
+    "name": "ProductService",
+    "package": "com.gradlemedium100.productservice.service",
+    "type": "interface",
+    "description": "Service interface for product management operations",
+    "dependencies": ["com.gradlemedium100.productservice.dto.ProductDTO", "com.gradlemedium100.productservice.dto.ProductSearchCriteria"],
+    "methods": [
+      {
+        "name": "findAllProducts",
+        "returnType": "List<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [],
+        "description": "Retrieves all products"
+      },
+      {
+        "name": "findProductById",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves a product by its ID"
+      },
+      {
+        "name": "createProduct",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Creates a new product"
+      },
+      {
+        "name": "updateProduct",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          },
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Updates an existing product"
+      },
+      {
+        "name": "deleteProduct",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Deletes a product"
+      },
+      {
+        "name": "searchProducts",
+        "returnType": "List<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "criteria",
+            "type": "com.gradlemedium100.productservice.dto.ProductSearchCriteria"
+          }
+        ],
+        "description": "Searches for products based on criteria"
+      }
+    ]
+  },
+  {
+    "name": "CategoryService",
+    "package": "com.gradlemedium100.productservice.service",
+    "type": "interface",
+    "description": "Service interface for category management operations",
+    "dependencies": ["com.gradlemedium100.productservice.dto.CategoryDTO", "com.gradlemedium100.productservice.dto.ProductDTO"],
+    "methods": [
+      {
+        "name": "findAllCategories",
+        "returnType": "List<com.gradlemedium100.productservice.dto.CategoryDTO>",
+        "parameters": [],
+        "description": "Retrieves all product categories"
+      },
+      {
+        "name": "findCategoryById",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves a category by its ID"
+      },
+      {
+        "name": "createCategory",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Creates a new product category"
+      },
+      {
+        "name": "updateCategory",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          },
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Updates an existing category"
+      },
+      {
+        "name": "deleteCategory",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Deletes a category"
+      }
+    ]
+  },
+  {
+    "name": "InventoryService",
+    "package": "com.gradlemedium100.productservice.service",
+    "type": "interface",
+    "description": "Service interface for inventory management operations",
+    "dependencies": ["com.gradlemedium100.productservice.dto.InventoryDTO", "com.gradlemedium100.productservice.dto.ProductDTO"],
+    "methods": [
+      {
+        "name": "getInventoryForProduct",
+        "returnType": "com.gradlemedium100.productservice.dto.InventoryDTO",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves inventory information for a specific product"
+      },
+      {
+        "name": "updateInventory",
+        "returnType": "com.gradlemedium100.productservice.dto.InventoryDTO",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          },
+          {
+            "name": "inventoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.InventoryDTO"
+          }
+        ],
+        "description": "Updates inventory information for a product"
+      },
+      {
+        "name": "isProductAvailable",
+        "returnType": "boolean",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          },
+          {
+            "name": "quantity",
+            "type": "int"
+          }
+        ],
+        "description": "Checks if a product is available in the requested quantity"
+      },
+      {
+        "name": "getLowStockProducts",
+        "returnType": "List<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "threshold",
+            "type": "int"
+          }
+        ],
+        "description": "Retrieves products with stock levels below the specified threshold"
+      }
+    ]
+  },
+  {
+    "name": "ProductRepository",
+    "package": "com.gradlemedium100.productservice.repository",
+    "type": "interface",
+    "description": "Repository interface for Product entity",
+    "dependencies": ["com.gradlemedium100.productservice.model.Product", "com.gradlemedium100.productservice.model.Category"],
+    "extends": "org.springframework.data.jpa.repository.JpaRepository<com.gradlemedium100.productservice.model.Product, Long>",
+    "methods": [
+      {
+        "name": "findByName",
+        "returnType": "List<com.gradlemedium100.productservice.model.Product>",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Finds products by name"
+      },
+      {
+        "name": "findByNameContaining",
+        "returnType": "List<com.gradlemedium100.productservice.model.Product>",
+        "parameters": [
+          {
+            "name": "keyword",
+            "type": "String"
+          }
+        ],
+        "description": "Finds products containing the keyword in their names"
+      },
+      {
+        "name": "findByCategory",
+        "returnType": "List<com.gradlemedium100.productservice.model.Product>",
+        "parameters": [
+          {
+            "name": "category",
+            "type": "com.gradlemedium100.productservice.model.Category"
+          }
+        ],
+        "description": "Finds products by category"
+      },
+      {
+        "name": "findByPriceBetween",
+        "returnType": "List<com.gradlemedium100.productservice.model.Product>",
+        "parameters": [
+          {
+            "name": "minPrice",
+            "type": "BigDecimal"
+          },
+          {
+            "name": "maxPrice",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Finds products within a price range"
+      },
+      {
+        "name": "findBySku",
+        "returnType": "com.gradlemedium100.productservice.model.Product",
+        "parameters": [
+          {
+            "name": "sku",
+            "type": "String"
+          }
+        ],
+        "description": "Finds a product by its SKU"
+      }
+    ]
+  },
+  {
+    "name": "CategoryRepository",
+    "package": "com.gradlemedium100.productservice.repository",
+    "type": "interface",
+    "description": "Repository interface for Category entity",
+    "dependencies": ["com.gradlemedium100.productservice.model.Category"],
+    "extends": "org.springframework.data.jpa.repository.JpaRepository<com.gradlemedium100.productservice.model.Category, Long>",
+    "methods": [
+      {
+        "name": "findByName",
+        "returnType": "com.gradlemedium100.productservice.model.Category",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Finds a category by name"
+      },
+      {
+        "name": "findByNameContaining",
+        "returnType": "List<com.gradlemedium100.productservice.model.Category>",
+        "parameters": [
+          {
+            "name": "keyword",
+            "type": "String"
+          }
+        ],
+        "description": "Finds categories containing the keyword in their names"
+      },
+      {
+        "name": "findByParentCategory",
+        "returnType": "List<com.gradlemedium100.productservice.model.Category>",
+        "parameters": [
+          {
+            "name": "parentCategory",
+            "type": "com.gradlemedium100.productservice.model.Category"
+          }
+        ],
+        "description": "Finds subcategories of a given parent category"
+      },
+      {
+        "name": "findByParentCategoryIsNull",
+        "returnType": "List<com.gradlemedium100.productservice.model.Category>",
+        "parameters": [],
+        "description": "Finds top-level categories (with no parent)"
+      }
+    ]
+  },
+  {
+    "name": "InventoryRepository",
+    "package": "com.gradlemedium100.productservice.repository",
+    "type": "interface",
+    "description": "Repository interface for Inventory entity",
+    "dependencies": ["com.gradlemedium100.productservice.model.Inventory", "com.gradlemedium100.productservice.model.Product"],
+    "extends": "org.springframework.data.jpa.repository.JpaRepository<com.gradlemedium100.productservice.model.Inventory, Long>",
+    "methods": [
+      {
+        "name": "findByProduct",
+        "returnType": "com.gradlemedium100.productservice.model.Inventory",
+        "parameters": [
+          {
+            "name": "product",
+            "type": "com.gradlemedium100.productservice.model.Product"
+          }
+        ],
+        "description": "Finds inventory information for a specific product"
+      },
+      {
+        "name": "findByQuantityLessThanEqual",
+        "returnType": "List<com.gradlemedium100.productservice.model.Inventory>",
+        "parameters": [
+          {
+            "name": "threshold",
+            "type": "Integer"
+          }
+        ],
+        "description": "Finds inventory records with quantities below or equal to the specified threshold"
+      },
+      {
+        "name": "findByQuantityGreaterThan",
+        "returnType": "List<com.gradlemedium100.productservice.model.Inventory>",
+        "parameters": [
+          {
+            "name": "quantity",
+            "type": "Integer"
+          }
+        ],
+        "description": "Finds inventory records with quantities greater than the specified amount"
+      },
+      {
+        "name": "findByLocation",
+        "returnType": "List<com.gradlemedium100.productservice.model.Inventory>",
+        "parameters": [
+          {
+            "name": "location",
+            "type": "String"
+          }
+        ],
+        "description": "Finds inventory records for a specific storage location"
+      }
+    ]
+  }
+]

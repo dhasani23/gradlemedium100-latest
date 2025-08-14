@@ -1,0 +1,864 @@
+[
+    {
+        "name": "OrderValidatorImpl",
+        "package": "com.gradlemedium100.orderservice.validation.impl",
+        "type": "service",
+        "description": "Implementation of the OrderValidator interface for validating order data",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.orderservice.model.OrderItem",
+            "com.gradlemedium100.orderservice.model.OrderStatus",
+            "com.gradlemedium100.orderservice.validation.OrderValidator",
+            "com.gradlemedium100.common.exception.ValidationException",
+            "com.gradlemedium100.productservice.service.ProductService"
+        ],
+        "implements": ["com.gradlemedium100.orderservice.validation.OrderValidator"],
+        "fields": [
+            {
+                "name": "productService",
+                "type": "ProductService",
+                "description": "Service for product-related operations and validations"
+            },
+            {
+                "name": "minimumOrderAmount",
+                "type": "BigDecimal",
+                "description": "Minimum allowed total amount for an order"
+            },
+            {
+                "name": "maximumOrderItems",
+                "type": "Integer",
+                "description": "Maximum number of items allowed in an order"
+            }
+        ],
+        "methods": [
+            {
+                "name": "validateOrder",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Validates an order's data integrity and business rules"
+            },
+            {
+                "name": "validateOrderStatus",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "currentStatus",
+                        "type": "OrderStatus"
+                    },
+                    {
+                        "name": "newStatus",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Validates if a status transition is allowed"
+            },
+            {
+                "name": "validateOrderItems",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Validates the items in an order for availability and pricing"
+            },
+            {
+                "name": "checkProductAvailability",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Checks if a product is available in the requested quantity"
+            },
+            {
+                "name": "validateShippingAddress",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "type": "String"
+                    }
+                ],
+                "description": "Validates that the shipping address is properly formatted and valid"
+            },
+            {
+                "name": "validateOrderAmount",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "totalAmount",
+                        "type": "BigDecimal"
+                    }
+                ],
+                "description": "Validates that the order total amount meets minimum requirements"
+            }
+        ]
+    },
+    {
+        "name": "OrderService",
+        "package": "com.gradlemedium100.orderservice.service",
+        "type": "service",
+        "description": "Interface defining the core order management operations",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.orderservice.model.OrderStatus",
+            "com.gradlemedium100.common.exception.ServiceException"
+        ],
+        "implements": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "createOrder",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "cartId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Creates a new order from a user's shopping cart"
+            },
+            {
+                "name": "getOrderById",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Retrieves an order by its ID"
+            },
+            {
+                "name": "getUserOrders",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Retrieves all orders for a specific user"
+            },
+            {
+                "name": "updateOrderStatus",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Updates the status of an order"
+            },
+            {
+                "name": "cancelOrder",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Cancels an order if it's in a cancellable state"
+            },
+            {
+                "name": "processPayment",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "paymentDetails",
+                        "type": "Map<String, String>"
+                    }
+                ],
+                "description": "Processes payment for an order"
+            }
+        ]
+    },
+    {
+        "name": "CartService",
+        "package": "com.gradlemedium100.orderservice.service",
+        "type": "service",
+        "description": "Interface defining the shopping cart management operations",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.model.Cart",
+            "com.gradlemedium100.common.exception.ServiceException"
+        ],
+        "implements": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "getOrCreateCart",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Gets the active cart for a user or creates a new one if none exists"
+            },
+            {
+                "name": "addItemToCart",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Adds an item to the user's cart"
+            },
+            {
+                "name": "updateCartItemQuantity",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Updates the quantity of an item in the user's cart"
+            },
+            {
+                "name": "removeCartItem",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Removes an item from the user's cart"
+            },
+            {
+                "name": "clearCart",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Removes all items from the user's cart"
+            },
+            {
+                "name": "getCartByUserId",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Gets the active cart for a user"
+            }
+        ]
+    },
+    {
+        "name": "OrderServiceImpl",
+        "package": "com.gradlemedium100.orderservice.service.impl",
+        "type": "service",
+        "description": "Implementation of the OrderService interface for managing orders",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.repository.OrderRepository",
+            "com.gradlemedium100.orderservice.service.CartService",
+            "com.gradlemedium100.orderservice.validation.OrderValidator",
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.orderservice.model.OrderStatus",
+            "com.gradlemedium100.orderservice.service.OrderService",
+            "com.gradlemedium100.common.exception.ServiceException",
+            "com.gradlemedium100.paymentservice.service.PaymentService",
+            "com.gradlemedium100.notificationservice.service.NotificationService"
+        ],
+        "implements": ["com.gradlemedium100.orderservice.service.OrderService"],
+        "fields": [
+            {
+                "name": "orderRepository",
+                "type": "OrderRepository",
+                "description": "Repository for order data access operations"
+            },
+            {
+                "name": "cartService",
+                "type": "CartService",
+                "description": "Service for cart operations"
+            },
+            {
+                "name": "orderValidator",
+                "type": "OrderValidator",
+                "description": "Validator for order business rules"
+            },
+            {
+                "name": "paymentService",
+                "type": "PaymentService",
+                "description": "Service for payment processing operations"
+            },
+            {
+                "name": "notificationService",
+                "type": "NotificationService",
+                "description": "Service for sending notifications"
+            }
+        ],
+        "methods": [
+            {
+                "name": "createOrder",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "cartId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Creates a new order from a user's shopping cart"
+            },
+            {
+                "name": "getOrderById",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Retrieves an order by its ID"
+            },
+            {
+                "name": "getUserOrders",
+                "returnType": "List<Order>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Retrieves all orders for a specific user"
+            },
+            {
+                "name": "updateOrderStatus",
+                "returnType": "Order",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Updates the status of an order"
+            },
+            {
+                "name": "cancelOrder",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Cancels an order if it's in a cancellable state"
+            },
+            {
+                "name": "processPayment",
+                "returnType": "boolean",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "paymentDetails",
+                        "type": "Map<String, String>"
+                    }
+                ],
+                "description": "Processes payment for an order"
+            },
+            {
+                "name": "sendOrderConfirmation",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Sends an order confirmation notification to the user"
+            },
+            {
+                "name": "sendOrderStatusUpdate",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    },
+                    {
+                        "name": "oldStatus",
+                        "type": "OrderStatus"
+                    }
+                ],
+                "description": "Sends a notification about an order status change"
+            }
+        ]
+    },
+    {
+        "name": "CartServiceImpl",
+        "package": "com.gradlemedium100.orderservice.service.impl",
+        "type": "service",
+        "description": "Implementation of the CartService interface for managing shopping carts",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.repository.CartRepository",
+            "com.gradlemedium100.orderservice.model.Cart",
+            "com.gradlemedium100.orderservice.model.CartItem",
+            "com.gradlemedium100.orderservice.service.CartService",
+            "com.gradlemedium100.common.exception.ServiceException",
+            "com.gradlemedium100.productservice.service.ProductService"
+        ],
+        "implements": ["com.gradlemedium100.orderservice.service.CartService"],
+        "fields": [
+            {
+                "name": "cartRepository",
+                "type": "CartRepository",
+                "description": "Repository for cart data access operations"
+            },
+            {
+                "name": "productService",
+                "type": "ProductService",
+                "description": "Service for product operations and validation"
+            },
+            {
+                "name": "cartTimeoutHours",
+                "type": "Integer",
+                "description": "Number of hours after which an inactive cart is considered abandoned"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getOrCreateCart",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Gets the active cart for a user or creates a new one if none exists"
+            },
+            {
+                "name": "addItemToCart",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Adds an item to the user's cart"
+            },
+            {
+                "name": "updateCartItemQuantity",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "Updates the quantity of an item in the user's cart"
+            },
+            {
+                "name": "removeCartItem",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Removes an item from the user's cart"
+            },
+            {
+                "name": "clearCart",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Removes all items from the user's cart"
+            },
+            {
+                "name": "getCartByUserId",
+                "returnType": "Cart",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Gets the active cart for a user"
+            },
+            {
+                "name": "getProductDetails",
+                "returnType": "Map<String, Object>",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "Gets product details for a cart item from the product service"
+            },
+            {
+                "name": "cleanUpAbandonedCarts",
+                "returnType": "int",
+                "parameters": [],
+                "description": "Scheduled task that cleans up abandoned carts"
+            }
+        ]
+    },
+    {
+        "name": "OrderController",
+        "package": "com.gradlemedium100.orderservice.controller",
+        "type": "controller",
+        "description": "REST controller for order management operations",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.service.OrderService",
+            "com.gradlemedium100.orderservice.model.Order",
+            "com.gradlemedium100.orderservice.model.OrderStatus",
+            "com.gradlemedium100.common.dto.OrderDTO",
+            "com.gradlemedium100.common.exception.ControllerException",
+            "org.springframework.http.ResponseEntity",
+            "org.springframework.web.bind.annotation.*"
+        ],
+        "implements": [],
+        "fields": [
+            {
+                "name": "orderService",
+                "type": "OrderService",
+                "description": "Service for order operations"
+            }
+        ],
+        "methods": [
+            {
+                "name": "createOrder",
+                "returnType": "ResponseEntity<OrderDTO>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "cartId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to create a new order from a shopping cart"
+            },
+            {
+                "name": "getOrder",
+                "returnType": "ResponseEntity<OrderDTO>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to get an order by its ID"
+            },
+            {
+                "name": "getUserOrders",
+                "returnType": "ResponseEntity<List<OrderDTO>>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to get all orders for a user"
+            },
+            {
+                "name": "updateOrderStatus",
+                "returnType": "ResponseEntity<OrderDTO>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "status",
+                        "type": "String"
+                    }
+                ],
+                "description": "REST endpoint to update an order's status"
+            },
+            {
+                "name": "cancelOrder",
+                "returnType": "ResponseEntity<Boolean>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to cancel an order"
+            },
+            {
+                "name": "processPayment",
+                "returnType": "ResponseEntity<Boolean>",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "paymentDetails",
+                        "type": "Map<String, String>"
+                    }
+                ],
+                "description": "REST endpoint to process payment for an order"
+            },
+            {
+                "name": "convertToDTO",
+                "returnType": "OrderDTO",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "type": "Order"
+                    }
+                ],
+                "description": "Converts an Order entity to a DTO for API responses"
+            },
+            {
+                "name": "handleException",
+                "returnType": "ResponseEntity<String>",
+                "parameters": [
+                    {
+                        "name": "ex",
+                        "type": "Exception"
+                    }
+                ],
+                "description": "Global exception handler for the controller"
+            }
+        ]
+    },
+    {
+        "name": "CartController",
+        "package": "com.gradlemedium100.orderservice.controller",
+        "type": "controller",
+        "description": "REST controller for shopping cart operations",
+        "dependencies": [
+            "com.gradlemedium100.orderservice.service.CartService",
+            "com.gradlemedium100.orderservice.model.Cart",
+            "com.gradlemedium100.common.dto.CartDTO",
+            "com.gradlemedium100.common.exception.ControllerException",
+            "org.springframework.http.ResponseEntity",
+            "org.springframework.web.bind.annotation.*"
+        ],
+        "implements": [],
+        "fields": [
+            {
+                "name": "cartService",
+                "type": "CartService",
+                "description": "Service for cart operations"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getCart",
+                "returnType": "ResponseEntity<CartDTO>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to get a user's active cart"
+            },
+            {
+                "name": "addItemToCart",
+                "returnType": "ResponseEntity<CartDTO>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "REST endpoint to add an item to a user's cart"
+            },
+            {
+                "name": "updateCartItemQuantity",
+                "returnType": "ResponseEntity<CartDTO>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "Integer"
+                    }
+                ],
+                "description": "REST endpoint to update the quantity of an item in a user's cart"
+            },
+            {
+                "name": "removeCartItem",
+                "returnType": "ResponseEntity<CartDTO>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    },
+                    {
+                        "name": "productId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to remove an item from a user's cart"
+            },
+            {
+                "name": "clearCart",
+                "returnType": "ResponseEntity<Void>",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "type": "Long"
+                    }
+                ],
+                "description": "REST endpoint to clear a user's cart"
+            },
+            {
+                "name": "convertToDTO",
+                "returnType": "CartDTO",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "type": "Cart"
+                    }
+                ],
+                "description": "Converts a Cart entity to a DTO for API responses"
+            },
+            {
+                "name": "handleException",
+                "returnType": "ResponseEntity<String>",
+                "parameters": [
+                    {
+                        "name": "ex",
+                        "type": "Exception"
+                    }
+                ],
+                "description": "Global exception handler for the controller"
+            }
+        ]
+    },
+    {
+        "name": "OrderServiceApplication",
+        "package": "com.gradlemedium100.orderservice",
+        "type": "application",
+        "description": "Spring Boot application entry point for the Order Service module",
+        "dependencies": [
+            "org.springframework.boot.SpringApplication",
+            "org.springframework.boot.autoconfigure.SpringBootApplication",
+            "org.springframework.context.annotation.ComponentScan",
+            "org.springframework.scheduling.annotation.EnableScheduling"
+        ],
+        "implements": [],
+        "fields": [],
+        "methods": [
+            {
+                "name": "main",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "args",
+                        "type": "String[]"
+                    }
+                ],
+                "description": "Application entry point method"
+            }
+        ]
+    }
+]

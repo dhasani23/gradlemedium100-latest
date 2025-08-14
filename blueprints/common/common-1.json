@@ -1,0 +1,416 @@
+[
+    {
+        "name": "GlobalExceptionHandler",
+        "package": "com.gradlemedium100.common.exception",
+        "type": "handler",
+        "description": "Centralized exception handler for converting exceptions to appropriate HTTP responses",
+        "dependencies": ["com.gradlemedium100.common.exception.ErrorHandler", "com.gradlemedium100.common.dto.ErrorResponse", "org.slf4j.Logger"],
+        "implements": ["com.gradlemedium100.common.exception.ErrorHandler"],
+        "extends": null,
+        "fields": [
+            {
+                "name": "logger",
+                "type": "Logger",
+                "description": "Logger instance for the class"
+            }
+        ],
+        "methods": [
+            {
+                "name": "handleException",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "Exception"
+                    }
+                ],
+                "description": "Handles a general exception and returns an appropriate error response"
+            },
+            {
+                "name": "handleResourceNotFoundException",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "ResourceNotFoundException"
+                    }
+                ],
+                "description": "Handles a resource not found exception and returns a 404 error response"
+            },
+            {
+                "name": "handleBadRequestException",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "BadRequestException"
+                    }
+                ],
+                "description": "Handles a bad request exception and returns a 400 error response"
+            },
+            {
+                "name": "logException",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "exception",
+                        "type": "Exception"
+                    },
+                    {
+                        "name": "errorCode",
+                        "type": "String"
+                    }
+                ],
+                "description": "Logs an exception with the specified error code"
+            },
+            {
+                "name": "buildErrorResponse",
+                "returnType": "ErrorResponse",
+                "parameters": [
+                    {
+                        "name": "errorCode",
+                        "type": "String"
+                    },
+                    {
+                        "name": "message",
+                        "type": "String"
+                    },
+                    {
+                        "name": "errors",
+                        "type": "List<String>"
+                    }
+                ],
+                "description": "Builds an error response with the specified code, message, and list of errors"
+            }
+        ]
+    },
+    {
+        "name": "ErrorResponse",
+        "package": "com.gradlemedium100.common.dto",
+        "type": "dto",
+        "description": "Data transfer object representing a standardized error response",
+        "dependencies": [],
+        "implements": [],
+        "extends": "java.io.Serializable",
+        "fields": [
+            {
+                "name": "timestamp",
+                "type": "long",
+                "description": "Timestamp when the error occurred"
+            },
+            {
+                "name": "status",
+                "type": "int",
+                "description": "HTTP status code"
+            },
+            {
+                "name": "errorCode",
+                "type": "String",
+                "description": "Application-specific error code"
+            },
+            {
+                "name": "message",
+                "type": "String",
+                "description": "Error message"
+            },
+            {
+                "name": "errors",
+                "type": "List<String>",
+                "description": "List of detailed error messages"
+            },
+            {
+                "name": "path",
+                "type": "String",
+                "description": "Request path that caused the error"
+            },
+            {
+                "name": "serialVersionUID",
+                "type": "long",
+                "description": "Serial version UID for serialization"
+            }
+        ],
+        "methods": [
+            {
+                "name": "ErrorResponse",
+                "returnType": null,
+                "parameters": [],
+                "description": "Default constructor"
+            },
+            {
+                "name": "ErrorResponse",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "int"
+                    },
+                    {
+                        "name": "errorCode",
+                        "type": "String"
+                    },
+                    {
+                        "name": "message",
+                        "type": "String"
+                    }
+                ],
+                "description": "Constructor with status, error code, and message"
+            },
+            {
+                "name": "ErrorResponse",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "status",
+                        "type": "int"
+                    },
+                    {
+                        "name": "errorCode",
+                        "type": "String"
+                    },
+                    {
+                        "name": "message",
+                        "type": "String"
+                    },
+                    {
+                        "name": "errors",
+                        "type": "List<String>"
+                    }
+                ],
+                "description": "Constructor with status, error code, message, and list of errors"
+            },
+            {
+                "name": "builder",
+                "returnType": "ErrorResponse.Builder",
+                "parameters": [],
+                "description": "Creates a new builder for ErrorResponse"
+            }
+        ]
+    },
+    {
+        "name": "BaseDTO",
+        "package": "com.gradlemedium100.common.dto",
+        "type": "dto",
+        "description": "Abstract base class for all DTOs with common fields and methods",
+        "dependencies": ["com.fasterxml.jackson.annotation.JsonInclude"],
+        "implements": [],
+        "extends": "java.io.Serializable",
+        "fields": [
+            {
+                "name": "id",
+                "type": "String",
+                "description": "Unique identifier for the DTO"
+            },
+            {
+                "name": "createdAt",
+                "type": "LocalDateTime",
+                "description": "Timestamp when the entity was created"
+            },
+            {
+                "name": "updatedAt",
+                "type": "LocalDateTime",
+                "description": "Timestamp when the entity was last updated"
+            },
+            {
+                "name": "serialVersionUID",
+                "type": "long",
+                "description": "Serial version UID for serialization"
+            }
+        ],
+        "methods": [
+            {
+                "name": "BaseDTO",
+                "returnType": null,
+                "parameters": [],
+                "description": "Default constructor"
+            },
+            {
+                "name": "BaseDTO",
+                "returnType": null,
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "String"
+                    }
+                ],
+                "description": "Constructor with ID"
+            },
+            {
+                "name": "getId",
+                "returnType": "String",
+                "parameters": [],
+                "description": "Gets the ID of the DTO"
+            },
+            {
+                "name": "setId",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "String"
+                    }
+                ],
+                "description": "Sets the ID of the DTO"
+            },
+            {
+                "name": "getCreatedAt",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Gets the creation timestamp"
+            },
+            {
+                "name": "setCreatedAt",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "createdAt",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Sets the creation timestamp"
+            },
+            {
+                "name": "getUpdatedAt",
+                "returnType": "LocalDateTime",
+                "parameters": [],
+                "description": "Gets the last update timestamp"
+            },
+            {
+                "name": "setUpdatedAt",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "updatedAt",
+                        "type": "LocalDateTime"
+                    }
+                ],
+                "description": "Sets the last update timestamp"
+            }
+        ]
+    },
+    {
+        "name": "Constants",
+        "package": "com.gradlemedium100.common",
+        "type": "constants",
+        "description": "Class containing application-wide constants and configuration values",
+        "dependencies": [],
+        "implements": [],
+        "extends": null,
+        "fields": [
+            {
+                "name": "API_VERSION",
+                "type": "String",
+                "description": "Current API version"
+            },
+            {
+                "name": "DEFAULT_PAGE_SIZE",
+                "type": "int",
+                "description": "Default page size for paginated results"
+            },
+            {
+                "name": "MAX_PAGE_SIZE",
+                "type": "int",
+                "description": "Maximum allowed page size for paginated results"
+            },
+            {
+                "name": "DEFAULT_SORT_DIRECTION",
+                "type": "String",
+                "description": "Default sort direction (ASC or DESC)"
+            },
+            {
+                "name": "DATE_FORMAT",
+                "type": "String",
+                "description": "Standard date format used throughout the application"
+            },
+            {
+                "name": "DATETIME_FORMAT",
+                "type": "String",
+                "description": "Standard datetime format used throughout the application"
+            },
+            {
+                "name": "API_KEY_HEADER",
+                "type": "String",
+                "description": "Header name for API key authentication"
+            },
+            {
+                "name": "AUTH_TOKEN_HEADER",
+                "type": "String",
+                "description": "Header name for authentication token"
+            },
+            {
+                "name": "ERROR_CODES",
+                "type": "Map<String, String>",
+                "description": "Map of error codes to error messages"
+            }
+        ],
+        "methods": [
+            {
+                "name": "getErrorMessage",
+                "returnType": "String",
+                "parameters": [
+                    {
+                        "name": "errorCode",
+                        "type": "String"
+                    }
+                ],
+                "description": "Gets the error message for the specified error code"
+            },
+            {
+                "name": "registerErrorCode",
+                "returnType": "void",
+                "parameters": [
+                    {
+                        "name": "errorCode",
+                        "type": "String"
+                    },
+                    {
+                        "name": "errorMessage",
+                        "type": "String"
+                    }
+                ],
+                "description": "Registers a new error code with its corresponding message"
+            }
+        ]
+    },
+    {
+        "name": "CommonConfiguration",
+        "package": "com.gradlemedium100.common.config",
+        "type": "configuration",
+        "description": "Spring configuration class that sets up common beans and services",
+        "dependencies": ["org.springframework.context.annotation.Configuration", "org.springframework.context.annotation.Bean"],
+        "implements": [],
+        "extends": null,
+        "fields": [],
+        "methods": [
+            {
+                "name": "objectMapper",
+                "returnType": "ObjectMapper",
+                "parameters": [],
+                "description": "Creates and configures a Jackson ObjectMapper bean"
+            },
+            {
+                "name": "validator",
+                "returnType": "Validator",
+                "parameters": [],
+                "description": "Creates a validator bean"
+            },
+            {
+                "name": "errorHandler",
+                "returnType": "ErrorHandler",
+                "parameters": [],
+                "description": "Creates an error handler bean"
+            },
+            {
+                "name": "commonExceptionHandler",
+                "returnType": "GlobalExceptionHandler",
+                "parameters": [],
+                "description": "Creates a global exception handler bean"
+            },
+            {
+                "name": "messageSource",
+                "returnType": "MessageSource",
+                "parameters": [],
+                "description": "Creates a message source for internationalization"
+            }
+        ]
+    }
+]

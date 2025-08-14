@@ -1,0 +1,173 @@
+{
+    "module": "SecurityModule",
+    "description": "Handles user authentication, authorization, and session management. Implements Spring Security with JWT token authentication, user roles, permissions, and security configurations.",
+    "file_count": 12,
+    "module_path": "security",
+    "interfaces": [
+        "com.gradlemedium100.security.service.AuthenticationService",
+        "com.gradlemedium100.security.service.JwtService",
+        "com.gradlemedium100.security.service.UserDetailsService"
+    ],
+    "dependencies": [
+        "org.springframework.boot:spring-boot-starter-security",
+        "org.springframework.boot:spring-boot-starter-web",
+        "io.jsonwebtoken:jjwt-api",
+        "io.jsonwebtoken:jjwt-impl",
+        "io.jsonwebtoken:jjwt-jackson",
+        "com.gradlemedium100.Common"
+    ],
+    "classes": [
+        {
+            "name": "SecurityConfig",
+            "package": "com.gradlemedium100.security.config",
+            "type": "configuration",
+            "description": "Main security configuration class that sets up Spring Security, defines security filter chain, authentication provider, password encoder, and security rules.",
+            "dependencies": [
+                "com.gradlemedium100.security.filter.JwtAuthenticationFilter",
+                "com.gradlemedium100.security.service.impl.UserDetailsServiceImpl"
+            ],
+            "implements": [],
+            "extends": "org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter"
+        },
+        {
+            "name": "JwtAuthenticationFilter",
+            "package": "com.gradlemedium100.security.filter",
+            "type": "filter",
+            "description": "Filter that intercepts each HTTP request, extracts JWT token, validates it, and sets authentication in the security context if valid.",
+            "dependencies": [
+                "com.gradlemedium100.security.service.impl.JwtServiceImpl",
+                "com.gradlemedium100.security.service.impl.UserDetailsServiceImpl"
+            ],
+            "implements": [],
+            "extends": "org.springframework.web.filter.OncePerRequestFilter"
+        },
+        {
+            "name": "AuthenticationController",
+            "package": "com.gradlemedium100.security.controller",
+            "type": "controller",
+            "description": "REST controller that handles login, registration, token refresh, and logout endpoints.",
+            "dependencies": [
+                "com.gradlemedium100.security.service.impl.AuthenticationServiceImpl",
+                "com.gradlemedium100.security.dto.AuthenticationRequest",
+                "com.gradlemedium100.security.dto.AuthenticationResponse",
+                "com.gradlemedium100.security.dto.RegisterRequest"
+            ],
+            "implements": [],
+            "extends": ""
+        },
+        {
+            "name": "AuthenticationRequest",
+            "package": "com.gradlemedium100.security.dto",
+            "type": "dto",
+            "description": "Data Transfer Object that holds login credentials from client requests.",
+            "dependencies": [],
+            "implements": [],
+            "extends": ""
+        },
+        {
+            "name": "AuthenticationResponse",
+            "package": "com.gradlemedium100.security.dto",
+            "type": "dto",
+            "description": "Data Transfer Object that returns authentication results, including JWT token and user details.",
+            "dependencies": [],
+            "implements": [],
+            "extends": ""
+        },
+        {
+            "name": "RegisterRequest",
+            "package": "com.gradlemedium100.security.dto",
+            "type": "dto",
+            "description": "Data Transfer Object that holds user registration details from client requests.",
+            "dependencies": [],
+            "implements": [],
+            "extends": ""
+        },
+        {
+            "name": "SecurityUser",
+            "package": "com.gradlemedium100.security.model",
+            "type": "model",
+            "description": "User entity model for security context with Spring Security integration.",
+            "dependencies": [],
+            "implements": ["org.springframework.security.core.userdetails.UserDetails"],
+            "extends": ""
+        },
+        {
+            "name": "Role",
+            "package": "com.gradlemedium100.security.model",
+            "type": "model",
+            "description": "Enumeration of user roles within the system for authorization purposes.",
+            "dependencies": [],
+            "implements": [],
+            "extends": ""
+        },
+        {
+            "name": "AuthenticationServiceImpl",
+            "package": "com.gradlemedium100.security.service.impl",
+            "type": "service",
+            "description": "Service implementation that handles user authentication, registration, and related security operations.",
+            "dependencies": [
+                "com.gradlemedium100.security.service.JwtService",
+                "com.gradlemedium100.security.model.SecurityUser",
+                "com.gradlemedium100.security.model.Role"
+            ],
+            "implements": ["com.gradlemedium100.security.service.AuthenticationService"],
+            "extends": ""
+        },
+        {
+            "name": "JwtServiceImpl",
+            "package": "com.gradlemedium100.security.service.impl",
+            "type": "service",
+            "description": "Service implementation that handles JWT token generation, validation, and extraction of claims.",
+            "dependencies": [],
+            "implements": ["com.gradlemedium100.security.service.JwtService"],
+            "extends": ""
+        },
+        {
+            "name": "UserDetailsServiceImpl",
+            "package": "com.gradlemedium100.security.service.impl",
+            "type": "service",
+            "description": "Service implementation that loads user-specific data and provides UserDetails objects for Spring Security authentication.",
+            "dependencies": [
+                "com.gradlemedium100.security.model.SecurityUser"
+            ],
+            "implements": ["com.gradlemedium100.security.service.UserDetailsService"],
+            "extends": ""
+        },
+        {
+            "name": "SecurityExceptionHandler",
+            "package": "com.gradlemedium100.security.exception",
+            "type": "exception",
+            "description": "Global exception handler for security-related exceptions like invalid tokens, authentication failures, and authorization issues.",
+            "dependencies": [],
+            "implements": [],
+            "extends": ""
+        }
+    ],
+    "configFiles": [
+        {
+            "path": "security/build.gradle",
+            "description": "Build file for the SecurityModule module"
+        },
+        {
+            "path": "security/src/main/resources/application-security.properties",
+            "description": "Configuration properties for the SecurityModule module, including JWT token settings and security parameters"
+        }
+    ],
+    "generationOrder": [
+        "com.gradlemedium100.security.model.Role",
+        "com.gradlemedium100.security.model.SecurityUser",
+        "com.gradlemedium100.security.dto.AuthenticationRequest",
+        "com.gradlemedium100.security.dto.AuthenticationResponse",
+        "com.gradlemedium100.security.dto.RegisterRequest",
+        "com.gradlemedium100.security.service.JwtService",
+        "com.gradlemedium100.security.service.AuthenticationService",
+        "com.gradlemedium100.security.service.UserDetailsService",
+        "com.gradlemedium100.security.service.impl.JwtServiceImpl",
+        "com.gradlemedium100.security.service.impl.UserDetailsServiceImpl",
+        "com.gradlemedium100.security.service.impl.AuthenticationServiceImpl",
+        "com.gradlemedium100.security.filter.JwtAuthenticationFilter",
+        "com.gradlemedium100.security.config.SecurityConfig",
+        "com.gradlemedium100.security.controller.AuthenticationController",
+        "com.gradlemedium100.security.exception.SecurityExceptionHandler"
+    ]
+}

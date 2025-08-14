@@ -1,0 +1,882 @@
+[
+  {
+    "name": "ProductController",
+    "package": "com.gradlemedium100.productservice.controller",
+    "type": "controller",
+    "description": "REST API controller that handles HTTP requests related to products, including CRUD operations, search, and filtering",
+    "dependencies": ["com.gradlemedium100.productservice.service.ProductService", "com.gradlemedium100.productservice.dto.ProductDTO", "com.gradlemedium100.productservice.dto.ProductSearchCriteria"],
+    "fields": [
+      {
+        "name": "productService",
+        "type": "com.gradlemedium100.productservice.service.ProductService",
+        "description": "Service for handling product business logic"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getAllProducts",
+        "returnType": "org.springframework.http.ResponseEntity<List<com.gradlemedium100.productservice.dto.ProductDTO>>",
+        "parameters": [],
+        "description": "Retrieves all products from the catalog"
+      },
+      {
+        "name": "getProductById",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves a product by its unique identifier"
+      },
+      {
+        "name": "createProduct",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Creates a new product in the catalog"
+      },
+      {
+        "name": "updateProduct",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          },
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Updates an existing product's information"
+      },
+      {
+        "name": "deleteProduct",
+        "returnType": "org.springframework.http.ResponseEntity<Void>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Removes a product from the catalog"
+      },
+      {
+        "name": "searchProducts",
+        "returnType": "org.springframework.http.ResponseEntity<List<com.gradlemedium100.productservice.dto.ProductDTO>>",
+        "parameters": [
+          {
+            "name": "criteria",
+            "type": "com.gradlemedium100.productservice.dto.ProductSearchCriteria"
+          }
+        ],
+        "description": "Searches products based on various criteria"
+      }
+    ]
+  },
+  {
+    "name": "CategoryController",
+    "package": "com.gradlemedium100.productservice.controller",
+    "type": "controller",
+    "description": "REST API controller for managing product categories",
+    "dependencies": ["com.gradlemedium100.productservice.service.CategoryService", "com.gradlemedium100.productservice.dto.CategoryDTO"],
+    "fields": [
+      {
+        "name": "categoryService",
+        "type": "com.gradlemedium100.productservice.service.CategoryService",
+        "description": "Service for handling category business logic"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getAllCategories",
+        "returnType": "org.springframework.http.ResponseEntity<List<com.gradlemedium100.productservice.dto.CategoryDTO>>",
+        "parameters": [],
+        "description": "Retrieves all product categories"
+      },
+      {
+        "name": "getCategoryById",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.CategoryDTO>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves a specific category by its ID"
+      },
+      {
+        "name": "createCategory",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.CategoryDTO>",
+        "parameters": [
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Creates a new product category"
+      },
+      {
+        "name": "updateCategory",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.CategoryDTO>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          },
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Updates an existing category"
+      },
+      {
+        "name": "deleteCategory",
+        "returnType": "org.springframework.http.ResponseEntity<Void>",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Removes a category from the system"
+      },
+      {
+        "name": "getProductsByCategory",
+        "returnType": "org.springframework.http.ResponseEntity<List<com.gradlemedium100.productservice.dto.ProductDTO>>",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves all products belonging to a specific category"
+      }
+    ]
+  },
+  {
+    "name": "InventoryController",
+    "package": "com.gradlemedium100.productservice.controller",
+    "type": "controller",
+    "description": "REST API controller for managing product inventory",
+    "dependencies": ["com.gradlemedium100.productservice.service.InventoryService", "com.gradlemedium100.productservice.dto.InventoryDTO"],
+    "fields": [
+      {
+        "name": "inventoryService",
+        "type": "com.gradlemedium100.productservice.service.InventoryService",
+        "description": "Service for handling inventory business logic"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getInventoryForProduct",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.InventoryDTO>",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves inventory information for a specific product"
+      },
+      {
+        "name": "updateInventory",
+        "returnType": "org.springframework.http.ResponseEntity<com.gradlemedium100.productservice.dto.InventoryDTO>",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          },
+          {
+            "name": "inventoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.InventoryDTO"
+          }
+        ],
+        "description": "Updates inventory information for a product"
+      },
+      {
+        "name": "checkProductAvailability",
+        "returnType": "org.springframework.http.ResponseEntity<Boolean>",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          },
+          {
+            "name": "quantity",
+            "type": "Integer"
+          }
+        ],
+        "description": "Checks if a product is available in the requested quantity"
+      },
+      {
+        "name": "getLowStockProducts",
+        "returnType": "org.springframework.http.ResponseEntity<List<com.gradlemedium100.productservice.dto.ProductDTO>>",
+        "parameters": [
+          {
+            "name": "threshold",
+            "type": "Integer"
+          }
+        ],
+        "description": "Retrieves products with stock levels below the specified threshold"
+      }
+    ]
+  },
+  {
+    "name": "ProductServiceImpl",
+    "package": "com.gradlemedium100.productservice.service.impl",
+    "type": "service",
+    "description": "Implementation of ProductService that manages product operations with caching support",
+    "dependencies": ["com.gradlemedium100.productservice.repository.ProductRepository", "com.gradlemedium100.productservice.model.Product", "com.gradlemedium100.productservice.dto.ProductDTO", "com.gradlemedium100.common.util.CacheManager"],
+    "implements": ["com.gradlemedium100.productservice.service.ProductService"],
+    "fields": [
+      {
+        "name": "productRepository",
+        "type": "com.gradlemedium100.productservice.repository.ProductRepository",
+        "description": "Repository for product data access"
+      },
+      {
+        "name": "cacheManager",
+        "type": "com.gradlemedium100.common.util.CacheManager",
+        "description": "Cache manager for product data"
+      }
+    ],
+    "methods": [
+      {
+        "name": "findAllProducts",
+        "returnType": "List<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [],
+        "description": "Retrieves all products with caching"
+      },
+      {
+        "name": "findProductById",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves a product by ID with caching"
+      },
+      {
+        "name": "createProduct",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Creates a new product and invalidates cache"
+      },
+      {
+        "name": "updateProduct",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          },
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Updates a product and refreshes cache"
+      },
+      {
+        "name": "deleteProduct",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Deletes a product and invalidates cache"
+      },
+      {
+        "name": "searchProducts",
+        "returnType": "List<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "criteria",
+            "type": "com.gradlemedium100.productservice.dto.ProductSearchCriteria"
+          }
+        ],
+        "description": "Searches for products based on various criteria"
+      },
+      {
+        "name": "convertToDTO",
+        "returnType": "com.gradlemedium100.productservice.dto.ProductDTO",
+        "parameters": [
+          {
+            "name": "product",
+            "type": "com.gradlemedium100.productservice.model.Product"
+          }
+        ],
+        "description": "Converts a Product entity to its DTO representation"
+      },
+      {
+        "name": "convertToEntity",
+        "returnType": "com.gradlemedium100.productservice.model.Product",
+        "parameters": [
+          {
+            "name": "productDTO",
+            "type": "com.gradlemedium100.productservice.dto.ProductDTO"
+          }
+        ],
+        "description": "Converts a ProductDTO to its entity representation"
+      }
+    ]
+  },
+  {
+    "name": "CategoryServiceImpl",
+    "package": "com.gradlemedium100.productservice.service.impl",
+    "type": "service",
+    "description": "Implementation of CategoryService that manages product category operations",
+    "dependencies": ["com.gradlemedium100.productservice.repository.CategoryRepository", "com.gradlemedium100.productservice.model.Category", "com.gradlemedium100.productservice.dto.CategoryDTO"],
+    "implements": ["com.gradlemedium100.productservice.service.CategoryService"],
+    "fields": [
+      {
+        "name": "categoryRepository",
+        "type": "com.gradlemedium100.productservice.repository.CategoryRepository",
+        "description": "Repository for category data access"
+      }
+    ],
+    "methods": [
+      {
+        "name": "findAllCategories",
+        "returnType": "List<com.gradlemedium100.productservice.dto.CategoryDTO>",
+        "parameters": [],
+        "description": "Retrieves all product categories"
+      },
+      {
+        "name": "findCategoryById",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Retrieves a category by its ID"
+      },
+      {
+        "name": "createCategory",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Creates a new product category"
+      },
+      {
+        "name": "updateCategory",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          },
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Updates an existing category"
+      },
+      {
+        "name": "deleteCategory",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Deletes a category"
+      },
+      {
+        "name": "convertToDTO",
+        "returnType": "com.gradlemedium100.productservice.dto.CategoryDTO",
+        "parameters": [
+          {
+            "name": "category",
+            "type": "com.gradlemedium100.productservice.model.Category"
+          }
+        ],
+        "description": "Converts a Category entity to its DTO representation"
+      },
+      {
+        "name": "convertToEntity",
+        "returnType": "com.gradlemedium100.productservice.model.Category",
+        "parameters": [
+          {
+            "name": "categoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.CategoryDTO"
+          }
+        ],
+        "description": "Converts a CategoryDTO to its entity representation"
+      }
+    ]
+  },
+  {
+    "name": "InventoryServiceImpl",
+    "package": "com.gradlemedium100.productservice.service.impl",
+    "type": "service",
+    "description": "Implementation of InventoryService that handles product inventory operations",
+    "dependencies": ["com.gradlemedium100.productservice.repository.InventoryRepository", "com.gradlemedium100.productservice.repository.ProductRepository", "com.gradlemedium100.productservice.model.Inventory", "com.gradlemedium100.productservice.dto.InventoryDTO"],
+    "implements": ["com.gradlemedium100.productservice.service.InventoryService"],
+    "fields": [
+      {
+        "name": "inventoryRepository",
+        "type": "com.gradlemedium100.productservice.repository.InventoryRepository",
+        "description": "Repository for inventory data access"
+      },
+      {
+        "name": "productRepository",
+        "type": "com.gradlemedium100.productservice.repository.ProductRepository",
+        "description": "Repository for product data access"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getInventoryForProduct",
+        "returnType": "com.gradlemedium100.productservice.dto.InventoryDTO",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          }
+        ],
+        "description": "Gets inventory information for a specific product"
+      },
+      {
+        "name": "updateInventory",
+        "returnType": "com.gradlemedium100.productservice.dto.InventoryDTO",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          },
+          {
+            "name": "inventoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.InventoryDTO"
+          }
+        ],
+        "description": "Updates inventory information for a product"
+      },
+      {
+        "name": "isProductAvailable",
+        "returnType": "boolean",
+        "parameters": [
+          {
+            "name": "productId",
+            "type": "Long"
+          },
+          {
+            "name": "quantity",
+            "type": "int"
+          }
+        ],
+        "description": "Checks if a product is available in the requested quantity"
+      },
+      {
+        "name": "getLowStockProducts",
+        "returnType": "List<com.gradlemedium100.productservice.dto.ProductDTO>",
+        "parameters": [
+          {
+            "name": "threshold",
+            "type": "int"
+          }
+        ],
+        "description": "Retrieves products with stock levels below the specified threshold"
+      },
+      {
+        "name": "convertToDTO",
+        "returnType": "com.gradlemedium100.productservice.dto.InventoryDTO",
+        "parameters": [
+          {
+            "name": "inventory",
+            "type": "com.gradlemedium100.productservice.model.Inventory"
+          }
+        ],
+        "description": "Converts an Inventory entity to its DTO representation"
+      },
+      {
+        "name": "convertToEntity",
+        "returnType": "com.gradlemedium100.productservice.model.Inventory",
+        "parameters": [
+          {
+            "name": "inventoryDTO",
+            "type": "com.gradlemedium100.productservice.dto.InventoryDTO"
+          }
+        ],
+        "description": "Converts an InventoryDTO to its entity representation"
+      }
+    ]
+  },
+  {
+    "name": "Product",
+    "package": "com.gradlemedium100.productservice.model",
+    "type": "model",
+    "description": "Entity class representing a product in the catalog",
+    "dependencies": ["com.gradlemedium100.productservice.model.Category"],
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Unique identifier for the product"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "description": "Name of the product"
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "description": "Detailed description of the product"
+      },
+      {
+        "name": "price",
+        "type": "BigDecimal",
+        "description": "Price of the product"
+      },
+      {
+        "name": "category",
+        "type": "com.gradlemedium100.productservice.model.Category",
+        "description": "Category to which the product belongs"
+      },
+      {
+        "name": "sku",
+        "type": "String",
+        "description": "Stock keeping unit - unique code for the product"
+      },
+      {
+        "name": "imageUrl",
+        "type": "String",
+        "description": "URL pointing to the product image"
+      },
+      {
+        "name": "createdAt",
+        "type": "LocalDateTime",
+        "description": "Timestamp when the product was created"
+      },
+      {
+        "name": "updatedAt",
+        "type": "LocalDateTime",
+        "description": "Timestamp when the product was last updated"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the product ID"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the product ID"
+      },
+      {
+        "name": "getName",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the product name"
+      },
+      {
+        "name": "setName",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the product name"
+      },
+      {
+        "name": "getDescription",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the product description"
+      },
+      {
+        "name": "setDescription",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the product description"
+      },
+      {
+        "name": "getPrice",
+        "returnType": "BigDecimal",
+        "parameters": [],
+        "description": "Gets the product price"
+      },
+      {
+        "name": "setPrice",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "price",
+            "type": "BigDecimal"
+          }
+        ],
+        "description": "Sets the product price"
+      },
+      {
+        "name": "getCategory",
+        "returnType": "com.gradlemedium100.productservice.model.Category",
+        "parameters": [],
+        "description": "Gets the product category"
+      },
+      {
+        "name": "setCategory",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "category",
+            "type": "com.gradlemedium100.productservice.model.Category"
+          }
+        ],
+        "description": "Sets the product category"
+      }
+    ]
+  },
+  {
+    "name": "Category",
+    "package": "com.gradlemedium100.productservice.model",
+    "type": "model",
+    "description": "Entity class representing a product category",
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Unique identifier for the category"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "description": "Name of the category"
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "description": "Detailed description of the category"
+      },
+      {
+        "name": "parentCategory",
+        "type": "com.gradlemedium100.productservice.model.Category",
+        "description": "Parent category (for hierarchical categories)"
+      },
+      {
+        "name": "createdAt",
+        "type": "LocalDateTime",
+        "description": "Timestamp when the category was created"
+      },
+      {
+        "name": "updatedAt",
+        "type": "LocalDateTime",
+        "description": "Timestamp when the category was last updated"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the category ID"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the category ID"
+      },
+      {
+        "name": "getName",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the category name"
+      },
+      {
+        "name": "setName",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the category name"
+      },
+      {
+        "name": "getDescription",
+        "returnType": "String",
+        "parameters": [],
+        "description": "Gets the category description"
+      },
+      {
+        "name": "setDescription",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "description",
+            "type": "String"
+          }
+        ],
+        "description": "Sets the category description"
+      },
+      {
+        "name": "getParentCategory",
+        "returnType": "com.gradlemedium100.productservice.model.Category",
+        "parameters": [],
+        "description": "Gets the parent category"
+      },
+      {
+        "name": "setParentCategory",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "parentCategory",
+            "type": "com.gradlemedium100.productservice.model.Category"
+          }
+        ],
+        "description": "Sets the parent category"
+      }
+    ]
+  },
+  {
+    "name": "Inventory",
+    "package": "com.gradlemedium100.productservice.model",
+    "type": "model",
+    "description": "Entity class representing inventory information for a product",
+    "dependencies": ["com.gradlemedium100.productservice.model.Product"],
+    "fields": [
+      {
+        "name": "id",
+        "type": "Long",
+        "description": "Unique identifier for the inventory record"
+      },
+      {
+        "name": "product",
+        "type": "com.gradlemedium100.productservice.model.Product",
+        "description": "Product associated with this inventory record"
+      },
+      {
+        "name": "quantity",
+        "type": "Integer",
+        "description": "Current quantity in stock"
+      },
+      {
+        "name": "lastRestocked",
+        "type": "LocalDateTime",
+        "description": "Timestamp of the last restock"
+      },
+      {
+        "name": "lowStockThreshold",
+        "type": "Integer",
+        "description": "Threshold below which stock is considered low"
+      },
+      {
+        "name": "location",
+        "type": "String",
+        "description": "Storage location of the product"
+      },
+      {
+        "name": "updatedAt",
+        "type": "LocalDateTime",
+        "description": "Timestamp when the inventory was last updated"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getId",
+        "returnType": "Long",
+        "parameters": [],
+        "description": "Gets the inventory record ID"
+      },
+      {
+        "name": "setId",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "Long"
+          }
+        ],
+        "description": "Sets the inventory record ID"
+      },
+      {
+        "name": "getProduct",
+        "returnType": "com.gradlemedium100.productservice.model.Product",
+        "parameters": [],
+        "description": "Gets the associated product"
+      },
+      {
+        "name": "setProduct",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "product",
+            "type": "com.gradlemedium100.productservice.model.Product"
+          }
+        ],
+        "description": "Sets the associated product"
+      },
+      {
+        "name": "getQuantity",
+        "returnType": "Integer",
+        "parameters": [],
+        "description": "Gets the current quantity in stock"
+      },
+      {
+        "name": "setQuantity",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "quantity",
+            "type": "Integer"
+          }
+        ],
+        "description": "Sets the current quantity in stock"
+      },
+      {
+        "name": "isLowStock",
+        "returnType": "boolean",
+        "parameters": [],
+        "description": "Checks if the inventory is below the low stock threshold"
+      }
+    ]
+  }
+]

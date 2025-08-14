@@ -1,0 +1,74 @@
+[
+  {
+    "name": "ProductServiceConfig",
+    "package": "com.gradlemedium100.productservice.config",
+    "type": "configuration",
+    "description": "Spring configuration class for the product service module",
+    "dependencies": ["com.gradlemedium100.common.util.CacheManager"],
+    "fields": [
+      {
+        "name": "cacheExpirationSeconds",
+        "type": "long",
+        "description": "Cache expiration time in seconds for product data"
+      },
+      {
+        "name": "cacheMaxSize",
+        "type": "int",
+        "description": "Maximum number of entries in the product cache"
+      }
+    ],
+    "methods": [
+      {
+        "name": "cacheManager",
+        "returnType": "com.gradlemedium100.common.util.CacheManager",
+        "parameters": [],
+        "description": "Creates and configures a cache manager for product data"
+      },
+      {
+        "name": "productCacheConfig",
+        "returnType": "org.springframework.cache.CacheManager",
+        "parameters": [],
+        "description": "Configures the Spring cache manager for products"
+      },
+      {
+        "name": "productApiClient",
+        "returnType": "RestTemplate",
+        "parameters": [],
+        "description": "Creates a REST client for external product APIs"
+      },
+      {
+        "name": "productValidationService",
+        "returnType": "com.gradlemedium100.productservice.validation.ProductValidationService",
+        "parameters": [],
+        "description": "Creates a validation service for product data"
+      }
+    ]
+  },
+  {
+    "name": "ProductServiceApplication",
+    "package": "com.gradlemedium100.productservice",
+    "type": "application",
+    "description": "Main application class that bootstraps the product service module",
+    "dependencies": ["org.springframework.boot.SpringApplication"],
+    "fields": [],
+    "methods": [
+      {
+        "name": "main",
+        "returnType": "void",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "String[]"
+          }
+        ],
+        "description": "Entry point for the product service application"
+      },
+      {
+        "name": "commandLineRunner",
+        "returnType": "CommandLineRunner",
+        "parameters": [],
+        "description": "Initializes sample data for development environment"
+      }
+    ]
+  }
+]
