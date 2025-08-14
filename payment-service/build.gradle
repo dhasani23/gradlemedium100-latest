@@ -10,8 +10,8 @@ group = 'com.gradlemedium100'
 version = '0.1.0-SNAPSHOT'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -39,7 +39,7 @@ dependencies {
     
     // Payment gateway integration dependencies
     // TODO: Add specific payment gateway client libraries based on requirements
-    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
     
     // JSON processing
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'

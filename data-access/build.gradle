@@ -5,7 +5,7 @@ plugins {
     id 'org.flywaydb.flyway' version '7.9.1' // Added Flyway plugin
 }
 
-description = 'Provides repository implementations and database entity models. Contains JPA repositories, database configuration, migration scripts, and entity mappings for the application\'s domain objects.'
+description = "Provides repository implementations and database entity models. Contains JPA repositories, database configuration, migration scripts, and entity mappings for the application's domain objects."
 
 bootJar {
     enabled = false
@@ -17,8 +17,8 @@ jar {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
