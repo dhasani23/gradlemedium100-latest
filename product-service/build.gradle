@@ -13,6 +13,11 @@ plugins {
 
 description = 'Product Service Module'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 ext {
     springCloudVersion = '2020.0.3'
 }
@@ -72,6 +77,12 @@ test {
 bootJar {
     archiveBaseName.set('product-service')
     archiveVersion.set('0.1.0-SNAPSHOT')
+    mainClass = 'com.gradlemedium100.productservice.ProductServiceApplication'
+}
+
+// Configure Spring Boot main class
+springBoot {
+    mainClass = 'com.gradlemedium100.productservice.ProductServiceApplication'
 }
 
 // Skip Javadoc generation to avoid errors with unresolved references

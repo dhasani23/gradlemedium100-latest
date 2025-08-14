@@ -7,8 +7,8 @@ plugins {
 description = 'Notification service module that manages email, SMS, and in-app notifications'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -63,6 +63,12 @@ bootJar {
     enabled = true
     archiveBaseName = 'notification-service'
     archiveVersion = '0.1.0-SNAPSHOT'
+    mainClass = 'com.gradlemedium100.notification.NotificationServiceApplication'
+}
+
+// Configure Spring Boot main class
+springBoot {
+    mainClass = 'com.gradlemedium100.notification.NotificationServiceApplication'
 }
 
 // Create javadoc JAR

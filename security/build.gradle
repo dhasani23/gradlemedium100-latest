@@ -10,11 +10,17 @@ bootJar {
     enabled = true
     archiveBaseName = 'security'
     archiveVersion = '0.1.0-SNAPSHOT'
+    mainClass = 'com.gradlemedium100.security.SecurityApplication'
+}
+
+// Configure Spring Boot main class
+springBoot {
+    mainClass = 'com.gradlemedium100.security.SecurityApplication'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
