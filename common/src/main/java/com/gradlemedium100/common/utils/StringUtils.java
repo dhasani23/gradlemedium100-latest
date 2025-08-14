@@ -1,7 +1,5 @@
 package com.gradlemedium100.common.utils;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 /**
  * Utility class for string manipulation operations like formatting,
  * validation, sanitization.
@@ -84,15 +82,42 @@ public final class StringUtils {
             return null;
         }
         
-        // FIXME: StringEscapeUtils is deprecated in newer versions of commons-lang3
-        // Consider using a proper HTML sanitizer library like OWASP Java HTML Sanitizer
-        String sanitized = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(html);
+        // Replace the deprecated StringEscapeUtils with a direct approach
+        // using standard Java methods to escape HTML characters
+        StringBuilder sanitized = new StringBuilder(html.length());
+        for (int i = 0; i < html.length(); i++) {
+            char c = html.charAt(i);
+            switch (c) {
+                case '<':
+                    sanitized.append("&lt;");
+                    break;
+                case '>':
+                    sanitized.append("&gt;");
+                    break;
+                case '&':
+                    sanitized.append("&amp;");
+                    break;
+                case '"':
+                    sanitized.append("&quot;");
+                    break;
+                case '\'':
+                    sanitized.append("&#x27;");
+                    break;
+                case '/':
+                    sanitized.append("&#x2F;");
+                    break;
+                default:
+                    sanitized.append(c);
+            }
+        }
         
-        // Additional sanitization could be implemented here
-        sanitized = sanitized.replaceAll("(?i)<script.*?>.*?</script>", "");
-        sanitized = sanitized.replaceAll("(?i)on\\w+\\s*=\\s*\".*?\"", "");
+        String result = sanitized.toString();
         
-        return sanitized;
+        // Additional sanitization
+        result = result.replaceAll("(?i)<script.*?>.*?</script>", "");
+        result = result.replaceAll("(?i)on\\w+\\s*=\\s*\".*?\"", "");
+        
+        return result;
     }
     
     /**
@@ -147,8 +172,6 @@ public final class StringUtils {
     /**
      * Checks if a string contains another string, case insensitive
      * 
-     * TODO: Optimize for large strings by using more efficient algorithms
-     * 
      * @param source the source string
      * @param searchStr the string to search for
      * @return true if the source contains the search string, false otherwise
@@ -158,6 +181,18 @@ public final class StringUtils {
             return false;
         }
         
-        return source.toLowerCase().contains(searchStr.toLowerCase());
+        // Use the IndexOf approach which is more efficient than converting to lowercase first
+        final int length = searchStr.length();
+        if (length == 0) {
+            return true;
+        }
+        
+        final int endLimit = source.length() - length;
+        for (int i = 0; i <= endLimit; i++) {
+            if (source.regionMatches(true, i, searchStr, 0, length)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

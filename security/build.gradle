@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.5.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 description = 'Handles user authentication, authorization, and session management. Implements Spring Security with JWT token authentication, user roles, permissions, and security configurations.'
@@ -10,11 +10,12 @@ bootJar {
     enabled = true
     archiveBaseName = 'security'
     archiveVersion = '0.1.0-SNAPSHOT'
+    mainClass = 'com.gradlemedium100.security.SecurityApplication'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -27,9 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     
     // JWT dependencies
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     
     // Project dependencies
     implementation project(':common')
@@ -42,8 +43,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     
     // Lombok for reducing boilerplate code
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
     
     // Test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -79,6 +80,11 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives javadocJar
     archives sourcesJar
+}
+
+// Configure SpringBoot main class
+springBoot {
+    mainClass = 'com.gradlemedium100.security.SecurityApplication'
 }
 
 // TODO: Configure security-specific properties for production deployment

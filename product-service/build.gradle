@@ -6,15 +6,20 @@
  */
 
 plugins {
-    id 'org.springframework.boot' version '2.5.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
 }
 
 description = 'Product Service Module'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 ext {
-    springCloudVersion = '2020.0.3'
+    springCloudVersion = '2021.0.8'
 }
 
 dependencyManagement {
@@ -48,8 +53,8 @@ dependencies {
     implementation 'com.github.ben-manes.caffeine:caffeine'
     
     // Lombok for boilerplate code reduction
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
     
     // Swagger for API documentation
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
@@ -72,6 +77,12 @@ test {
 bootJar {
     archiveBaseName.set('product-service')
     archiveVersion.set('0.1.0-SNAPSHOT')
+    mainClass = 'com.gradlemedium100.productservice.ProductServiceApplication'
+}
+
+// Configure SpringBoot main class
+springBoot {
+    mainClass = 'com.gradlemedium100.productservice.ProductServiceApplication'
 }
 
 // Skip Javadoc generation to avoid errors with unresolved references

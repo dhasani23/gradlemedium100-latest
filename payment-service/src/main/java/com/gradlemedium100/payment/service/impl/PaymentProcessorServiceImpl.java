@@ -134,9 +134,17 @@ public class PaymentProcessorServiceImpl implements PaymentProcessorService {
                 return false;
             }
         } else if (paymentDetails.containsKey("cardDetails")) {
-            // TODO: Implement card validation logic
-            // FIXME: Currently accepts any card details without validation
-            Map<String, String> cardDetails = (Map<String, String>) paymentDetails.get("cardDetails");
+            // Fix the unchecked cast with explicit type checking
+            Object cardDetailsObj = paymentDetails.get("cardDetails");
+            if (!(cardDetailsObj instanceof Map)) {
+                logger.error("Card details must be a Map");
+                return false;
+            }
+            
+            @SuppressWarnings("unchecked")
+            Map<String, String> cardDetails = (Map<String, String>) cardDetailsObj;
+            
+            // Validate card details
             if (!cardDetails.containsKey("cardNumber") || !cardDetails.containsKey("expiryMonth") || 
                 !cardDetails.containsKey("expiryYear") || !cardDetails.containsKey("cvv")) {
                 logger.error("Incomplete card details provided");

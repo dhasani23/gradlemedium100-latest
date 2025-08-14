@@ -5,12 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -28,26 +29,27 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
+    
     /**
-     * Configures HTTP security settings.
+     * Configures HTTP security settings with the new approach (replacing WebSecurityConfigurerAdapter).
      * - Disables CSRF protection as we use JWT
      * - Sets up authorization for different endpoints
      * - Configures session management as stateless
      * - Adds JWT filter before the standard authentication filter
      * 
      * @param http HttpSecurity object to configure
+     * @return The configured SecurityFilterChain
      * @throws Exception if configuration fails
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors().and()
             .csrf().disable()
@@ -65,17 +67,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
         // TODO: Consider adding custom authentication entry point for better error messages
+        
+        return http.build();
     }
 
     /**
      * Configures authentication manager to use our custom user details service
      * and password encoder.
-     * 
-     * @param auth AuthenticationManagerBuilder to configure
-     * @throws Exception if configuration fails
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    void configureAuthenticationManager(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -95,13 +96,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * Creates an authentication manager bean that can be injected elsewhere.
      * This is required for programmatic authentication in services.
      * 
+     * @param authenticationConfiguration the Spring Security authentication configuration
      * @return AuthenticationManager instance
      * @throws Exception if bean creation fails
      */
     @Bean
-    @Override
-    public AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     /**

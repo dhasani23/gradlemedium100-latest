@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
-    id 'org.springframework.boot' version '2.5.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.17'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 description = 'Common module containing utilities, exceptions, DTOs, and shared constants'
@@ -16,8 +16,8 @@ jar {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -26,19 +26,19 @@ repositories {
 
 dependencies {
     // Spring Boot dependencies
-    api 'org.springframework.boot:spring-boot-starter:2.5.0'
-    api 'org.springframework.boot:spring-boot-starter-validation:2.5.0'
-    api 'org.springframework.boot:spring-boot-starter-logging:2.5.0'
+    api 'org.springframework.boot:spring-boot-starter'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api 'org.springframework.boot:spring-boot-starter-logging'
     
     // Added Spring Web for HTTP classes and REST annotations
-    api 'org.springframework.boot:spring-boot-starter-web:2.5.0'
+    api 'org.springframework.boot:spring-boot-starter-web'
     
     // Added Spring Data for Pagination support
-    api 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.0'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
     
     // Jackson for JSON processing
-    api 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3' // Added Java 8 DateTime support
+    api 'com.fasterxml.jackson.core:jackson-databind'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310' // Added Java 8 DateTime support
     
     // Validation
     api 'javax.validation:validation-api:2.0.1.Final'
@@ -47,14 +47,14 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.12.0'
     
     // Logging
-    api 'org.slf4j:slf4j-api:1.7.30'
-    api 'ch.qos.logback:logback-classic:1.2.3'
+    api 'org.slf4j:slf4j-api'
+    api 'ch.qos.logback:logback-classic'
     
     // Test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.11.2' // Added Mockito with JUnit 5 support
+    testImplementation 'org.mockito:mockito-junit-jupiter'
 }
 
 test {

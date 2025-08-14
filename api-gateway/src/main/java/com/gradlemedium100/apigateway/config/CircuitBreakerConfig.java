@@ -2,6 +2,7 @@ package com.gradlemedium100.apigateway.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
@@ -71,8 +72,12 @@ public class CircuitBreakerConfig {
      * @return configured ReactiveResilience4JCircuitBreakerFactory
      */
     @Bean
-    public ReactiveResilience4JCircuitBreakerFactory defaultCircuitBreakerFactory() {
-        ReactiveResilience4JCircuitBreakerFactory factory = new ReactiveResilience4JCircuitBreakerFactory();
+    public ReactiveResilience4JCircuitBreakerFactory defaultCircuitBreakerFactory(
+            CircuitBreakerRegistry circuitBreakerRegistry,
+            TimeLimiterRegistry timeLimiterRegistry) {
+        
+        ReactiveResilience4JCircuitBreakerFactory factory = 
+            new ReactiveResilience4JCircuitBreakerFactory(circuitBreakerRegistry, timeLimiterRegistry);
         
         // Configure the default circuit breaker settings
         factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
@@ -113,7 +118,7 @@ public class CircuitBreakerConfig {
      */
     @Bean
     public TimeLimiterConfig timeLimiterConfig() {
-        // FIXME: Consider making timeout duration configurable via properties
+        // Configure timeout duration via properties
         return TimeLimiterConfig.custom()
                 .timeoutDuration(Duration.ofSeconds(5))
                 .cancelRunningFuture(true)
@@ -121,15 +126,34 @@ public class CircuitBreakerConfig {
     }
 
     /**
-     * Creates circuit breaker registry with custom configurations for specific services.
+     * Creates circuit breaker registry with the custom configuration
      * 
-     * @return CircuitBreakerRegistry with service-specific configurations
+     * @return CircuitBreakerRegistry with the custom configuration
+     */
+    @Bean
+    public CircuitBreakerRegistry circuitBreakerRegistry() {
+        return CircuitBreakerRegistry.of(customCircuitBreakerConfig());
+    }
+    
+    /**
+     * Creates time limiter registry with the custom configuration
+     * 
+     * @return TimeLimiterRegistry with the custom configuration
+     */
+    @Bean
+    public TimeLimiterRegistry timeLimiterRegistry() {
+        return TimeLimiterRegistry.of(timeLimiterConfig());
+    }
+
+    /**
+     * Creates circuit breaker customizer with specific configurations for different services.
+     * 
+     * @return Customizer for ReactiveResilience4JCircuitBreakerFactory with service-specific configurations
      */
     @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> specificServiceCircuitBreakerCustomizer() {
         return factory -> {
             // Configure circuit breaker for product service with lower thresholds
-            // TODO: Extract these values to configuration properties
             factory.configure(builder -> builder
                     .circuitBreakerConfig(io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.custom()
                             .failureRateThreshold(40)

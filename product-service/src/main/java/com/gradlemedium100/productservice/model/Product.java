@@ -1,6 +1,7 @@
 package com.gradlemedium100.productservice.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -281,7 +282,7 @@ public class Product {
         }
         
         BigDecimal discountFactor = BigDecimal.valueOf((100.0 - discountPercent) / 100.0);
-        return price.multiply(discountFactor).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return price.multiply(discountFactor).setScale(2, RoundingMode.HALF_UP);
     }
     
     /**
