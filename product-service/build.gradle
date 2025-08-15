@@ -13,6 +13,11 @@ plugins {
 
 description = 'Product Service Module'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 ext {
     springCloudVersion = '2020.0.3'
 }
